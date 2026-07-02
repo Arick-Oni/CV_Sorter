@@ -1,0 +1,15 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+sqlalchemy==2.0.36
+psycopg2-binary==2.9.10
+python-multipart==0.0.12
+python-dotenv==1.0.1
+spacy==3.8.3
+easyocr==1.7.2
+requests==2.32.3
+pillow==10.4.0
+pydantic==2.9.2
+ftfy==6.3.1
+scikit-learn
+pymupdf
+python-docx

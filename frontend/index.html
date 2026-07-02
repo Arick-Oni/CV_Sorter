@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV Platform</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header>
+    <h1>CV Platform</h1>
+    <nav>
+      <button class="tab-btn" data-tab="upload">Upload CV</button>
+      <button class="tab-btn" data-tab="library">CV Library</button>
+      <button class="tab-btn" data-tab="rank">JD Match</button>
+    </nav>
+  </header>
+
+  <!-- Upload Tab -->
+  <section id="tab-upload" class="tab">
+    <div class="card">
+      <h2>Upload a CV</h2>
+      <form id="upload-form">
+        <label>CV File (image, PDF, or DOCX)
+          <input type="file" id="cv-file" accept=".png,.jpg,.jpeg,.webp,.pdf,.docx" required />
+        </label>
+
+        <label>Text Extraction Method
+          <select id="extraction-method">
+            <option value="easyocr">EasyOCR (local, no GPU needed)</option>
+            <option value="minicpm-v">MiniCPM-V via Ollama (vision LLM)</option>
+          </select>
+        </label>
+
+        <div id="ollama-url-group" style="display:none">
+          <label>Ollama / ngrok URL
+            <input type="url" id="ollama-url" placeholder="https://your-ngrok-url.ngrok-free.app" />
+          </label>
+        </div>
+
+        <button type="submit" class="btn-primary" id="upload-btn">Upload &amp; Process</button>
+      </form>
+      <div id="upload-status" class="status" style="display:none"></div>
+    </div>
+  </section>
+
+  <!-- JD Match Tab -->
+  <section id="tab-rank" class="tab" style="display:none">
+    <div class="card rank-card">
+      <h2>Match CVs to Job Description</h2>
+      <form id="rank-form">
+        <div class="jd-label-row">
+          <span class="field-label">Job Description</span>
+          <label class="btn-secondary jd-upload-btn" title="Extract text from a PDF, image, or DOCX">
+            Upload JD file
+            <input type="file" id="jd-file" accept=".pdf,.png,.jpg,.jpeg,.webp,.docx" style="display:none" />
+          </label>
+        </div>
+        <textarea id="jd-text" rows="7" placeholder="Paste the full job description here, or upload a file above..." required></textarea>
+        <div id="jd-file-status" class="status" style="display:none"></div>
+        <div class="rank-controls">
+          <label class="inline-label">Show top
+            <input type="number" id="rank-top-n" value="10" min="1" max="50" class="rank-topn" />
+          </label>
+          <button type="submit" class="btn-primary" id="rank-btn">Find Matches</button>
+        </div>
+      </form>
+      <div id="rank-status" class="status" style="display:none"></div>
+    </div>
+    <div id="rank-results"></div>
+  </section>
+
+  <!-- Library Tab -->
+  <section id="tab-library" class="tab" style="display:none">
+    <div class="toolbar">
+      <button class="btn-secondary" id="refresh-btn">Refresh</button>
+    </div>
+    <div id="cv-table-wrap">
+      <table id="cv-table">
+        <thead>
+          <tr>
+            <th>ID</th><th>Filename</th><th>Uploaded</th>
+            <th>Method</th><th>Status</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="cv-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Detail Modal -->
+  <div id="modal" class="modal" style="display:none">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <h2 id="modal-title"></h2>
+
+      <div class="modal-tabs">
+        <button class="mtab" data-mtab="raw">Raw Text</button>
+        <button class="mtab" data-mtab="m1">model-best</button>
+        <button class="mtab" data-mtab="m2">model-best-2</button>
+        <button class="mtab" data-mtab="merged">Merged</button>
+        <button class="mtab" data-mtab="skills">Skills NER</button>
+        <button class="mtab" data-mtab="image">Original</button>
+      </div>
+
+      <div id="mtab-raw"    class="mtab-panel" style="display:none"><pre id="raw-text-pre"></pre></div>
+      <div id="mtab-m1"     class="mtab-panel" style="display:none"><div id="ner-m1"></div></div>
+      <div id="mtab-m2"     class="mtab-panel" style="display:none"><div id="ner-m2"></div></div>
+      <div id="mtab-merged" class="mtab-panel" style="display:none"><div id="ner-merged"></div></div>
+      <div id="mtab-skills" class="mtab-panel" style="display:none"><div id="ner-skills"></div></div>
+      <div id="mtab-image"  class="mtab-panel" style="display:none"><img id="cv-img" src="" alt="CV" /></div>
+
+      <div class="modal-actions">
+        <div class="action-group">
+          <span>Re-extract:</span>
+          <select id="re-extract-method">
+            <option value="easyocr">EasyOCR</option>
+            <option value="minicpm-v">MiniCPM-V</option>
+          </select>
+          <input type="url" id="re-ollama-url" style="display:none" placeholder="ngrok URL" />
+          <button class="btn-secondary" id="re-extract-btn">Re-extract</button>
+        </div>
+        <div class="action-group">
+          <span>Re-classify:</span>
+          <select id="re-classify-model">
+            <option value="both">All models</option>
+            <option value="model1">model-best only</option>
+            <option value="model2">model-best-2 only</option>
+            <option value="skills">Skills NER only</option>
+          </select>
+          <button class="btn-secondary" id="re-classify-btn">Re-classify</button>
+        </div>
+        <button class="btn-danger" id="delete-btn">Delete CV</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
