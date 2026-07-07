@@ -404,7 +404,7 @@ const llmModelSelect   = document.getElementById('llm-model-select');
 const llmModelCustom   = document.getElementById('llm-model-custom');
 
 rankMethodSelect.addEventListener('change', () => {
-  llmOptionsGroup.style.display = rankMethodSelect.value === 'llm' ? 'flex' : 'none';
+  llmOptionsGroup.style.display = rankMethodSelect.value.startsWith('llm') ? 'flex' : 'none';
 });
 
 llmModelSelect.addEventListener('change', () => {
@@ -511,18 +511,22 @@ document.getElementById('compare-modal-close').addEventListener('click', () => {
 // ── JD Match ──────────────────────────────────────────────────────────────────
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-function renderRankResultsTable(resultsEl, results, { isHybrid, isLlm, rubric, llmModel }) {
+function renderRankResultsTable(resultsEl, results, { isHybrid, isLlm, rubric, llmModel, method }) {
   if (!results.length) {
     resultsEl.innerHTML = '<p style="color:#6b7280;padding:1rem 0">No CVs with extracted text found. Upload and extract CVs first.</p>';
     return;
   }
 
-  const rubricHtml = (isLlm && rubric)
-    ? `<details class="rubric-box">
-        <summary>View generated scoring rubric (${escapeHtml(llmModel)})</summary>
+  let rubricHtml = '';
+  if (isLlm && rubric) {
+    const summaryText = method === 'llm_no_rubric'
+      ? `View job description sent for evaluation (${escapeHtml(llmModel)})`
+      : `View generated scoring rubric (${escapeHtml(llmModel)})`;
+    rubricHtml = `<details class="rubric-box">
+        <summary>${summaryText}</summary>
         <pre>${escapeHtml(rubric)}</pre>
-      </details>`
-    : '';
+      </details>`;
+  }
 
   const rows = results.map((cv, i) => {
     const score = typeof cv.match_score === 'number' ? cv.match_score : 0;
@@ -560,7 +564,7 @@ function renderRankResultsTable(resultsEl, results, { isHybrid, isLlm, rubric, l
 // Polls /cvs/rank/llm/{job_id} until done/error, updating the progress bar and
 // live results table (in completion order) on every tick so the user watches
 // CVs get scored one by one instead of staring at a spinner for minutes.
-async function pollLlmRankJob(jobId, resultsEl, llmModel) {
+async function pollLlmRankJob(jobId, resultsEl, llmModel, method) {
   const progressEl  = document.getElementById('llm-progress');
   const progressFill = document.getElementById('llm-progress-fill');
   const progressText = document.getElementById('llm-progress-text');
@@ -574,16 +578,24 @@ async function pollLlmRankJob(jobId, resultsEl, llmModel) {
 
       const pct = job.total ? Math.round((job.completed / job.total) * 100) : 0;
       progressFill.style.width = `${pct}%`;
-      if (job.phase === 'rubric' || job.phase === 'starting') {
+      if (job.phase === 'starting') {
+        progressText.textContent = 'Starting LLM ranking job...';
+      } else if (job.phase === 'rubric') {
         progressText.textContent = 'Building scoring rubric from the job description...';
+      } else if (job.phase === 'filtering') {
+        progressText.textContent = `Soft filtering CVs: scanned ${job.completed}/${job.total} — ${job.current_filename || ''}`;
+      } else if (job.phase === 'batch_scoring') {
+        progressText.textContent = `Scoring candidates in batches of 3: completed ${job.completed}/${job.total} — ${job.current_filename || ''}`;
+      } else if (job.phase === 're_ranking') {
+        progressText.textContent = `Re-ranking top candidates relative to each other...`;
       } else if (job.phase === 'scoring') {
         progressText.textContent = `Scoring CV ${job.completed}/${job.total} — ${job.current_filename || ''}`;
       }
 
       lastJdNer       = {};
-      lastRankMethod  = 'llm';
+      lastRankMethod  = method;
       lastRankResults = job.results || [];
-      renderRankResultsTable(resultsEl, job.results || [], { isHybrid: false, isLlm: true, rubric: job.rubric, llmModel });
+      renderRankResultsTable(resultsEl, job.results || [], { isHybrid: false, isLlm: true, rubric: job.rubric, llmModel, method });
 
       if (job.status === 'done') {
         progressText.textContent = `Done — scored ${job.total}/${job.total} CVs.`;
@@ -609,7 +621,7 @@ document.getElementById('rank-form').addEventListener('submit', async e => {
   const method    = document.getElementById('rank-method').value;
   if (!jdText) return;
 
-  const isLlm = method === 'llm';
+  const isLlm = method.startsWith('llm');
   let llmModel, llmOllamaUrl;
   if (isLlm) {
     llmModel     = resolveLlmModel();
@@ -624,7 +636,9 @@ document.getElementById('rank-form').addEventListener('submit', async e => {
     model2: 'model-best 2 embedding',
     model1_hybrid: 'model-best hybrid (embedding + NER)',
     model2_hybrid: 'model-best 2 hybrid (embedding + NER)',
-    llm: `LLM Judge (${llmModel || ''})`,
+    llm: `LLM Judge (rubric-based) (${llmModel || ''})`,
+    llm_no_rubric: `LLM Judge (no rubric, direct JD) (${llmModel || ''})`,
+    llm_multilayer: `LLM Judge (multilayer: filter -> score -> re-rank) (${llmModel || ''})`,
   }[method];
   const isHybrid = method.endsWith('_hybrid');
   btn.disabled = true;
@@ -641,14 +655,14 @@ document.getElementById('rank-form').addEventListener('submit', async e => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           jd_text: jdText, top_n: topN, project_id: currentProjectId,
-          llm_model: llmModel, ollama_url: llmOllamaUrl,
+          llm_model: llmModel, ollama_url: llmOllamaUrl, method: method,
         }),
       });
       const startData = await safeJson(startRes);
       if (!startRes.ok) throw new Error(startData.detail || `Server error ${startRes.status}`);
 
       hideEl(statusEl);
-      await pollLlmRankJob(startData.job_id, resultsEl, llmModel);
+      await pollLlmRankJob(startData.job_id, resultsEl, llmModel, method);
       return;
     }
 
@@ -667,7 +681,7 @@ document.getElementById('rank-form').addEventListener('submit', async e => {
     lastRankMethod  = data.method || method;
     lastRankResults = results;
 
-    renderRankResultsTable(resultsEl, results, { isHybrid, isLlm: false });
+    renderRankResultsTable(resultsEl, results, { isHybrid, isLlm: false, method });
   } catch (err) {
     setStatus(statusEl, `Error: ${err.message}`, 'error');
   } finally {

@@ -135,8 +135,8 @@ def _jd_ner_for_method(jd_text: str, method: str) -> dict:
 
 @router.post("/rank")
 def rank_by_jd(body: RankRequest, db: Session = Depends(get_db)):
-    if body.method == "llm":
-        raise HTTPException(400, "method=llm runs as a background job — use POST /cvs/rank/llm/start instead")
+    if body.method in ("llm", "llm_no_rubric"):
+        raise HTTPException(400, f"method={body.method} runs as a background job — use POST /cvs/rank/llm/start instead")
 
     query = db.query(CV).filter(CV.raw_text.isnot(None))
     if body.project_id is not None:
@@ -167,41 +167,154 @@ def rank_by_jd(body: RankRequest, db: Session = Depends(get_db)):
 
 # ── LLM Judge ranking (background job, polled for live progress) ────────────
 def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
-                          ollama_url: str, llm_model: str, top_n: int) -> None:
+                          ollama_url: str, llm_model: str, top_n: int, method: str) -> None:
     try:
-        rank_jobs.update_job(job_id, phase="rubric")
-        rubric = llm_ranking_service.build_rubric(jd_text, ollama_url, llm_model)
-        rank_jobs.update_job(job_id, phase="scoring", rubric=rubric)
+        if method == "llm_multilayer":
+            # --- STAGE 1: SOFT FILTERING ---
+            rank_jobs.update_job(job_id, phase="filtering", completed=0, total=len(cv_dicts))
+            relevant_candidates = []
+            filtered_out_results = []
+            
+            for idx, cv in enumerate(cv_dicts):
+                rank_jobs.update_job(job_id, current_filename=cv["filename"])
+                try:
+                    is_rel = llm_ranking_service.filter_candidate(
+                        jd_text, cv["raw_text"], ollama_url, llm_model
+                    )
+                except Exception:
+                    is_rel = True  # Fallback to True on error
+                
+                if is_rel:
+                    relevant_candidates.append(cv)
+                else:
+                    filtered_out_results.append({
+                        "id": cv["id"],
+                        "filename": cv["filename"],
+                        "name": cv["name"],
+                        "email": cv["email"],
+                        "skills": cv["skills"],
+                        "match_score": 0.0,
+                        "llm_justification": "Filtered out in Stage 1: Marked as not relevant to the Job Description."
+                    })
+                rank_jobs.update_job(job_id, completed=idx + 1)
 
-        for cv in cv_dicts:
-            rank_jobs.update_job(job_id, current_filename=cv["filename"])
-            # One bad CV (tunnel blip, slow model, malformed response) shouldn't lose
-            # every other CV's score in this batch — record it as a failed 0 and move on.
-            try:
-                outcome = llm_ranking_service.score_cv(rubric, cv["raw_text"], ollama_url, llm_model)
-            except Exception as e:
-                outcome = {"score": 0.0, "justification": f"LLM call failed: {e}"}
-            rank_jobs.append_result(job_id, {
-                "id": cv["id"],
-                "filename": cv["filename"],
-                "name": cv["name"],
-                "email": cv["email"],
-                "skills": cv["skills"],
-                "match_score": round(outcome["score"], 2),
-                "llm_justification": outcome["justification"],
-            })
+            # --- STAGE 2: BATCH SCORING (groups of 3) ---
+            rank_jobs.update_job(job_id, phase="batch_scoring", completed=0, total=len(relevant_candidates))
+            stage2_scored_candidates = []
+            
+            batches = [relevant_candidates[i:i+3] for i in range(0, len(relevant_candidates), 3)]
+            processed_relevant = 0
+            for batch in batches:
+                filenames_str = ", ".join([c["filename"] for c in batch])
+                rank_jobs.update_job(job_id, current_filename=filenames_str)
+                
+                try:
+                    scores_list = llm_ranking_service.score_batch(jd_text, batch, ollama_url, llm_model)
+                except Exception:
+                    scores_list = []
+                
+                for cv in batch:
+                    match = next((s for s in scores_list if s.get("filename") == cv["filename"]), None)
+                    if match:
+                        score_val = float(match.get("score", 0.0))
+                        just_val = str(match.get("justification", ""))
+                    else:
+                        score_val = 0.0
+                        just_val = "Could not parse batch score for this candidate."
+                    
+                    stage2_scored_candidates.append({
+                        "id": cv["id"],
+                        "filename": cv["filename"],
+                        "name": cv["name"],
+                        "email": cv["email"],
+                        "skills": cv["skills"],
+                        "raw_text": cv["raw_text"],
+                        "previous_score": score_val,
+                        "previous_justification": just_val,
+                        "match_score": score_val,
+                        "llm_justification": just_val
+                    })
+                
+                processed_relevant += len(batch)
+                rank_jobs.update_job(job_id, completed=processed_relevant)
 
-        rank_jobs.finish_job(job_id, top_n)
+            # --- STAGE 3: RE-RANKING TOP 10 ---
+            rank_jobs.update_job(job_id, phase="re_ranking", completed=0, total=1)
+            
+            stage2_scored_candidates.sort(key=lambda x: x["match_score"], reverse=True)
+            top_10 = stage2_scored_candidates[:10]
+            remaining = stage2_scored_candidates[10:]
+            
+            if top_10:
+                rank_jobs.update_job(job_id, current_filename="Re-ranking top candidates...")
+                try:
+                    rerank_results = llm_ranking_service.rerank_top_candidates(jd_text, top_10, ollama_url, llm_model)
+                except Exception:
+                    rerank_results = []
+                
+                for cand in top_10:
+                    match = next((r for r in rerank_results if r.get("filename") == cand["filename"]), None)
+                    if match:
+                        cand["match_score"] = float(match.get("score", cand["match_score"]))
+                        cand["llm_justification"] = f"Rank {match.get('rank', '-')}: {match.get('justification', cand['llm_justification'])}"
+            
+            rank_jobs.update_job(job_id, completed=1)
+
+            # Put all results together
+            final_results = top_10 + remaining + filtered_out_results
+            final_results.sort(key=lambda x: x["match_score"], reverse=True)
+            
+            for r in final_results:
+                r.pop("raw_text", None)
+                r.pop("previous_score", None)
+                r.pop("previous_justification", None)
+
+            rank_jobs.update_job(
+                job_id,
+                results=final_results[:top_n],
+                completed=len(cv_dicts),
+                total=len(cv_dicts)
+            )
+            rank_jobs.finish_job(job_id, top_n)
+        else:
+            is_jd = (method == "llm_no_rubric")
+            if is_jd:
+                rubric_or_jd = jd_text
+                rank_jobs.update_job(job_id, phase="scoring", rubric=jd_text)
+            else:
+                rank_jobs.update_job(job_id, phase="rubric")
+                rubric_or_jd = llm_ranking_service.build_rubric(jd_text, ollama_url, llm_model)
+                rank_jobs.update_job(job_id, phase="scoring", rubric=rubric_or_jd)
+
+            for cv in cv_dicts:
+                rank_jobs.update_job(job_id, current_filename=cv["filename"])
+                try:
+                    outcome = llm_ranking_service.score_cv(rubric_or_jd, cv["raw_text"], ollama_url, llm_model, is_jd=is_jd)
+                except Exception as e:
+                    outcome = {"score": 0.0, "justification": f"LLM call failed: {e}"}
+                rank_jobs.append_result(job_id, {
+                    "id": cv["id"],
+                    "filename": cv["filename"],
+                    "name": cv["name"],
+                    "email": cv["email"],
+                    "skills": cv["skills"],
+                    "match_score": round(outcome["score"], 2),
+                    "llm_justification": outcome["justification"],
+                })
+
+            rank_jobs.finish_job(job_id, top_n)
     except Exception as e:
         rank_jobs.fail_job(job_id, str(e))
 
 
 @router.post("/rank/llm/start")
 def start_llm_rank(body: RankRequest, db: Session = Depends(get_db)):
+    if body.method not in ("llm", "llm_no_rubric", "llm_multilayer"):
+        raise HTTPException(400, f"Unsupported method for LLM ranker: {body.method}")
     if not body.ollama_url:
-        raise HTTPException(400, "ollama_url is required for method=llm")
+        raise HTTPException(400, f"ollama_url is required for method={body.method}")
     if not body.llm_model:
-        raise HTTPException(400, "llm_model is required for method=llm")
+        raise HTTPException(400, f"llm_model is required for method={body.method}")
 
     query = db.query(CV).filter(CV.raw_text.isnot(None))
     if body.project_id is not None:
@@ -227,7 +340,7 @@ def start_llm_rank(body: RankRequest, db: Session = Depends(get_db)):
     job_id = rank_jobs.create_job(total=len(cv_dicts))
     threading.Thread(
         target=_run_llm_ranking_job,
-        args=(job_id, cv_dicts, body.jd_text, body.ollama_url, body.llm_model, body.top_n),
+        args=(job_id, cv_dicts, body.jd_text, body.ollama_url, body.llm_model, body.top_n, body.method),
         daemon=True,
     ).start()
     return {"job_id": job_id}

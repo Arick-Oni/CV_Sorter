@@ -25,11 +25,25 @@ RUBRIC_SYSTEM_PROMPT = (
 )
 
 SCORE_SYSTEM_PROMPT = (
-    "You are an expert technical recruiter scoring one candidate CV against a fixed rubric "
-    "derived from a job description. Judge strictly and literally against the rubric's stated "
-    "criteria only — do not reward creativity, embellishment, or impressive-sounding but "
-    "unrelated experience. Score from 0-100. Respond with valid JSON only, matching the "
-    "requested schema."
+    "You are an expert technical recruiter. You score candidate CVs against a scoring rubric "
+    "from 0-100 based on real relevance (skills, experience, context), not keyword overlap. "
+    "CRITICAL GUARDRAIL: Some CVs are blank templates containing placeholder text, formatting guides, "
+    "or writing instructions (e.g., 'Write a short brief introduction explaining who you are...', "
+    "'In a short statement of no more than just a few sentences describe your role...', 'A sentence describing your duties', "
+    "'More text here', 'Company name', 'JOB TITLE'). You MUST ignore these placeholder instructions. "
+    "Any candidate CV that is a blank template containing no actual personal background or work history "
+    "MUST be scored as 0. Respond with valid JSON only, matching the requested schema."
+)
+
+SCORE_JD_SYSTEM_PROMPT = (
+    "You are an expert technical recruiter. You score candidate CVs against a job description "
+    "from 0-100 based on real relevance (skills, experience, context), not keyword overlap. "
+    "CRITICAL GUARDRAIL: Some CVs are blank templates containing placeholder text, formatting guides, "
+    "or writing instructions (e.g., 'Write a short brief introduction explaining who you are...', "
+    "'In a short statement of no more than just a few sentences describe your role...', 'A sentence describing your duties', "
+    "'More text here', 'Company name', 'JOB TITLE'). You MUST ignore these placeholder instructions. "
+    "Any candidate CV that is a blank template containing no actual personal background or work history "
+    "MUST be scored as 0. Respond with valid JSON only, matching the requested schema."
 )
 
 SCORE_SCHEMA = {
@@ -41,9 +55,88 @@ SCORE_SCHEMA = {
     "required": ["score", "justification"],
 }
 
+FILTER_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "relevant": {"type": "boolean"},
+        "explanation": {"type": "string"},
+    },
+    "required": ["relevant"],
+}
 
-# temperature 0 (+ no top_p/top_k sampling noise) — deterministic, literal scoring, not creative
-_DETERMINISTIC_OPTIONS = {"num_ctx": 16384, "num_predict": -1, "temperature": 0, "top_p": 1, "top_k": 1}
+FILTER_SYSTEM_PROMPT = (
+    "You are an expert recruiter performing a quick, initial pass over candidate CVs. "
+    "Determine whether the candidate has any potential relevance, skills, or background "
+    "that could align with the job description. Do not be overly strict—if they have transferrable "
+    "skills or basic qualifications, mark them as relevant so they can be scored in the next round. "
+    "CRITICAL GUARDRAIL: If the CV is a blank template containing only placeholder instructions, formatting guides, "
+    "or boilerplate text with no actual candidate career history, mark it as NOT relevant (relevant: false). "
+    "Respond with valid JSON only matching the schema."
+)
+
+BATCH_SCORING_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "scores": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "filename": {"type": "string"},
+                    "score": {"type": "number"},
+                    "justification": {"type": "string"},
+                },
+                "required": ["filename", "score", "justification"],
+            },
+        }
+    },
+    "required": ["scores"],
+}
+
+BATCH_SCORE_SYSTEM_PROMPT = (
+    "You are an expert technical recruiter scoring candidate CVs against a job description. "
+    "Compare and score each candidate CV from 0-100 based on their relevance and fit. "
+    "CRITICAL GUARDRAIL: Some CVs are blank templates containing placeholder text, formatting guides, "
+    "or writing instructions (e.g., 'Write a short brief introduction explaining who you are...', "
+    "'In a short statement of no more than just a few sentences describe your role...', 'A sentence describing your duties', "
+    "'More text here', 'Company name', 'JOB TITLE'). You MUST ignore these placeholder instructions. "
+    "Any candidate CV that is a blank template containing no actual personal background or work history "
+    "MUST be scored as 0. Respond with valid JSON only matching the requested schema, returning exactly "
+    "one score entry per candidate filename provided."
+)
+
+RERANK_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "ranks": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "filename": {"type": "string"},
+                    "rank": {"type": "integer"},
+                    "score": {"type": "number"},
+                    "justification": {"type": "string"}
+                },
+                "required": ["filename", "rank", "score", "justification"]
+            }
+        }
+    },
+    "required": ["ranks"]
+}
+
+RERANK_SYSTEM_PROMPT = (
+    "You are an expert executive recruiter comparative-ranking candidate CVs side-by-side. "
+    "Given a job description and a list of top candidates, compare them against each other "
+    "and rank them in order of best fit (Rank 1 being the best) down to the last candidate. "
+    "Assign them relative, final matching scores (0-100) reflecting their hierarchy, and provide a "
+    "clear, comparative justification explaining why they placed in that specific rank relative "
+    "to the other candidates. Respond with valid JSON only matching the schema."
+)
+
+
+# temperature 1 (+ no top_p/top_k sampling noise) — deterministic, literal scoring, not creative
+_DETERMINISTIC_OPTIONS = {"num_ctx": 16384, "num_predict": -1, "temperature": 1, "top_p": 1, "top_k": 1}
 
 
 def _poll_job(base_url: str, job_id: str, interval: int = 5, max_wait: int = 600) -> str:
@@ -119,14 +212,24 @@ def build_rubric(jd_text: str, ollama_url: str, model: str) -> str:
     return _ollama_chat(ollama_url, model, RUBRIC_SYSTEM_PROMPT, user_text)
 
 
-def score_cv(rubric: str, cv_text: str, ollama_url: str, model: str) -> dict:
-    """Score one CV's raw text against a rubric. Returns {"score": float, "justification": str}."""
-    user_text = (
-        f"Scoring Rubric:\n{rubric}\n\n"
-        f"Candidate CV:\n{cv_text}\n\n"
-        "Score this candidate strictly against the rubric above."
-    )
-    content = _ollama_chat(ollama_url, model, SCORE_SYSTEM_PROMPT, user_text, json_schema=SCORE_SCHEMA)
+def score_cv(rubric_or_jd: str, cv_text: str, ollama_url: str, model: str, is_jd: bool = False) -> dict:
+    """Score one CV's raw text against a rubric or JD. Returns {"score": float, "justification": str}."""
+    if is_jd:
+        user_text = (
+            f"Job Description:\n{rubric_or_jd}\n\n"
+            f"Candidate CV:\n{cv_text}\n\n"
+            "Score this candidate from 0-100 against this job description, with a one-sentence justification."
+        )
+        system_prompt = SCORE_JD_SYSTEM_PROMPT
+    else:
+        user_text = (
+            f"Scoring Rubric:\n{rubric_or_jd}\n\n"
+            f"Candidate CV:\n{cv_text}\n\n"
+            "Score this candidate from 0-100 against this scoring rubric, with a one-sentence justification."
+        )
+        system_prompt = SCORE_SYSTEM_PROMPT
+
+    content = _ollama_chat(ollama_url, model, system_prompt, user_text, json_schema=SCORE_SCHEMA)
     try:
         parsed = json.loads(content)
         return {
@@ -135,3 +238,73 @@ def score_cv(rubric: str, cv_text: str, ollama_url: str, model: str) -> dict:
         }
     except (json.JSONDecodeError, TypeError, ValueError):
         return {"score": 0.0, "justification": "Could not parse LLM response."}
+
+
+def filter_candidate(jd_text: str, cv_text: str, ollama_url: str, model: str) -> bool:
+    """Soft-filter a CV to check if it has potential relevance to the JD."""
+    user_text = (
+        f"Job Description:\n{jd_text}\n\n"
+        f"Candidate CV:\n{cv_text}\n\n"
+        "Is this candidate potentially relevant to the job? Answer with a JSON object containing the boolean 'relevant'."
+    )
+    try:
+        content = _ollama_chat(ollama_url, model, FILTER_SYSTEM_PROMPT, user_text, json_schema=FILTER_SCHEMA)
+        parsed = json.loads(content)
+        return bool(parsed.get("relevant", True))
+    except Exception:
+        # Fallback to True if parsing fails to avoid dropping relevant candidates
+        return True
+
+
+def score_batch(jd_text: str, batch_candidates: list[dict], ollama_url: str, model: str) -> list[dict]:
+    """Score a batch of candidate CVs (up to 3) against the Job Description."""
+    # batch_candidates is a list of dicts: {"filename": str, "raw_text": str}
+    blocks = []
+    for idx, cand in enumerate(batch_candidates):
+        blocks.append(f"Candidate {idx+1} [Filename: {cand['filename']}]:\n{cand['raw_text']}")
+    candidates_text = "\n---\n".join(blocks)
+    
+    user_text = (
+        f"Job Description:\n{jd_text}\n\n"
+        f"Score EACH of the following {len(batch_candidates)} candidates from 0-100 against the job description above. "
+        f"Provide a brief, one-sentence justification for each. "
+        f"Return exactly one entry per candidate, identified by filename.\n\n"
+        f"Candidates:\n{candidates_text}"
+    )
+    
+    try:
+        content = _ollama_chat(ollama_url, model, BATCH_SCORE_SYSTEM_PROMPT, user_text, json_schema=BATCH_SCORING_SCHEMA)
+        parsed = json.loads(content)
+        return parsed.get("scores", [])
+    except Exception:
+        return []
+
+
+def rerank_top_candidates(jd_text: str, top_candidates: list[dict], ollama_url: str, model: str) -> list[dict]:
+    """Re-rank the top candidates relative to each other by presenting them side-by-side."""
+    # top_candidates is a list of dicts: {"filename": str, "raw_text": str, "previous_score": float, "previous_justification": str}
+    blocks = []
+    for cand in top_candidates:
+        # Use first 1500 chars of CV to fit context limit
+        snippet = cand["raw_text"][:1500]
+        blocks.append(
+            f"Candidate Filename: {cand['filename']}\n"
+            f"Stage 2 Score: {cand['previous_score']}\n"
+            f"Stage 2 Justification: {cand['previous_justification']}\n"
+            f"CV Snippet (First 1500 chars):\n{snippet}"
+        )
+    candidates_text = "\n---\n".join(blocks)
+    
+    user_text = (
+        f"Job Description:\n{jd_text}\n\n"
+        "Here are the top candidates. Compare their profiles relative to one another and "
+        "output a definitive final ranking and comparative scores from 0-100.\n\n"
+        f"Candidates:\n{candidates_text}"
+    )
+    
+    try:
+        content = _ollama_chat(ollama_url, model, RERANK_SYSTEM_PROMPT, user_text, json_schema=RERANK_SCHEMA)
+        parsed = json.loads(content)
+        return parsed.get("ranks", [])
+    except Exception:
+        return []
