@@ -122,6 +122,33 @@ def extract_docx(file_bytes: bytes) -> str:
     return clean_text("\n".join(parts))
 
 
+def convert_docx_to_pdf(docx_bytes: bytes) -> bytes | None:
+    """
+    Convert DOCX bytes to PDF bytes using docx2pdf (requires Microsoft Word on Windows).
+    Returns None if conversion is unavailable or fails.
+    """
+    import tempfile
+    try:
+        from docx2pdf import convert
+    except ImportError:
+        return None
+    with tempfile.NamedTemporaryFile(suffix=".docx", delete=False) as tmp:
+        tmp.write(docx_bytes)
+        tmp_path = tmp.name
+    pdf_path = tmp_path[:-5] + ".pdf"
+    try:
+        convert(tmp_path, pdf_path)
+        with open(pdf_path, "rb") as f:
+            return f.read()
+    except Exception:
+        return None
+    finally:
+        try: os.unlink(tmp_path)
+        except OSError: pass
+        try: os.unlink(pdf_path)
+        except OSError: pass
+
+
 # ── MiniCPM-V via Ollama ──────────────────────────────────────────────────────
 OCR_SYSTEM_PROMPT = (
     "You are an OCR engine. Transcribe ALL visible text from this resume image exactly as it "
@@ -161,13 +188,17 @@ def _resize_image(file_bytes: bytes, max_px: int = 1600) -> bytes:
     return buf.getvalue()
 
 def _poll_job(base_url: str, job_id: str, interval: int = 5, max_wait: int = 600) -> str:
-    """Poll /result/{job_id} until done or error."""
+    """Poll /result/{job_id} until done or error. Tolerates transient tunnel blips."""
     import time
     deadline = time.time() + max_wait
     while time.time() < deadline:
-        r = requests.get(f"{base_url.rstrip('/')}/result/{job_id}", verify=False, timeout=10)
-        r.raise_for_status()
-        data = r.json()
+        try:
+            r = requests.get(f"{base_url.rstrip('/')}/result/{job_id}", verify=False, timeout=10)
+            r.raise_for_status()
+            data = r.json()
+        except (requests.exceptions.RequestException, ValueError):
+            time.sleep(interval)
+            continue
         if data["status"] == "done":
             return data["result"]
         if data["status"] == "error":

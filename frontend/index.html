@@ -8,12 +8,19 @@
 </head>
 <body>
   <header>
-    <h1>CV Platform</h1>
-    <nav>
-      <button class="tab-btn" data-tab="upload">Upload CV</button>
-      <button class="tab-btn" data-tab="library">CV Library</button>
-      <button class="tab-btn" data-tab="rank">JD Match</button>
-    </nav>
+    <div class="header-left">
+      <h1>CV Platform</h1>
+      <nav>
+        <button class="tab-btn" data-tab="upload">Upload CV</button>
+        <button class="tab-btn" data-tab="library">CV Library</button>
+        <button class="tab-btn" data-tab="rank">JD Match</button>
+      </nav>
+    </div>
+    <div class="project-switcher">
+      <span class="project-switcher-label">Project</span>
+      <select id="global-project-select"></select>
+      <button class="btn-secondary" id="new-project-btn" type="button">+ New Project</button>
+    </div>
   </header>
 
   <!-- Upload Tab -->
@@ -25,15 +32,27 @@
           <input type="file" id="cv-file" accept=".png,.jpg,.jpeg,.webp,.pdf,.docx" required />
         </label>
 
+        <label>Project
+          <select id="upload-project-select">
+            <option value="">Unassigned (global only)</option>
+            <option value="__new__">+ Create new project...</option>
+          </select>
+        </label>
+        <div id="upload-new-project-group" style="display:none">
+          <label>New Project Name
+            <input type="text" id="upload-new-project-name" placeholder="e.g. Q3 Data Analyst Hiring" />
+          </label>
+        </div>
+
         <label>Text Extraction Method
           <select id="extraction-method">
-            <option value="easyocr">EasyOCR (local, no GPU needed)</option>
-            <option value="minicpm-v">MiniCPM-V via Ollama (vision LLM)</option>
+            <option value="easyocr">Auto / EasyOCR - PDF, DOCX &amp; images (local)</option>
+            <option value="minicpm-v">MiniCPM-V via Ollama - images only (vision LLM)</option>
           </select>
         </label>
 
         <div id="ollama-url-group" style="display:none">
-          <label>Ollama / ngrok URL
+          <label>Ollama / ngrok / cloudeflare URL
             <input type="url" id="ollama-url" placeholder="https://your-ngrok-url.ngrok-free.app" />
           </label>
         </div>
@@ -59,13 +78,42 @@
         <textarea id="jd-text" rows="7" placeholder="Paste the full job description here, or upload a file above..." required></textarea>
         <div id="jd-file-status" class="status" style="display:none"></div>
         <div class="rank-controls">
+          <label class="inline-label">Method
+            <select id="rank-method" class="rank-method">
+              <option value="tfidf">TF-IDF</option>
+              <option value="model2">model-best 2 (embeddings)</option>
+              <option value="model1">model-best (embeddings)</option>
+              <option value="model2_hybrid">model-best 2 (hybrid: 67% embedding + 33% NER)</option>
+              <option value="model1_hybrid">model-best (hybrid: 67% embedding + 33% NER)</option>
+              <option value="llm">LLM Judge (rubric-based)</option>
+            </select>
+          </label>
           <label class="inline-label">Show top
             <input type="number" id="rank-top-n" value="10" min="1" max="50" class="rank-topn" />
           </label>
           <button type="submit" class="btn-primary" id="rank-btn">Find Matches</button>
         </div>
+        <div id="llm-options-group" class="rank-controls" style="display:none">
+          <label class="inline-label">LLM Model
+            <select id="llm-model-select">
+              <option value="qwen2.5vl:7b">qwen2.5vl:7b</option>
+              <option value="qwen2.5-coder:14b">qwen2.5-coder:14b</option>
+              <option value="minicpm-v">minicpm-v</option>
+              <option value="moondream">moondream</option>
+              <option value="__custom__">Custom...</option>
+            </select>
+          </label>
+          <input type="text" id="llm-model-custom" style="display:none" placeholder="e.g. llama3.1:8b" />
+          <label class="inline-label" style="flex:1">Ollama / ngrok / cloudflare URL
+            <input type="url" id="llm-ollama-url" placeholder="https://your-ngrok-url.ngrok-free.app" style="width:100%" />
+          </label>
+        </div>
       </form>
       <div id="rank-status" class="status" style="display:none"></div>
+      <div id="llm-progress" style="display:none">
+        <div class="llm-progress-track"><div id="llm-progress-fill" class="llm-progress-fill"></div></div>
+        <div id="llm-progress-text" class="llm-progress-text"></div>
+      </div>
     </div>
     <div id="rank-results"></div>
   </section>
@@ -79,7 +127,7 @@
       <table id="cv-table">
         <thead>
           <tr>
-            <th>ID</th><th>Filename</th><th>Uploaded</th>
+            <th>ID</th><th>Filename</th><th>Project</th><th>Uploaded</th>
             <th>Method</th><th>Status</th><th>Actions</th>
           </tr>
         </thead>
@@ -108,7 +156,14 @@
       <div id="mtab-m2"     class="mtab-panel" style="display:none"><div id="ner-m2"></div></div>
       <div id="mtab-merged" class="mtab-panel" style="display:none"><div id="ner-merged"></div></div>
       <div id="mtab-skills" class="mtab-panel" style="display:none"><div id="ner-skills"></div></div>
-      <div id="mtab-image"  class="mtab-panel" style="display:none"><img id="cv-img" src="" alt="CV" /></div>
+      <div id="mtab-image" class="mtab-panel" style="display:none">
+        <img   id="cv-img"      src="" alt="CV" style="display:none" />
+        <embed id="cv-pdf-embed" src="" type="application/pdf" style="display:none;width:100%;height:520px;border-radius:6px;border:1px solid #e5e7eb" />
+        <div   id="cv-docx-msg" style="display:none;padding:1rem;color:#6b7280">
+          DOCX preview not available in browser.
+          <a id="cv-docx-dl" href="#" class="btn-secondary" style="margin-left:.75rem">Download file</a>
+        </div>
+      </div>
 
       <div class="modal-actions">
         <div class="action-group">
@@ -117,7 +172,7 @@
             <option value="easyocr">EasyOCR</option>
             <option value="minicpm-v">MiniCPM-V</option>
           </select>
-          <input type="url" id="re-ollama-url" style="display:none" placeholder="ngrok URL" />
+          <input type="url" id="re-ollama-url" style="display:none" placeholder="ngrok/cloudeflare URL" />
           <button class="btn-secondary" id="re-extract-btn">Re-extract</button>
         </div>
         <div class="action-group">
@@ -130,11 +185,29 @@
           </select>
           <button class="btn-secondary" id="re-classify-btn">Re-classify</button>
         </div>
+        <div class="action-group">
+          <span>Project:</span>
+          <select id="modal-project-select">
+            <option value="">Unassigned</option>
+            <option value="__new__">+ Create new project...</option>
+          </select>
+          <input type="text" id="modal-new-project-name" style="display:none" placeholder="New project name" />
+          <button class="btn-secondary" id="assign-project-btn">Move</button>
+        </div>
         <button class="btn-danger" id="delete-btn">Delete CV</button>
       </div>
     </div>
   </div>
 
-  <script src="/static/app.js"></script>
+  <!-- JD vs CV NER Compare Modal -->
+  <div id="compare-modal" class="modal" style="display:none">
+    <div class="modal-content">
+      <button class="modal-close" id="compare-modal-close">&times;</button>
+      <h2 id="compare-modal-title"></h2>
+      <div id="compare-body"></div>
+    </div>
+  </div>
+
+  <script src="/static/app.js?v=3"></script>
 </body>
 </html>

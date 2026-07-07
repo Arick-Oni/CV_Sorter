@@ -7,13 +7,14 @@ from pathlib import Path
 from sqlalchemy import text
 from .database import engine
 from .models import Base
-from .routers import cvs
+from .routers import cvs, projects
 
 Base.metadata.create_all(bind=engine)
 
-# Add ner_skills column if it doesn't exist yet (for DBs created before this column)
+# Add columns that didn't exist in DBs created before this feature was added
 with engine.connect() as _conn:
     _conn.execute(text("ALTER TABLE cvs ADD COLUMN IF NOT EXISTS ner_skills JSON"))
+    _conn.execute(text("ALTER TABLE cvs ADD COLUMN IF NOT EXISTS project_id INTEGER"))
     _conn.commit()
 
 app = FastAPI(title="CV Platform", version="1.0.0")
@@ -26,10 +27,19 @@ app.add_middleware(
 )
 
 app.include_router(cvs.router)
+app.include_router(projects.router)
 
 # Serve frontend
 FRONTEND = Path(__file__).parent.parent / "frontend"
 app.mount("/static", StaticFiles(directory=str(FRONTEND)), name="static")
+
+@app.middleware("http")
+async def no_cache_static(request, call_next):
+    """Dev app, frontend files change often — never let the browser cache them stale."""
+    response = await call_next(request)
+    if request.url.path.startswith("/static/") or request.url.path == "/":
+        response.headers["Cache-Control"] = "no-store"
+    return response
 
 @app.get("/")
 def serve_frontend():
