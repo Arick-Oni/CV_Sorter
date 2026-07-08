@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, LargeBinary, DateTime, JSON, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, LargeBinary, DateTime, JSON, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from .database import Base
@@ -30,7 +30,25 @@ class CV(Base):
     ner_model2  = Column(JSON)   # model-best-2 results
     ner_merged  = Column(JSON)   # per-label best merged result
     ner_skills  = Column(JSON)   # en_core_web_sm + EntityRuler (skills.jsonl)
+    
+    years_of_experience = Column(Float, nullable=True)
+    seniority_level     = Column(String, nullable=True)
 
     # NULL = unassigned; still visible in the "All Projects" global view
     project_id = Column(Integer, ForeignKey("projects.id", ondelete="SET NULL"), nullable=True)
     project    = relationship("Project", back_populates="cvs")
+
+
+class MatchHistory(Base):
+    __tablename__ = "match_history"
+
+    id         = Column(Integer, primary_key=True, index=True)
+    project_id = Column(Integer, ForeignKey("projects.id", ondelete="SET NULL"), nullable=True)
+    jd_text    = Column(Text, nullable=False)
+    rubric     = Column(Text, nullable=True)
+    method     = Column(String, nullable=False)
+    llm_model  = Column(String, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    results    = Column(JSON, nullable=False)
+
+    project    = relationship("Project")

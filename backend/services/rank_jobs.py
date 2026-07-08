@@ -52,7 +52,7 @@ def finish_job(job_id: str, top_n: int) -> None:
         job = _JOBS.get(job_id)
         if job is None:
             return
-        job["results"] = sorted(job["results"], key=lambda r: r["match_score"], reverse=True)[:top_n]
+        job["results"] = sorted(job["results"], key=lambda r: r["match_score"], reverse=True)
         job["status"] = "done"
         job["phase"] = "done"
         job["current_filename"] = None

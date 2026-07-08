@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CV Platform</title>
   <link rel="stylesheet" href="/static/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header>
@@ -65,59 +66,92 @@
 
   <!-- JD Match Tab -->
   <section id="tab-rank" class="tab" style="display:none">
-    <div class="card rank-card">
-      <h2>Match CVs to Job Description</h2>
-      <form id="rank-form">
-        <div class="jd-label-row">
-          <span class="field-label">Job Description</span>
-          <label class="btn-secondary jd-upload-btn" title="Extract text from a PDF, image, or DOCX">
-            Upload JD file
-            <input type="file" id="jd-file" accept=".pdf,.png,.jpg,.jpeg,.webp,.docx" style="display:none" />
-          </label>
+    <div class="rank-tab-layout">
+      <!-- Left sidebar for Match History -->
+      <aside class="history-sidebar">
+        <h3>Recent Matches</h3>
+        <div id="history-list" class="history-list">
+          <p style="color:#6b7280; font-size:.85rem; text-align:center; padding:1rem 0">No recent matches found.</p>
         </div>
-        <textarea id="jd-text" rows="7" placeholder="Paste the full job description here, or upload a file above..." required></textarea>
-        <div id="jd-file-status" class="status" style="display:none"></div>
-        <div class="rank-controls">
-          <label class="inline-label">Method
-            <select id="rank-method" class="rank-method">
-              <option value="tfidf">TF-IDF</option>
-              <option value="model2">model-best 2 (embeddings)</option>
-              <option value="model1">model-best (embeddings)</option>
-              <option value="model2_hybrid">model-best 2 (hybrid: 67% embedding + 33% NER)</option>
-              <option value="model1_hybrid">model-best (hybrid: 67% embedding + 33% NER)</option>
-              <option value="llm">LLM Judge (rubric-based)</option>
-              <option value="llm_no_rubric">LLM Judge (no rubric, direct JD)</option>
-              <option value="llm_multilayer">LLM Judge (multilayer: filter -> score -> re-rank)</option>
-            </select>
-          </label>
-          <label class="inline-label">Show top
-            <input type="number" id="rank-top-n" value="10" min="1" max="50" class="rank-topn" />
-          </label>
-          <button type="submit" class="btn-primary" id="rank-btn">Find Matches</button>
+      </aside>
+
+      <!-- Right main area -->
+      <div class="rank-main-area">
+        <div class="card rank-card" style="max-width:100%; margin:0 0 1.5rem 0;">
+          <h2>Match CVs to Job Description</h2>
+          <div id="loaded-history-banner" style="display: none;">
+            <div>
+              <span>Showing historical match run for Project: </span>
+              <strong id="loaded-history-project-name">Project Name</strong>
+              <span id="loaded-history-meta" style="color:#4b5563; margin-left:0.5rem; font-size:0.8rem"></span>
+            </div>
+            <button type="button" class="btn-secondary" id="clear-history-view-btn" style="padding:0.2rem 0.5rem; font-size:0.75rem">New Match</button>
+          </div>
+          <form id="rank-form">
+            <div id="jd-toggle-header" class="jd-toggle-header">
+              <span class="field-label">Job Description</span>
+              <button type="button" class="btn-secondary" id="toggle-jd-form-btn" style="padding:0.2rem 0.5rem; font-size:0.75rem">Collapse Input</button>
+            </div>
+            <div id="rank-form-body">
+              <div class="jd-label-row">
+                <span class="field-label-desc" style="font-size:0.85rem; color:#64748b">Paste requirements or upload a JD file to match CVs against.</span>
+                <label class="btn-secondary jd-upload-btn" title="Extract text from a PDF, image, or DOCX">
+                  Upload JD file
+                  <input type="file" id="jd-file" accept=".pdf,.png,.jpg,.jpeg,.webp,.docx" style="display:none" />
+                </label>
+              </div>
+              <textarea id="jd-text" rows="7" placeholder="Paste the full job description here, or upload a file above..." required></textarea>
+              <div id="jd-file-status" class="status" style="display:none"></div>
+              <div class="rank-controls">
+                <label class="inline-label">Method
+                  <select id="rank-method" class="rank-method">
+                    <option value="tfidf">TF-IDF</option>
+                    <option value="model2">model-best 2 (embeddings)</option>
+                    <option value="model1">model-best (embeddings)</option>
+                    <option value="model2_hybrid">model-best 2 (hybrid: 67% embedding + 33% NER)</option>
+                    <option value="model1_hybrid">model-best (hybrid: 67% embedding + 33% NER)</option>
+                    <option value="llm">LLM Judge (rubric-based)</option>
+                    <option value="llm_no_rubric">LLM Judge (no rubric, direct JD)</option>
+                    <option value="llm_multilayer">LLM Judge (multilayer: filter -> score -> re-rank)</option>
+                  </select>
+                </label>
+                <button type="submit" class="btn-primary" id="rank-btn">Find Matches</button>
+              </div>
+              <div id="llm-options-group" class="rank-controls" style="display:none">
+                <label class="inline-label">LLM Model
+                  <select id="llm-model-select">
+                    <option value="qwen2.5vl:7b">qwen2.5vl:7b</option>
+                    <option value="qwen2.5-coder:14b">qwen2.5-coder:14b</option>
+                    <option value="minicpm-v">minicpm-v</option>
+                    <option value="moondream">moondream</option>
+                    <option value="__custom__">Custom...</option>
+                  </select>
+                </label>
+                <input type="text" id="llm-model-custom" style="display:none" placeholder="e.g. llama3.1:8b" />
+                <label class="inline-label" style="flex:1">Ollama / ngrok / cloudflare URL
+                  <input type="url" id="llm-ollama-url" placeholder="https://your-ngrok-url.ngrok-free.app" style="width:100%" />
+                </label>
+              </div>
+            </div>
+          </form>
+          <div id="rank-status" class="status" style="display:none"></div>
+          <div id="llm-progress" style="display:none">
+            <div class="llm-progress-track"><div id="llm-progress-fill" class="llm-progress-fill"></div></div>
+            <div id="llm-progress-text" class="llm-progress-text"></div>
+          </div>
         </div>
-        <div id="llm-options-group" class="rank-controls" style="display:none">
-          <label class="inline-label">LLM Model
-            <select id="llm-model-select">
-              <option value="qwen2.5vl:7b">qwen2.5vl:7b</option>
-              <option value="qwen2.5-coder:14b">qwen2.5-coder:14b</option>
-              <option value="minicpm-v">minicpm-v</option>
-              <option value="moondream">moondream</option>
-              <option value="__custom__">Custom...</option>
-            </select>
-          </label>
-          <input type="text" id="llm-model-custom" style="display:none" placeholder="e.g. llama3.1:8b" />
-          <label class="inline-label" style="flex:1">Ollama / ngrok / cloudflare URL
-            <input type="url" id="llm-ollama-url" placeholder="https://your-ngrok-url.ngrok-free.app" style="width:100%" />
-          </label>
+        
+        <!-- Results container and pagination -->
+        <div id="results-wrapper">
+          <div id="rank-results" class="table-responsive"></div>
+          <div id="pagination-controls" class="pagination-controls" style="display:none">
+            <button class="btn-secondary" id="btn-prev-page" type="button">Previous</button>
+            <span id="page-indicator" style="font-weight:600; color:#374151">Page 1 of 1</span>
+            <button class="btn-secondary" id="btn-next-page" type="button">Next</button>
+          </div>
         </div>
-      </form>
-      <div id="rank-status" class="status" style="display:none"></div>
-      <div id="llm-progress" style="display:none">
-        <div class="llm-progress-track"><div id="llm-progress-fill" class="llm-progress-fill"></div></div>
-        <div id="llm-progress-text" class="llm-progress-text"></div>
       </div>
     </div>
-    <div id="rank-results"></div>
   </section>
 
   <!-- Library Tab -->
@@ -203,10 +237,37 @@
 
   <!-- JD vs CV NER Compare Modal -->
   <div id="compare-modal" class="modal" style="display:none">
-    <div class="modal-content">
+    <div class="modal-content" style="max-width: 900px; width: 100%;">
       <button class="modal-close" id="compare-modal-close">&times;</button>
       <h2 id="compare-modal-title"></h2>
-      <div id="compare-body"></div>
+      
+      <div class="modal-tabs">
+        <button class="ctab active" data-ctab="table">Table Comparison</button>
+        <button class="ctab" data-ctab="chart">Spider Graph Analysis</button>
+      </div>
+      
+      <div id="ctab-table" class="ctab-panel">
+        <div id="compare-body"></div>
+      </div>
+      
+      <div id="ctab-chart" class="ctab-panel" style="display:none">
+        <div class="chart-container-row" style="display: flex; gap: 2rem; justify-content: space-around; flex-wrap: wrap; margin-top: 1rem;">
+          <div class="chart-box" style="flex: 1; min-width: 320px; max-width: 400px; text-align: center;">
+            <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; color: #0f172a;">Skills Alignment</h3>
+            <div style="position: relative; width: 100%; height: 350px;">
+              <canvas id="skillsRadarChart"></canvas>
+            </div>
+            <div id="skillsChartPlaceholder" style="display:none; padding: 2rem; color: #64748b;">No matching skills found to compare.</div>
+          </div>
+          <div class="chart-box" style="flex: 1; min-width: 320px; max-width: 400px; text-align: center;">
+            <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; color: #0f172a;">Technology Alignment</h3>
+            <div style="position: relative; width: 100%; height: 350px;">
+              <canvas id="techRadarChart"></canvas>
+            </div>
+            <div id="techChartPlaceholder" style="display:none; padding: 2rem; color: #64748b;">No matching technologies found to compare.</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

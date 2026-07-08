@@ -15,6 +15,9 @@ Base.metadata.create_all(bind=engine)
 with engine.connect() as _conn:
     _conn.execute(text("ALTER TABLE cvs ADD COLUMN IF NOT EXISTS ner_skills JSON"))
     _conn.execute(text("ALTER TABLE cvs ADD COLUMN IF NOT EXISTS project_id INTEGER"))
+    _conn.execute(text("ALTER TABLE cvs ADD COLUMN IF NOT EXISTS years_of_experience REAL"))
+    _conn.execute(text("ALTER TABLE cvs ADD COLUMN IF NOT EXISTS seniority_level VARCHAR"))
+    _conn.execute(text("ALTER TABLE match_history ADD COLUMN IF NOT EXISTS rubric TEXT"))
     _conn.commit()
 
 app = FastAPI(title="CV Platform", version="1.0.0")

@@ -20,6 +20,8 @@ class CVSummary(BaseModel):
     status: str
     extraction_method: Optional[str]
     project_id: Optional[int]
+    years_of_experience: Optional[float] = None
+    seniority_level: Optional[str] = None
 
     model_config = {"from_attributes": True}
 

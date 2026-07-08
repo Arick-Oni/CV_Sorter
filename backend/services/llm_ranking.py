@@ -159,7 +159,7 @@ def _poll_job(base_url: str, job_id: str, interval: int = 5, max_wait: int = 600
 
 
 def _ollama_chat(base_url: str, model: str, system_prompt: str, user_text: str,
-                  json_schema: dict | None = None, timeout: int = 180) -> str:
+                  json_schema: dict | None = None, timeout: int = 500) -> str:
     base_url = base_url.rstrip("/")
 
     # Try the async job-queue wrapper first (Colab FastAPI server, same pattern as

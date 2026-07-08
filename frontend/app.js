@@ -37,6 +37,19 @@ function methodBadge(m) {
   return `<span class="badge ${cls}">${label}</span>`;
 }
 
+function seniorityBadge(level) {
+  if (!level) return '--';
+  const map = {
+    'Junior': 'badge-gray',
+    'Mid-level': 'badge-blue',
+    'Senior': 'badge-green',
+    'Lead / Principal': 'badge-yellow',
+    'Executive': 'badge-red'
+  };
+  const cls = map[level] || 'badge-gray';
+  return `<span class="badge ${cls}">${level}</span>`;
+}
+
 function renderNer(container, nerData) {
   if (!nerData || !Object.keys(nerData).length) {
     container.innerHTML = '<p style="color:#6b7280;padding:.5rem">No NER data.</p>';
@@ -60,6 +73,12 @@ async function safeJson(res) {
 // ── Projects ──────────────────────────────────────────────────────────────────
 let projects = [];               // [{id, name, created_at}, ...]
 let currentProjectId = null;     // null = "All Projects" (global view)
+
+// ── Match Ranking Pagination & State ──────────────────────────────────────────
+let currentRankResults = [];
+let currentRankPage = 1;
+const ROWS_PER_PAGE = 10;
+let currentRankResultsOptions = {};
 
 function populateProjectSelect(selectEl, { includeAll = false, includeNew = false, selected = null } = {}) {
   const opts = [];
@@ -123,6 +142,8 @@ document.getElementById('upload-project-select').addEventListener('change', func
 });
 
 loadProjects();
+// Initial history load
+loadRankHistory();
 
 // ── Tab switching ─────────────────────────────────────────────────────────────
 const TAB_IDS = ['upload', 'library', 'rank'];
@@ -136,6 +157,7 @@ function switchTab(targetTab) {
     b.classList.toggle('active', b.dataset.tab === targetTab);
   });
   if (targetTab === 'library') loadLibrary();
+  if (targetTab === 'rank') loadRankHistory();
 }
 
 document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -493,7 +515,155 @@ function renderCompareNer(jdNer, cvNer) {
   </table>`;
 }
 
-function openCompare(cvId) {
+// ── Compare Modal Tabs & Chart.js Integration ───────────────────────────────
+let skillsChart = null;
+let techChart = null;
+
+function switchCtab(targetCtab) {
+  document.querySelectorAll('.ctab').forEach(b => {
+    b.classList.toggle('active', b.dataset.ctab === targetCtab);
+  });
+  document.querySelectorAll('.ctab-panel').forEach(p => {
+    p.style.display = p.id === `ctab-${targetCtab}` ? 'block' : 'none';
+  });
+}
+
+// Bind ctab event listeners
+function bindCtabs() {
+  document.querySelectorAll('.ctab').forEach(btn => {
+    btn.addEventListener('click', () => switchCtab(btn.dataset.ctab));
+  });
+}
+bindCtabs();
+
+function renderRadarChart(canvasId, placeholderId, dataList, label) {
+  const canvas = document.getElementById(canvasId);
+  const placeholder = document.getElementById(placeholderId);
+  
+  if (!canvas || !placeholder) return;
+  
+  if (!dataList || dataList.length === 0) {
+    canvas.style.display = 'none';
+    placeholder.style.display = 'block';
+    return;
+  }
+  
+  canvas.style.display = 'block';
+  placeholder.style.display = 'none';
+  
+  const labels = dataList.map(item => item.jd_item);
+  const cvScores = dataList.map(item => item.similarity);
+  const jdScores = dataList.map(() => 100);
+  
+  // Destroy existing chart instance to avoid overlaps
+  if (canvasId === 'skillsRadarChart' && skillsChart) {
+    skillsChart.destroy();
+    skillsChart = null;
+  }
+  if (canvasId === 'techRadarChart' && techChart) {
+    techChart.destroy();
+    techChart = null;
+  }
+  
+  const ctx = canvas.getContext('2d');
+  const chartInstance = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'JD Requirement',
+          data: jdScores,
+          fill: true,
+          backgroundColor: 'rgba(79, 70, 229, 0.05)',
+          borderColor: 'rgba(79, 70, 229, 0.3)',
+          pointBackgroundColor: 'rgba(79, 70, 229, 0.8)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(79, 70, 229, 1)'
+        },
+        {
+          label: 'Candidate Match',
+          data: cvScores,
+          fill: true,
+          backgroundColor: 'rgba(16, 185, 129, 0.15)',
+          borderColor: 'rgba(16, 185, 129, 0.85)',
+          pointBackgroundColor: 'rgba(16, 185, 129, 1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(16, 185, 129, 1)'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          angleLines: {
+            display: true,
+            color: '#e2e8f0'
+          },
+          grid: {
+            color: '#f1f5f9'
+          },
+          suggestedMin: 0,
+          suggestedMax: 100,
+          ticks: {
+            stepSize: 20,
+            backdropColor: 'transparent',
+            color: '#94a3b8',
+            font: {
+              size: 9
+            }
+          },
+          pointLabels: {
+            color: '#475569',
+            font: {
+              size: 10,
+              weight: '600'
+            }
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            boxWidth: 10,
+            font: {
+              size: 10,
+              weight: '500'
+            },
+            color: '#475569'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const datasetLabel = context.dataset.label || '';
+              const value = context.raw;
+              const index = context.dataIndex;
+              if (context.datasetIndex === 1) {
+                const matchItem = dataList[index].cv_item || 'N/A';
+                return `${datasetLabel}: ${value}% (Best match: ${matchItem})`;
+              }
+              return `${datasetLabel}: ${value}%`;
+            }
+          }
+        }
+      }
+    }
+  });
+  
+  if (canvasId === 'skillsRadarChart') {
+    skillsChart = chartInstance;
+  } else {
+    techChart = chartInstance;
+  }
+}
+
+async function openCompare(cvId) {
   const cv = lastRankResults.find(r => r.id === cvId);
   if (!cv) return;
   const nerField = RANK_METHOD_CV_NER_FIELD[lastRankMethod] || 'ner_merged';
@@ -501,24 +671,71 @@ function openCompare(cvId) {
 
   document.getElementById('compare-modal-title').textContent = `JD vs. ${cv.filename} — NER Match`;
   document.getElementById('compare-body').innerHTML = renderCompareNer(lastJdNer, cvNer);
+  
+  // Default to table tab
+  switchCtab('table');
   document.getElementById('compare-modal').style.display = 'flex';
+
+  // Destroy previous charts before loading new ones
+  if (skillsChart) { skillsChart.destroy(); skillsChart = null; }
+  if (techChart) { techChart.destroy(); techChart = null; }
+
+  // Fetch semantic similarity scores for radar graphs
+  const jdText = document.getElementById('jd-text').value.trim();
+  try {
+    const res = await fetch(`${API}/cvs/${cvId}/compare-semantic`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ jd_text: jdText, method: lastRankMethod })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      renderRadarChart('skillsRadarChart', 'skillsChartPlaceholder', data.skills, 'Skills');
+      renderRadarChart('techRadarChart', 'techChartPlaceholder', data.technologies, 'Technologies');
+    }
+  } catch (err) {
+    console.error('Error fetching semantic comparison:', err);
+  }
 }
 
 document.getElementById('compare-modal-close').addEventListener('click', () => {
   document.getElementById('compare-modal').style.display = 'none';
+  if (skillsChart) { skillsChart.destroy(); skillsChart = null; }
+  if (techChart) { techChart.destroy(); techChart = null; }
 });
 
 // ── JD Match ──────────────────────────────────────────────────────────────────
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-function renderRankResultsTable(resultsEl, results, { isHybrid, isLlm, rubric, llmModel, method }) {
-  if (!results.length) {
+function renderRankResultsTable(resultsEl, results, options) {
+  currentRankResults = results || [];
+  currentRankPage = 1;
+  currentRankResultsOptions = options || {};
+  renderCurrentRankPage();
+}
+
+function renderCurrentRankPage() {
+  const resultsEl = document.getElementById('rank-results');
+  const pagControlsEl = document.getElementById('pagination-controls');
+  
+  if (!currentRankResults.length) {
     resultsEl.innerHTML = '<p style="color:#6b7280;padding:1rem 0">No CVs with extracted text found. Upload and extract CVs first.</p>';
+    if (pagControlsEl) pagControlsEl.style.display = 'none';
     return;
   }
-
+  
+  const maxPage = Math.ceil(currentRankResults.length / ROWS_PER_PAGE) || 1;
+  if (currentRankPage > maxPage) currentRankPage = maxPage;
+  if (currentRankPage < 1) currentRankPage = 1;
+  
+  const startIdx = (currentRankPage - 1) * ROWS_PER_PAGE;
+  const endIdx = startIdx + ROWS_PER_PAGE;
+  const pageResults = currentRankResults.slice(startIdx, endIdx);
+  
+  const { isHybrid, isLlm, rubric, llmModel, method } = currentRankResultsOptions;
+  
   let rubricHtml = '';
-  if (isLlm && rubric) {
+  if (isLlm && rubric && currentRankPage === 1) {
     const summaryText = method === 'llm_no_rubric'
       ? `View job description sent for evaluation (${escapeHtml(llmModel)})`
       : `View generated scoring rubric (${escapeHtml(llmModel)})`;
@@ -527,38 +744,57 @@ function renderRankResultsTable(resultsEl, results, { isHybrid, isLlm, rubric, l
         <pre>${escapeHtml(rubric)}</pre>
       </details>`;
   }
-
-  const rows = results.map((cv, i) => {
+  
+  const rows = pageResults.map((cv, i) => {
+    const globalIdx = startIdx + i + 1;
     const score = typeof cv.match_score === 'number' ? cv.match_score : 0;
-    const scoreColor = score >= 15 ? '#15803d' : score >= 8 ? '#b45309' : '#6b7280';
-    const skillChips = (cv.skills || []).slice(0, 8)
+    const scoreClass = score >= 75 ? 'score-high' : score >= 40 ? 'score-medium' : 'score-low';
+    const skillChips = (cv.skills || []).slice(0, 4)
       .map(s => `<span class="ner-chip">${s}</span>`).join('');
     const breakdownCols = isHybrid
       ? `<td style="color:#6b7280">${(cv.embedding_score ?? 0).toFixed(1)}%</td><td style="color:#6b7280">${(cv.keyword_score ?? 0).toFixed(1)}%</td>`
       : '';
     const extraCol = isLlm
-      ? `<td>${escapeHtml(cv.llm_justification) || '-'}</td>`
+      ? `<td>
+          ${cv.llm_justification ? `
+            <details class="justification-details">
+              <summary>View details</summary>
+              <div class="justification-content">${escapeHtml(cv.llm_justification)}</div>
+            </details>
+          ` : '-'}
+         </td>`
       : `<td><button class="btn-secondary" style="padding:.2rem .5rem;font-size:.8rem" onclick="openCompare(${cv.id})">Compare NER</button></td>`;
+    
     return `<tr>
-      <td style="font-weight:600;width:2.5rem">${i + 1}</td>
-      <td><button class="btn-secondary" style="padding:.2rem .5rem;font-size:.8rem" onclick="openDetail(${cv.id})">${cv.filename}</button></td>
+      <td style="font-weight:600;width:2.5rem">${globalIdx}</td>
+      <td><a href="#" class="cv-link" onclick="event.preventDefault(); openDetail(${cv.id})">${cv.filename}</a></td>
       <td>${cv.name || '-'}</td>
       <td>${cv.email || '-'}</td>
-      <td><strong style="color:${scoreColor}">${score.toFixed(1)}%</strong></td>
+      <td><span class="score-badge ${scoreClass}">${score.toFixed(1)}%</span></td>
       ${breakdownCols}
-      <td><div class="ner-vals">${skillChips || '<span style="color:#9ca3af">none extracted</span>'}</div></td>
+      <td><div class="ner-vals">${skillChips || '<span style="color:#9ca3af">none</span>'}</div></td>
       ${extraCol}
     </tr>`;
   }).join('');
-
+  
   const breakdownHeaders = isHybrid ? '<th>Embedding</th><th>NER Keyword</th>' : '';
   const extraHeader = isLlm ? '<th>LLM Justification</th>' : '<th>Compare</th>';
+  
   resultsEl.innerHTML = `
     ${rubricHtml}
-    <table class="ner-table">
-      <thead><tr><th>#</th><th>File</th><th>Name</th><th>Email</th><th>Score</th>${breakdownHeaders}<th>Top Skills</th>${extraHeader}</tr></thead>
-      <tbody>${rows}</tbody>
-    </table>`;
+    <div class="table-responsive">
+      <table class="ner-table">
+        <thead><tr><th>#</th><th>File</th><th>Name</th><th>Email</th><th>Score</th>${breakdownHeaders}<th>Top Skills</th>${extraHeader}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+    
+  if (pagControlsEl) {
+    pagControlsEl.style.display = currentRankResults.length > ROWS_PER_PAGE ? 'flex' : 'none';
+    document.getElementById('page-indicator').textContent = `Page ${currentRankPage} of ${maxPage}`;
+    document.getElementById('btn-prev-page').disabled = currentRankPage === 1;
+    document.getElementById('btn-next-page').disabled = currentRankPage === maxPage;
+  }
 }
 
 // Polls /cvs/rank/llm/{job_id} until done/error, updating the progress bar and
@@ -599,6 +835,7 @@ async function pollLlmRankJob(jobId, resultsEl, llmModel, method) {
 
       if (job.status === 'done') {
         progressText.textContent = `Done — scored ${job.total}/${job.total} CVs.`;
+        loadRankHistory();
         return;
       }
       if (job.status === 'error') {
@@ -613,13 +850,19 @@ async function pollLlmRankJob(jobId, resultsEl, llmModel, method) {
 
 document.getElementById('rank-form').addEventListener('submit', async e => {
   e.preventDefault();
+  
+  const banner = document.getElementById('loaded-history-banner');
+  if (banner) banner.style.display = 'none';
+  document.querySelectorAll('.history-item').forEach(el => el.classList.remove('active'));
+
   const statusEl  = document.getElementById('rank-status');
   const resultsEl = document.getElementById('rank-results');
   const btn       = document.getElementById('rank-btn');
   const jdText    = document.getElementById('jd-text').value.trim();
-  const topN      = parseInt(document.getElementById('rank-top-n').value, 10) || 10;
   const method    = document.getElementById('rank-method').value;
   if (!jdText) return;
+
+  setJdFormCollapsed(true);
 
   const isLlm = method.startsWith('llm');
   let llmModel, llmOllamaUrl;
@@ -654,7 +897,7 @@ document.getElementById('rank-form').addEventListener('submit', async e => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          jd_text: jdText, top_n: topN, project_id: currentProjectId,
+          jd_text: jdText, top_n: 1000, project_id: currentProjectId,
           llm_model: llmModel, ollama_url: llmOllamaUrl, method: method,
         }),
       });
@@ -669,7 +912,7 @@ document.getElementById('rank-form').addEventListener('submit', async e => {
     const res = await fetch(`${API}/cvs/rank`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ jd_text: jdText, top_n: topN, method, project_id: currentProjectId }),
+      body: JSON.stringify({ jd_text: jdText, top_n: 1000, method, project_id: currentProjectId }),
     });
     const data = await safeJson(res);
     if (!res.ok) throw new Error(data.detail || `Server error ${res.status}`);
@@ -682,6 +925,7 @@ document.getElementById('rank-form').addEventListener('submit', async e => {
     lastRankResults = results;
 
     renderRankResultsTable(resultsEl, results, { isHybrid, isLlm: false, method });
+    loadRankHistory();
   } catch (err) {
     setStatus(statusEl, `Error: ${err.message}`, 'error');
   } finally {
@@ -689,3 +933,219 @@ document.getElementById('rank-form').addEventListener('submit', async e => {
     btn.textContent = 'Find Matches';
   }
 });
+
+// ── Match History & Pagination Helpers ─────────────────────────────────────────
+document.getElementById('btn-prev-page').addEventListener('click', () => {
+  if (currentRankPage > 1) {
+    currentRankPage--;
+    renderCurrentRankPage();
+  }
+});
+
+document.getElementById('btn-next-page').addEventListener('click', () => {
+  const maxPage = Math.ceil(currentRankResults.length / ROWS_PER_PAGE) || 1;
+  if (currentRankPage < maxPage) {
+    currentRankPage++;
+    renderCurrentRankPage();
+  }
+});
+
+async function loadRankHistory() {
+  const historyListEl = document.getElementById('history-list');
+  if (!historyListEl) return;
+  historyListEl.innerHTML = '<p style="color:#6b7280; font-size:.85rem; text-align:center; padding:1rem 0">Loading matches...</p>';
+  
+  try {
+    const qs = currentProjectId ? `?project_id=${currentProjectId}` : '';
+    const res = await fetch(`${API}/cvs/rank/history${qs}`);
+    const historyItems = await res.json();
+    
+    if (!historyItems.length) {
+      historyListEl.innerHTML = '<p style="color:#6b7280; font-size:.85rem; text-align:center; padding:1rem 0">No recent matches.</p>';
+      return;
+    }
+    
+    historyListEl.innerHTML = historyItems.map(item => {
+      const dt = new Date(item.created_at).toLocaleString();
+      const methodLabel = {
+        tfidf: 'TF-IDF',
+        model1: 'Embed M1',
+        model2: 'Embed M2',
+        model1_hybrid: 'Hybrid M1',
+        model2_hybrid: 'Hybrid M2',
+        llm: 'LLM Rubric',
+        llm_no_rubric: 'LLM Direct',
+        llm_multilayer: 'LLM Multi'
+      }[item.method] || item.method;
+      
+      const badgeClass = item.method.startsWith('llm') ? 'badge-yellow' : 'badge-blue';
+      const projBadge = item.project_name
+        ? `<span class="badge badge-gray" style="padding:.1rem .4rem; font-size:.65rem; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" title="${escapeHtml(item.project_name)}">${escapeHtml(item.project_name)}</span>`
+        : `<span class="badge badge-gray" style="padding:.1rem .4rem; font-size:.65rem; color:#6b7280; font-style:italic">Global</span>`;
+      
+      return `
+        <div class="history-item" data-history-id="${item.id}" onclick="loadHistoryDetail(${item.id})">
+          <button class="history-delete-btn" onclick="event.stopPropagation(); deleteHistoryItem(${item.id})">&times;</button>
+          <div class="history-item-header">
+            <span class="badge ${badgeClass}" style="padding:.1rem .4rem; font-size:.65rem">${methodLabel}</span>
+            <span class="history-item-meta">${dt}</span>
+          </div>
+          <div class="history-item-summary">${escapeHtml(item.jd_summary)}</div>
+          <div class="history-item-footer" style="display:flex; justify-content:space-between; align-items:center; margin-top:.4rem">
+            ${projBadge}
+            ${item.llm_model ? `<span class="history-item-meta" style="font-size:.65rem; color:#64748b" title="Model: ${escapeHtml(item.llm_model)}">${escapeHtml(item.llm_model)}</span>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (err) {
+    historyListEl.innerHTML = '<p style="color:#b91c1c; font-size:.85rem; text-align:center; padding:1rem 0">Error loading history.</p>';
+  }
+}
+
+async function loadHistoryDetail(id) {
+  document.querySelectorAll('.history-item').forEach(el => {
+    el.classList.toggle('active', Number(el.dataset.historyId) === id);
+  });
+  
+  const statusEl = document.getElementById('rank-status');
+  const resultsEl = document.getElementById('rank-results');
+  setStatus(statusEl, 'Loading previous match run...', 'info');
+  resultsEl.innerHTML = '';
+  
+  try {
+    const res = await fetch(`${API}/cvs/rank/history/${id}`);
+    if (!res.ok) throw new Error('Failed to fetch history details');
+    const data = await res.json();
+    
+    document.getElementById('jd-text').value = data.jd_text;
+    document.getElementById('rank-method').value = data.method;
+    
+    const isLlm = data.method.startsWith('llm');
+    const optionsGroup = document.getElementById('llm-options-group');
+    if (optionsGroup) {
+      optionsGroup.style.display = isLlm ? 'flex' : 'none';
+      if (isLlm && data.llm_model) {
+        const select = document.getElementById('llm-model-select');
+        if ([...select.options].some(o => o.value === data.llm_model)) {
+          select.value = data.llm_model;
+          document.getElementById('llm-model-custom').style.display = 'none';
+        } else {
+          select.value = '__custom__';
+          const customInput = document.getElementById('llm-model-custom');
+          customInput.value = data.llm_model;
+          customInput.style.display = 'inline-block';
+        }
+      }
+    }
+    
+    hideEl(statusEl);
+    
+    lastJdNer = data.jd_ner || {};
+    lastRankMethod = data.method;
+    lastRankResults = data.results || [];
+    
+    const banner = document.getElementById('loaded-history-banner');
+    if (banner) {
+      document.getElementById('loaded-history-project-name').textContent = data.project_name || 'Global / Unassigned';
+      const dt = new Date(data.created_at).toLocaleString();
+      const methodLabel = {
+        tfidf: 'TF-IDF',
+        model1: 'Embed M1',
+        model2: 'Embed M2',
+        model1_hybrid: 'Hybrid M1',
+        model2_hybrid: 'Hybrid M2',
+        llm: 'LLM Rubric',
+        llm_no_rubric: 'LLM Direct',
+        llm_multilayer: 'LLM Multi'
+      }[data.method] || data.method;
+      document.getElementById('loaded-history-meta').textContent = `(${dt} — ${methodLabel})`;
+      banner.style.display = 'flex';
+    }
+    
+    setJdFormCollapsed(true);
+    
+    renderRankResultsTable(resultsEl, data.results || [], {
+      isHybrid: data.method.endsWith('_hybrid'),
+      isLlm: isLlm,
+      rubric: isLlm ? (data.rubric || data.jd_text) : null,
+      llmModel: data.llm_model,
+      method: data.method
+    });
+  } catch (err) {
+    setStatus(statusEl, `Error: ${err.message}`, 'error');
+  }
+}
+
+async function deleteHistoryItem(id) {
+  if (!confirm('Are you sure you want to delete this match run from history?')) return;
+  try {
+    const res = await fetch(`${API}/cvs/rank/history/${id}`, { method: 'DELETE' });
+    if (res.ok) {
+      loadRankHistory();
+      const activeItem = document.querySelector('.history-item.active');
+      if (activeItem && Number(activeItem.dataset.historyId) === id) {
+        document.getElementById('rank-results').innerHTML = '';
+        document.getElementById('pagination-controls').style.display = 'none';
+      }
+    } else {
+      alert('Failed to delete history item');
+    }
+  } catch (err) {
+    alert(`Error: ${err.message}`);
+  }
+}
+
+function clearHistoryView() {
+  const banner = document.getElementById('loaded-history-banner');
+  if (banner) banner.style.display = 'none';
+  document.querySelectorAll('.history-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('jd-text').value = '';
+  document.getElementById('rank-method').value = 'tfidf';
+  const optionsGroup = document.getElementById('llm-options-group');
+  if (optionsGroup) optionsGroup.style.display = 'none';
+  
+  document.getElementById('rank-results').innerHTML = '';
+  const paginationControls = document.getElementById('pagination-controls');
+  if (paginationControls) paginationControls.style.display = 'none';
+  
+  const statusEl = document.getElementById('rank-status');
+  if (statusEl) hideEl(statusEl);
+  const jdFileStatus = document.getElementById('jd-file-status');
+  if (jdFileStatus) hideEl(jdFileStatus);
+  const jdFile = document.getElementById('jd-file');
+  if (jdFile) jdFile.value = '';
+  
+  lastJdNer = {};
+  lastRankMethod = 'tfidf';
+  lastRankResults = [];
+  
+  setJdFormCollapsed(false);
+}
+
+const clearBtn = document.getElementById('clear-history-view-btn');
+if (clearBtn) {
+  clearBtn.addEventListener('click', clearHistoryView);
+}
+
+function setJdFormCollapsed(collapsed) {
+  const body = document.getElementById('rank-form-body');
+  const btn = document.getElementById('toggle-jd-form-btn');
+  if (!body || !btn) return;
+  if (collapsed) {
+    body.style.display = 'none';
+    btn.textContent = 'Expand Input';
+  } else {
+    body.style.display = 'block';
+    btn.textContent = 'Collapse Input';
+  }
+}
+
+const toggleJdBtn = document.getElementById('toggle-jd-form-btn');
+if (toggleJdBtn) {
+  toggleJdBtn.addEventListener('click', () => {
+    const body = document.getElementById('rank-form-body');
+    const isCollapsed = body && body.style.display === 'none';
+    setJdFormCollapsed(!isCollapsed);
+  });
+}

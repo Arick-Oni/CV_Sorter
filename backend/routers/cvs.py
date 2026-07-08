@@ -5,8 +5,8 @@ from fastapi.responses import Response
 from sqlalchemy.orm import Session
 from typing import Optional
 
-from ..database import get_db
-from ..models import CV, Project
+from ..database import get_db, SessionLocal
+from ..models import CV, Project, MatchHistory
 from ..schemas import CVSummary, CVDetail, ExtractRequest, ClassifyRequest, RankRequest, AssignProjectRequest
 from ..services import ocr as ocr_service
 from ..services import ner as ner_service
@@ -92,6 +92,26 @@ async def upload_cv(
     merged = ner_service.merge_ner(ner1, ner2)
     skills_ner = ner_service.run_skills_ner(raw_text)
 
+    # Estimate experience and seniority
+    years, seniority = ner_service.estimate_experience_and_seniority(raw_text)
+    exp_val = [f"{years} yrs" if years > 0 else "0 yrs"]
+    sen_val = [seniority]
+
+    if "YEARS_OF_EXPERIENCE" not in ner1:
+        ner1["YEARS_OF_EXPERIENCE"] = exp_val
+    if "SENIORITY_LEVEL" not in ner1:
+        ner1["SENIORITY_LEVEL"] = sen_val
+
+    if "YEARS_OF_EXPERIENCE" not in ner2:
+        ner2["YEARS_OF_EXPERIENCE"] = exp_val
+    if "SENIORITY_LEVEL" not in ner2:
+        ner2["SENIORITY_LEVEL"] = sen_val
+
+    if "YEARS_OF_EXPERIENCE" not in merged:
+        merged["YEARS_OF_EXPERIENCE"] = exp_val
+    if "SENIORITY_LEVEL" not in merged:
+        merged["SENIORITY_LEVEL"] = sen_val
+
     cv = CV(
         filename=file.filename,
         file_type=stored_ext,
@@ -102,6 +122,8 @@ async def upload_cv(
         ner_model2=ner2,
         ner_merged=merged,
         ner_skills=skills_ner,
+        years_of_experience=years,
+        seniority_level=seniority,
         status="classified",
         project_id=resolved_project_id,
     )
@@ -135,7 +157,7 @@ def _jd_ner_for_method(jd_text: str, method: str) -> dict:
 
 @router.post("/rank")
 def rank_by_jd(body: RankRequest, db: Session = Depends(get_db)):
-    if body.method in ("llm", "llm_no_rubric"):
+    if body.method.startswith("llm"):
         raise HTTPException(400, f"method={body.method} runs as a background job — use POST /cvs/rank/llm/start instead")
 
     query = db.query(CV).filter(CV.raw_text.isnot(None))
@@ -143,7 +165,17 @@ def rank_by_jd(body: RankRequest, db: Session = Depends(get_db)):
         query = query.filter(CV.project_id == body.project_id)
     cvs = query.all()
     if not cvs:
-        return {"method": body.method, "jd_ner": {}, "results": []}
+        # Save empty history run to maintain log
+        history = MatchHistory(
+            project_id=body.project_id,
+            jd_text=body.jd_text,
+            method=body.method,
+            results=[]
+        )
+        db.add(history)
+        db.commit()
+        db.refresh(history)
+        return {"id": history.id, "method": body.method, "jd_ner": {}, "results": []}
 
     cv_dicts = []
     for cv in cvs:
@@ -158,16 +190,46 @@ def rank_by_jd(body: RankRequest, db: Session = Depends(get_db)):
             "ner_model1": cv.ner_model1 or {},
             "ner_model2": cv.ner_model2 or {},
             "ner_merged": cv.ner_merged or {},
+            "years_of_experience": cv.years_of_experience,
+            "seniority_level": cv.seniority_level,
         })
 
     ranked = ranking_service.rank_cvs(body.jd_text, cv_dicts, method=body.method)
     jd_ner = _jd_ner_for_method(body.jd_text, body.method)
-    return {"method": body.method, "jd_ner": jd_ner, "results": ranked[:body.top_n]}
+
+    # Save to search history
+    # Keep result records lightweight by omitting raw texts or details
+    saved_results = []
+    for r in ranked:
+        saved_results.append({
+            "id": r["id"],
+            "filename": r["filename"],
+            "name": r.get("name"),
+            "email": r.get("email"),
+            "skills": r.get("skills"),
+            "match_score": r["match_score"],
+            "embedding_score": r.get("embedding_score"),
+            "keyword_score": r.get("keyword_score"),
+            "years_of_experience": r.get("years_of_experience"),
+            "seniority_level": r.get("seniority_level"),
+        })
+
+    history = MatchHistory(
+        project_id=body.project_id,
+        jd_text=body.jd_text,
+        method=body.method,
+        results=saved_results
+    )
+    db.add(history)
+    db.commit()
+    db.refresh(history)
+
+    return {"id": history.id, "method": body.method, "jd_ner": jd_ner, "results": ranked}
 
 
 # ── LLM Judge ranking (background job, polled for live progress) ────────────
 def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
-                          ollama_url: str, llm_model: str, top_n: int, method: str) -> None:
+                          ollama_url: str, llm_model: str, top_n: int, method: str, project_id: Optional[int] = None) -> None:
     try:
         if method == "llm_multilayer":
             # --- STAGE 1: SOFT FILTERING ---
@@ -194,7 +256,9 @@ def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
                         "email": cv["email"],
                         "skills": cv["skills"],
                         "match_score": 0.0,
-                        "llm_justification": "Filtered out in Stage 1: Marked as not relevant to the Job Description."
+                        "llm_justification": "Filtered out in Stage 1: Marked as not relevant to the Job Description.",
+                        "years_of_experience": cv.get("years_of_experience"),
+                        "seniority_level": cv.get("seniority_level"),
                     })
                 rank_jobs.update_job(job_id, completed=idx + 1)
 
@@ -232,7 +296,9 @@ def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
                         "previous_score": score_val,
                         "previous_justification": just_val,
                         "match_score": score_val,
-                        "llm_justification": just_val
+                        "llm_justification": just_val,
+                        "years_of_experience": cv.get("years_of_experience"),
+                        "seniority_level": cv.get("seniority_level"),
                     })
                 
                 processed_relevant += len(batch)
@@ -271,11 +337,30 @@ def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
 
             rank_jobs.update_job(
                 job_id,
-                results=final_results[:top_n],
+                results=final_results,
                 completed=len(cv_dicts),
                 total=len(cv_dicts)
             )
             rank_jobs.finish_job(job_id, top_n)
+
+            # Save LLM Multilayer results to DB
+            db = SessionLocal()
+            try:
+                history = MatchHistory(
+                    project_id=project_id,
+                    jd_text=jd_text,
+                    method=method,
+                    llm_model=llm_model,
+                    results=final_results
+                )
+                db.add(history)
+                db.commit()
+                db.refresh(history)
+                rank_jobs.update_job(job_id, history_id=history.id)
+            except Exception as db_err:
+                print(f"Error saving match history to DB: {db_err}")
+            finally:
+                db.close()
         else:
             is_jd = (method == "llm_no_rubric")
             if is_jd:
@@ -300,9 +385,35 @@ def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
                     "skills": cv["skills"],
                     "match_score": round(outcome["score"], 2),
                     "llm_justification": outcome["justification"],
+                    "years_of_experience": cv.get("years_of_experience"),
+                    "seniority_level": cv.get("seniority_level"),
                 })
 
             rank_jobs.finish_job(job_id, top_n)
+
+            # Get sorted results
+            job_info = rank_jobs.get_job(job_id)
+            sorted_results = job_info.get("results", [])
+
+            # Save LLM standard/no-rubric results to DB
+            db = SessionLocal()
+            try:
+                history = MatchHistory(
+                    project_id=project_id,
+                    jd_text=jd_text,
+                    rubric=rubric_or_jd if method == "llm" else None,
+                    method=method,
+                    llm_model=llm_model,
+                    results=sorted_results
+                )
+                db.add(history)
+                db.commit()
+                db.refresh(history)
+                rank_jobs.update_job(job_id, history_id=history.id)
+            except Exception as db_err:
+                print(f"Error saving match history to DB: {db_err}")
+            finally:
+                db.close()
     except Exception as e:
         rank_jobs.fail_job(job_id, str(e))
 
@@ -335,12 +446,14 @@ def start_llm_rank(body: RankRequest, db: Session = Depends(get_db)):
             "name": (skills_data.get("NAME") or ["Unknown"])[0],
             "email": (skills_data.get("EMAIL") or ["Unknown"])[0],
             "skills": skills_data.get("SKILLS") or [],
+            "years_of_experience": cv.years_of_experience,
+            "seniority_level": cv.seniority_level,
         })
 
     job_id = rank_jobs.create_job(total=len(cv_dicts))
     threading.Thread(
         target=_run_llm_ranking_job,
-        args=(job_id, cv_dicts, body.jd_text, body.ollama_url, body.llm_model, body.top_n, body.method),
+        args=(job_id, cv_dicts, body.jd_text, body.ollama_url, body.llm_model, body.top_n, body.method, body.project_id),
         daemon=True,
     ).start()
     return {"job_id": job_id}
@@ -427,6 +540,30 @@ def classify(cv_id: int, body: ClassifyRequest, db: Session = Depends(get_db)):
     if cv.ner_model1 and cv.ner_model2:
         cv.ner_merged = ner_service.merge_ner(cv.ner_model1, cv.ner_model2)
 
+    # Estimate experience and seniority
+    years, seniority = ner_service.estimate_experience_and_seniority(cv.raw_text)
+    cv.years_of_experience = years
+    cv.seniority_level = seniority
+
+    # Inject into ner_model1, ner_model2, ner_merged if present
+    exp_val = [f"{years} yrs" if years > 0 else "0 yrs"]
+    sen_val = [seniority]
+    if cv.ner_model1:
+        m1 = dict(cv.ner_model1)
+        m1["YEARS_OF_EXPERIENCE"] = exp_val
+        m1["SENIORITY_LEVEL"] = sen_val
+        cv.ner_model1 = m1
+    if cv.ner_model2:
+        m2 = dict(cv.ner_model2)
+        m2["YEARS_OF_EXPERIENCE"] = exp_val
+        m2["SENIORITY_LEVEL"] = sen_val
+        cv.ner_model2 = m2
+    if cv.ner_merged:
+        merged = dict(cv.ner_merged)
+        merged["YEARS_OF_EXPERIENCE"] = exp_val
+        merged["SENIORITY_LEVEL"] = sen_val
+        cv.ner_merged = merged
+
     cv.status = "classified"
     db.commit()
     db.refresh(cv)
@@ -453,3 +590,188 @@ def delete_cv(cv_id: int, db: Session = Depends(get_db)):
         raise HTTPException(404, "CV not found")
     db.delete(cv)
     db.commit()
+
+
+# ── Match History ─────────────────────────────────────────────────────────────
+@router.get("/rank/history")
+def get_rank_history(project_id: Optional[int] = None, db: Session = Depends(get_db)):
+    query = db.query(MatchHistory)
+    if project_id is not None:
+        query = query.filter(MatchHistory.project_id == project_id)
+    history_items = query.order_by(MatchHistory.created_at.desc()).all()
+    
+    out = []
+    for item in history_items:
+        proj_name = item.project.name if item.project else None
+        out.append({
+            "id": item.id,
+            "project_id": item.project_id,
+            "project_name": proj_name,
+            "method": item.method,
+            "llm_model": item.llm_model,
+            "created_at": item.created_at,
+            "jd_summary": item.jd_text[:100] + ("..." if len(item.jd_text) > 100 else "")
+        })
+    return out
+
+
+@router.get("/rank/history/{history_id}")
+def get_rank_history_detail(history_id: int, db: Session = Depends(get_db)):
+    item = db.query(MatchHistory).filter(MatchHistory.id == history_id).first()
+    if not item:
+        raise HTTPException(status_code=404, detail="History not found")
+    
+    # Compute jd_ner on the fly for non-LLM runs to support Compare NER in re-loaded history
+    jd_ner = {}
+    if not item.method.startswith("llm"):
+        try:
+            jd_ner = _jd_ner_for_method(item.jd_text, item.method)
+        except Exception:
+            pass
+
+    results = []
+    if item.results:
+        cv_ids = [r["id"] for r in item.results if isinstance(r, dict) and "id" in r]
+        cv_map = {}
+        if cv_ids:
+            cvs = db.query(CV).filter(CV.id.in_(cv_ids)).all()
+            cv_map = {
+                cv.id: {
+                    "ner_model1": cv.ner_model1 or {},
+                    "ner_model2": cv.ner_model2 or {},
+                    "ner_merged": cv.ner_merged or {}
+                }
+                for cv in cvs
+            }
+        for r in item.results:
+            if isinstance(r, dict):
+                enriched_r = dict(r)
+                cv_ner = cv_map.get(r.get("id"), {})
+                enriched_r.update(cv_ner)
+                results.append(enriched_r)
+            else:
+                results.append(r)
+    else:
+        results = item.results
+
+    return {
+        "id": item.id,
+        "project_id": item.project_id,
+        "project_name": item.project.name if item.project else None,
+        "jd_text": item.jd_text,
+        "rubric": item.rubric,
+        "method": item.method,
+        "llm_model": item.llm_model,
+        "created_at": item.created_at,
+        "results": results,
+        "jd_ner": jd_ner
+    }
+
+
+@router.delete("/rank/history/{history_id}")
+def delete_rank_history(history_id: int, db: Session = Depends(get_db)):
+    item = db.query(MatchHistory).filter(MatchHistory.id == history_id).first()
+    if not item:
+        raise HTTPException(status_code=404, detail="History not found")
+    db.delete(item)
+    db.commit()
+    return {"status": "ok"}
+
+
+from pydantic import BaseModel
+
+class SemanticCompareRequest(BaseModel):
+    jd_text: str
+    method: str = "tfidf"
+
+@router.post("/{cv_id}/compare-semantic")
+def compare_semantic(cv_id: int, body: SemanticCompareRequest, db: Session = Depends(get_db)):
+    cv = db.get(CV, cv_id)
+    if not cv:
+        raise HTTPException(404, "CV not found")
+        
+    is_tfidf = (body.method == "tfidf")
+    cv_text_lower = (cv.raw_text or "").lower()
+    jd_text_lower = body.jd_text.lower()
+    
+    if body.method in ("model1", "model1_hybrid"):
+        nlp = ner_service.get_model1()
+        cv_ner = cv.ner_model1 or {}
+    elif body.method in ("model2", "model2_hybrid"):
+        nlp = ner_service.get_model2()
+        cv_ner = cv.ner_model2 or {}
+    else:
+        nlp = ner_service.get_model2()
+        cv_ner = cv.ner_merged or {}
+        
+    jd_ner = _jd_ner_for_method(body.jd_text, body.method)
+    
+    jd_skills = list(set((jd_ner.get("SKILLS") or []) + (jd_ner.get("SKILL") or [])))
+    cv_skills = list(set((cv_ner.get("SKILLS") or []) + (cv_ner.get("SKILL") or [])))
+    
+    jd_techs = list(set(jd_ner.get("TECHNOLOGY") or []))
+    cv_techs = list(set(cv_ner.get("TECHNOLOGY") or []))
+    
+    def get_best_matches(jd_items, cv_items):
+        results = []
+        for jd_item in jd_items:
+            jd_item_clean = jd_item.strip()
+            jd_item_lower = jd_item_clean.lower()
+            
+            if is_tfidf:
+                import re
+                escaped = re.escape(jd_item_lower)
+                pattern = rf"\b{escaped}\b"
+                
+                count_jd = len(re.findall(pattern, jd_text_lower))
+                count_cv = len(re.findall(pattern, cv_text_lower))
+                
+                if count_jd == 0:
+                    count_jd = 1
+                
+                score = min(1.0, count_cv / count_jd)
+                best_match = f"{count_cv} mentions" if count_cv > 0 else "0 mentions"
+                
+                results.append({
+                    "jd_item": jd_item_clean,
+                    "cv_item": best_match,
+                    "similarity": round(score * 100, 1)
+                })
+            else:
+                best_score = 0.0
+                best_match = None
+                
+                jd_clean = jd_item_lower
+                for cv_item in cv_items:
+                    cv_clean = cv_item.strip().lower()
+                    if jd_clean == cv_clean:
+                        best_score = 1.0
+                        best_match = cv_item
+                        break
+                
+                if best_score < 1.0 and cv_items:
+                    token_jd = nlp(jd_item_clean)
+                    for cv_item in cv_items:
+                        token_cv = nlp(cv_item)
+                        if token_jd.vector_norm and token_cv.vector_norm:
+                            sim = float(token_jd.similarity(token_cv))
+                        else:
+                            import difflib
+                            sim = difflib.SequenceMatcher(None, jd_clean, cv_clean).ratio()
+                            
+                        if sim > best_score:
+                            best_score = sim
+                            best_match = cv_item
+                            
+                results.append({
+                    "jd_item": jd_item_clean,
+                    "cv_item": best_match or "N/A",
+                    "similarity": round(best_score * 100, 1)
+                })
+        return results
+        
+    return {
+        "skills": get_best_matches(jd_skills, cv_skills),
+        "technologies": get_best_matches(jd_techs, cv_techs)
+    }
+
