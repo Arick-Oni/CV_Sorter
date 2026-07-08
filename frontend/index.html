@@ -140,6 +140,17 @@
             <div id="llm-progress-text" class="llm-progress-text"></div>
           </div>
         </div>
+
+        <!-- Ranking Visual Analytics Chart -->
+        <div id="ranking-chart-wrapper" class="card" style="display:none; max-width:100%; margin:0 0 1.5rem 0; padding:1.25rem">
+          <div class="jd-toggle-header" style="border-bottom:1px solid #f1f5f9; padding-bottom:0.5rem; margin-bottom:0.75rem">
+            <span class="field-label" style="font-size:1rem; font-weight:700; color:#0f172a">Match Scores Distribution</span>
+            <button type="button" class="btn-secondary" id="toggle-ranking-chart-btn" style="padding:0.2rem 0.5rem; font-size:0.75rem">Collapse Graph</button>
+          </div>
+          <div id="ranking-chart-body" style="position:relative; width:100%; height:320px">
+            <canvas id="rankingBarChart"></canvas>
+          </div>
+        </div>
         
         <!-- Results container and pagination -->
         <div id="results-wrapper">

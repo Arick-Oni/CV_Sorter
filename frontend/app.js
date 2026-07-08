@@ -663,6 +663,124 @@ function renderRadarChart(canvasId, placeholderId, dataList, label) {
   }
 }
 
+// ── Ranking Bar Chart (Score Distribution) ──────────────────────────────────
+let rankingBarChartInstance = null;
+let rankingChartCollapsed = false;
+
+function setRankingChartCollapsed(collapsed) {
+  rankingChartCollapsed = collapsed;
+  const body = document.getElementById('ranking-chart-body');
+  const btn = document.getElementById('toggle-ranking-chart-btn');
+  if (!body || !btn) return;
+  if (rankingChartCollapsed) {
+    body.style.display = 'none';
+    btn.textContent = 'Expand Graph';
+  } else {
+    body.style.display = 'block';
+    btn.textContent = 'Collapse Graph';
+  }
+}
+
+// Bind ranking chart toggle button listener immediately
+const toggleRankingChartBtn = document.getElementById('toggle-ranking-chart-btn');
+if (toggleRankingChartBtn) {
+  toggleRankingChartBtn.addEventListener('click', () => {
+    setRankingChartCollapsed(!rankingChartCollapsed);
+  });
+}
+
+function renderRankingBarChart(results) {
+  const wrapper = document.getElementById('ranking-chart-wrapper');
+  const canvas = document.getElementById('rankingBarChart');
+  if (!wrapper || !canvas) return;
+  
+  if (!results || results.length === 0) {
+    wrapper.style.display = 'none';
+    return;
+  }
+  
+  wrapper.style.display = 'block';
+  setRankingChartCollapsed(false);
+  
+  const sorted = [...results].sort((a, b) => b.match_score - a.match_score);
+  const labels = sorted.map(r => r.filename);
+  const data = sorted.map(r => r.match_score);
+  const seniorityLevels = sorted.map(r => r.seniority_level || 'N/A');
+  
+  if (rankingBarChartInstance) {
+    rankingBarChartInstance.destroy();
+    rankingBarChartInstance = null;
+  }
+  
+  const ctx = canvas.getContext('2d');
+  rankingBarChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Match Score (%)',
+        data: data,
+        backgroundColor: sorted.map((_, idx) => {
+          if (idx === 0) return 'rgba(79, 70, 229, 0.85)';
+          if (idx < 3) return 'rgba(79, 70, 229, 0.65)';
+          return 'rgba(79, 70, 229, 0.4)';
+        }),
+        borderColor: 'rgba(79, 70, 229, 1)',
+        borderWidth: 1,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          grid: { color: '#f1f5f9' },
+          ticks: {
+            color: '#64748b',
+            font: { size: 10 }
+          }
+        },
+        x: {
+          grid: { display: false },
+          ticks: {
+            color: '#64748b',
+            font: { size: 9 },
+            maxRotation: 45,
+            minRotation: 0,
+            callback: function(value, index) {
+              const label = labels[index] || '';
+              return label.length > 15 ? label.slice(0, 12) + '...' : label;
+            }
+          }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: function(context) {
+              const index = context[0].dataIndex;
+              return labels[index];
+            },
+            label: function(context) {
+              const value = context.raw;
+              const index = context.dataIndex;
+              const seniority = seniorityLevels[index];
+              return [
+                `Score: ${value.toFixed(1)}%`,
+                `Seniority: ${seniority}`
+              ];
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
 async function openCompare(cvId) {
   const cv = lastRankResults.find(r => r.id === cvId);
   if (!cv) return;
@@ -836,6 +954,7 @@ async function pollLlmRankJob(jobId, resultsEl, llmModel, method) {
       if (job.status === 'done') {
         progressText.textContent = `Done — scored ${job.total}/${job.total} CVs.`;
         loadRankHistory();
+        renderRankingBarChart(lastRankResults);
         return;
       }
       if (job.status === 'error') {
@@ -925,6 +1044,7 @@ document.getElementById('rank-form').addEventListener('submit', async e => {
     lastRankResults = results;
 
     renderRankResultsTable(resultsEl, results, { isHybrid, isLlm: false, method });
+    renderRankingBarChart(lastRankResults);
     loadRankHistory();
   } catch (err) {
     setStatus(statusEl, `Error: ${err.message}`, 'error');
@@ -1072,6 +1192,7 @@ async function loadHistoryDetail(id) {
       llmModel: data.llm_model,
       method: data.method
     });
+    renderRankingBarChart(lastRankResults);
   } catch (err) {
     setStatus(statusEl, `Error: ${err.message}`, 'error');
   }
@@ -1087,6 +1208,12 @@ async function deleteHistoryItem(id) {
       if (activeItem && Number(activeItem.dataset.historyId) === id) {
         document.getElementById('rank-results').innerHTML = '';
         document.getElementById('pagination-controls').style.display = 'none';
+        const chartWrapper = document.getElementById('ranking-chart-wrapper');
+        if (chartWrapper) chartWrapper.style.display = 'none';
+        if (rankingBarChartInstance) {
+          rankingBarChartInstance.destroy();
+          rankingBarChartInstance = null;
+        }
       }
     } else {
       alert('Failed to delete history item');
@@ -1108,6 +1235,13 @@ function clearHistoryView() {
   document.getElementById('rank-results').innerHTML = '';
   const paginationControls = document.getElementById('pagination-controls');
   if (paginationControls) paginationControls.style.display = 'none';
+  
+  const chartWrapper = document.getElementById('ranking-chart-wrapper');
+  if (chartWrapper) chartWrapper.style.display = 'none';
+  if (rankingBarChartInstance) {
+    rankingBarChartInstance.destroy();
+    rankingBarChartInstance = null;
+  }
   
   const statusEl = document.getElementById('rank-status');
   if (statusEl) hideEl(statusEl);
