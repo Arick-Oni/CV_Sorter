@@ -21,6 +21,7 @@
       <span class="project-switcher-label">Project</span>
       <select id="global-project-select"></select>
       <button class="btn-secondary" id="new-project-btn" type="button">+ New Project</button>
+      <button class="btn-danger" id="delete-project-btn" type="button" style="display:none">Delete Project</button>
     </div>
   </header>
 
@@ -103,16 +104,24 @@
               <textarea id="jd-text" rows="7" placeholder="Paste the full job description here, or upload a file above..." required></textarea>
               <div id="jd-file-status" class="status" style="display:none"></div>
               <div class="rank-controls">
+                <label class="inline-label">Project
+                  <select id="rank-project-select" class="rank-project-select"></select>
+                </label>
                 <label class="inline-label">Method
                   <select id="rank-method" class="rank-method">
                     <option value="tfidf">TF-IDF</option>
+                    <option value="lda">LDA Topic Matching</option>
+                    <option value="doc2vec">Doc2Vec Context Matching</option>
                     <option value="model2">model-best 2 (embeddings)</option>
                     <option value="model1">model-best (embeddings)</option>
                     <option value="model2_hybrid">model-best 2 (hybrid: 67% embedding + 33% NER)</option>
                     <option value="model1_hybrid">model-best (hybrid: 67% embedding + 33% NER)</option>
+                    <option value="sentence_transformer">Sentence Transformer (embeddings)</option>
+                    <option value="sentence_transformer_hybrid">Sentence Transformer (hybrid: 67% embedding + 33% NER)</option>
                     <option value="llm">LLM Judge (rubric-based)</option>
                     <option value="llm_no_rubric">LLM Judge (no rubric, direct JD)</option>
                     <option value="llm_multilayer">LLM Judge (multilayer: filter -> score -> re-rank)</option>
+                    <option value="hybrid">Hybrid (50% LLM Rubric + 20% model-best2 + 20% model-best + 10% TF-IDF)</option>
                   </select>
                 </label>
                 <button type="submit" class="btn-primary" id="rank-btn">Find Matches</button>
@@ -128,8 +137,8 @@
                   </select>
                 </label>
                 <input type="text" id="llm-model-custom" style="display:none" placeholder="e.g. llama3.1:8b" />
-                <label class="inline-label" style="flex:1">Ollama / ngrok / cloudflare URL
-                  <input type="url" id="llm-ollama-url" placeholder="https://your-ngrok-url.ngrok-free.app" style="width:100%" />
+                <label class="inline-label" style="flex:1">Ollama / ngrok / cloudflare URL(s)
+                  <input type="text" id="llm-ollama-url" placeholder="https://tunnel1.ngrok-free.app, https://tunnel2.trycloudflare.com (comma-separated for parallel speedup)" style="width:100%" />
                 </label>
               </div>
             </div>
@@ -138,6 +147,13 @@
           <div id="llm-progress" style="display:none">
             <div class="llm-progress-track"><div id="llm-progress-fill" class="llm-progress-fill"></div></div>
             <div id="llm-progress-text" class="llm-progress-text"></div>
+            <div id="llm-tunnel-activity" style="margin-top: 0.75rem; text-align: left; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.5rem 0.75rem; font-size: 0.8rem; display: none;">
+              <div style="font-weight: 700; color: #475569; margin-bottom: 0.25rem;">Active Tunnels:</div>
+              <ul id="llm-tunnel-list" style="margin: 0; padding-left: 1.2rem; color: #334155; list-style-type: square; line-height: 1.4;"></ul>
+            </div>
+            <div style="text-align: center;">
+              <button type="button" class="btn-danger" id="cancel-llm-btn" style="margin-top:0.75rem; padding:0.25rem 0.75rem; font-size:0.75rem; border-radius:4px; display:inline-block">Cancel Matching</button>
+            </div>
           </div>
         </div>
 
@@ -159,6 +175,29 @@
             <button class="btn-secondary" id="btn-prev-page" type="button">Previous</button>
             <span id="page-indicator" style="font-weight:600; color:#374151">Page 1 of 1</span>
             <button class="btn-secondary" id="btn-next-page" type="button">Next</button>
+          </div>
+        </div>
+
+        <!-- Consensus Matcher -->
+        <div id="consensus-matcher-card" class="card" style="display:none; margin-top:1.5rem">
+          <div class="consensus-matcher-header" style="border-bottom:1px solid #e2e8f0; padding-bottom:0.75rem; margin-bottom:1rem">
+            <span style="font-size:1.1rem; font-weight:700; color:#1e293b">Custom Consensus Matcher</span>
+          </div>
+          <p style="font-size:0.875rem; color:#64748b; margin-bottom:1rem">
+            Enter a comma-separated list of filenames or numeric IDs to check how many of the top-ranked results match them.
+            (e.g., <code>1, 4, 5, 29, 10</code> or <code>a1, a4, a5, a29</code>).
+          </p>
+          <div style="display:flex; gap:0.75rem; align-items:center; margin-bottom:1rem">
+            <input type="text" id="consensus-input" placeholder="e.g. a1, a4, a5, a29, a10" style="flex:1; padding:0.5rem 0.75rem; border:1px solid #cbd5e1; border-radius:6px; font-size:0.9rem" />
+            <button type="button" class="btn-primary" id="btn-calculate-consensus" style="padding:0.5rem 1rem; border-radius:6px; font-size:0.9rem">Calculate Match</button>
+          </div>
+          <div id="consensus-results" style="display:none; padding:1rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px">
+            <div style="font-weight:700; color:#334155; margin-bottom:0.5rem">Match Results:</div>
+            <div id="consensus-score-display" style="font-size:1.5rem; font-weight:800; color:#0f766e; margin-bottom:0.75rem">0/0 (0%)</div>
+            <div id="consensus-details" style="display:flex; flex-direction:column; gap:0.5rem; font-size:0.85rem">
+              <div><strong style="color:#16a34a">Matched in Top N:</strong> <span id="consensus-matched-chips"></span></div>
+              <div><strong style="color:#dc2626">Missing from Input:</strong> <span id="consensus-missing-chips"></span></div>
+            </div>
           </div>
         </div>
       </div>
@@ -278,6 +317,40 @@
             <div id="techChartPlaceholder" style="display:none; padding: 2rem; color: #64748b;">No matching technologies found to compare.</div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Project Modal -->
+  <div id="delete-project-modal" class="modal" style="display:none">
+    <div class="modal-content" style="max-width: 480px;">
+      <button class="modal-close" id="delete-project-modal-close">&times;</button>
+      <h2>Delete Project</h2>
+      <div style="margin-top: 1rem; margin-bottom: 1.5rem; font-size: 0.95rem; color: #475569; line-height: 1.5;">
+        Are you sure you want to delete the project <strong id="delete-project-modal-name" style="color: #0f172a;"></strong>? This action cannot be undone.
+      </div>
+      
+      <div class="delete-options" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+        <label style="display: flex; flex-direction: row; align-items: flex-start; gap: 0.75rem; cursor: pointer; font-weight: normal; color: #334155;">
+          <input type="radio" name="delete-option" value="soft" checked style="margin-top: 0.25rem;" />
+          <div>
+            <strong style="display: block; font-size: 0.9rem;">Unassign only (Soft Delete)</strong>
+            <span style="font-size: 0.8rem; color: #64748b; margin-top: 0.15rem; display: block;">Keep CVs and match history as unassigned. They will still be visible in global view.</span>
+          </div>
+        </label>
+        
+        <label style="display: flex; flex-direction: row; align-items: flex-start; gap: 0.75rem; cursor: pointer; font-weight: normal; color: #991b1b;">
+          <input type="radio" name="delete-option" value="hard" style="margin-top: 0.25rem;" />
+          <div>
+            <strong style="display: block; font-size: 0.9rem;">Delete Everything (Hard Delete)</strong>
+            <span style="font-size: 0.8rem; color: #ef4444; margin-top: 0.15rem; display: block;">Permanently delete the project, all of its CVs, and all associated matching histories.</span>
+          </div>
+        </label>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+        <button class="btn-secondary" id="delete-project-cancel-btn">Cancel</button>
+        <button class="btn-danger" id="delete-project-confirm-btn" style="background: #dc2626; color: #fff; border: none;">Delete</button>
       </div>
     </div>
   </div>

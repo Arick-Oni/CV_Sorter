@@ -1,0 +1,1228 @@
+filename,raw_text
+1.docx,"****************
+Java full stack developer
+(60% – IN JAVA BACKEND DEVELOPMENT AND 40% – IN WEB FRONTEND)
+3+ years of experience FullStack development and 5+ total experience in software development
+phone**********	 		linkedIn  
+location Bat Yam     		email 	 
+Professional Skills
+Programming languages: Java, JavaScript.
+Web:  HTML5/CSS3, JQuery, Bootstrap3
+Environments – IDE/tools:  Eclipse, IntelliJ IDEA, GitHub.
+Databases: SQL (MySQL), NoSQL (MongoDB).
+Technologies & Frameworks: OOP, AOP, Spring MVC, JPA, Hibernate, JDBC, SpringBoot, Spring Security, Spring Web, REST, JSON, Maven, Junit, Git, Postman.
+Systems: Linux, Windows.
+Professional Experience
+2020 -  now:   Backend JAVA developer,   (Israel, Rehovot)
+Latest project: Participation in the development of a microservice architecture for a system for storing educational information. 
+Areas of responsibility:
+Developed backend website application - RESTful Web service (Spring Boot Starter Web);
+Authentication/Authorization (Spring Security);
+Working with MongoDB, MySQL;
+Writing and running junit tests, fixing defects
+Email feedback.
+JSON web token for user authentication using Swagger UI to render and interact with API, REST, HTTPS.
+Tools summary: Spring Boot, Spring Security, Hibernate ORM, JSON, REST, MySQL, MongoDB, Java Persistence API, Maven, JDBC, Apache Tomcat, JUnit, HTML5, CSS3.	
+2017 – 2019:  Full stack JAVA developer, Bank Otkritie (Russia, Moscow)
+Preparation of non-standard reports by executing queries to SQL databases. Creating a simple web interface for entering a request and getting the result in a user-friendly form        (HTML, CCS, Bootstrap, JavaScript).
+Performed hardware and software installations and provided high-level customer care, training, and technical support.
+2005 - 2017: Software R-Style language developer, Privatbank (Ukraine, Dnepr)
+Performed hardware and software installations and provided high-level customer care, training, and technical support.
+Introduction of changes in the terms of service for bank products into the business logic of the program code.(R-Style Language).
+Education
+2000 - 2005: master's degree in Computer Science and Information Technology.
+Specialization: design and production of electronic computing systems.
+​National Technical University of Ukraine
+Other
+Languages: English, Hebrew, Russian, Ukrainian.
+Recommendations are available upon request"
+2.docx,"*************
+FULL-STACK DEVELOPER 
+4 years’ experience (80 % in JAVA Back-End and 20 % in JavaScript Front-End)
+Languages:  English, Hebrew, Russian
+LinkedIn : ****************************************
+Looking for Full-Stack / Back-End Java developer position
+EXPERIENCE SUMMARY
+Programming languages:  JAVA, JavaScript
+Technologies:  microservices, Maven, Spring Boot / Security / Mail / Data / JPA / Config / Netflix Eureka / Validation, Docker, Kafka, JSON, JUnit5 + Hamcrest / Mockito, Google Maps API (geocoding), Swagger, Lombok
+Web:  REST API, HTML5, CSS3.
+Environments – IDE/tools:  GitHub, Jira, Postman, Eclipse, IntelliJ IDEA, WebStorm, Visual Studio Code.
+Databases:  PostgreSQL, MySQL, MongoDB Redis, HSQLDB.   
+OS: Windows, Mac OS, Linux
+EXPERIENCE
+ July 2020 – now:  JAVA BACK-END developer, Elpisor LTD (Israel, Rehovot) www.elpisor.com
+The development of a project for an international group of internet-shops to prevent attempts of illegal access by brute-force passwords from blocked IPs. (14 microservices). The application includes the following functionality: receives from clients webservices logs about failure attempts to login; analyzing sequences login attempts from one IP; saving bad IPs to DB; blocking login from bad IPs; email notification about new bad IPs.
+The development of a microservices project for a municipality which is intended for an analyzing illegal parking and a sending notification. (15 microservices). The application includes the following functionality: receives messages about cars stops from mobile and stationary cameras; analyzing sequences of messages to check parking or stop; collecting an information from different sources, analyzing information to check parking is legal or illegal; saving illegal parking to DB; notification about illegal parking. Google Maps API (revers geocoding).
+The development of a complete logs and bugs analyzing and reporting solution for development purposes (17 microservices). The application includes the following functionality: receiving, analyzing and saving logs to DB, saving bugs to DB, email notification about bugs, search/filter logs using multiple selectors.
+Tools summary for all projects: See Technologies & Frameworks and an in addition: user authentication. To synchronous request and send a data to DB is used appropriate drivers (in pom.xml). To send notifications is used Spring Boot Starter Mail. To handle HTTP exceptions is used ExceptionHandler class. The functionality is implemented through back-offices with REST API. To manage properties is used Configuration service (Spring config-server) with properties repository on GitHub. A random generator of a data is used for a testing. Gateway. Google Maps API (geocoding). Lombok. Javax validation. Eclipse.
+2017 – 2020: FULLSTACK Developer, Cetera Labs (Russia, Moscow) www.ceteralabs.com
+The development of a business website for a cosmetics brand. The development of a website for a digital media (Hi-Teck news). The creation of a corporate portal of a dental-clinic equipment supplier. Websites include a range pages, multiple forms, an authorization, an admin panel, an interaction with databases, sending notifications to users and an administrator. Layout of pages for websites. The creating unit-tests, bug-fixing, creating REST API.
+Tools summary. Front: WordPress, custom CMS, HTML5, CSS3, JavaScript, React. Back: Spring Boot, JUnit5 and Mockito, REST API. Postman and Swagger to interact with the API, REST, HTTP. Javax validation. GitHub.
+2015 – 2017:  Data scientist, Company ""ConsultantPlus"", Russia, Moscow www.consultant.ru
+Data analyzing, development of computer reference legal systems ""ConsultantPlus"". Placement of legal documents in databases using an internal database management system. Formation of tables of contents, placement of hyperlinks.
+Tools summary: internal database management system. HTML.
+EDUCATION
+2000-2005 – Master’s degree in Computer reference legal systems, in Omsk Government Academy, Russia.
+Courses and special programs:
+2017-2018 – Courses «Java Developer» from Geekbrains.
+2020 – Special program for adaptation of software developers according to Israel IT technologies.
+Recommendations are available upon request.
+☎ | ✉: | 🎁: | ⌂: Rishon LeZion"
+3.docx,"*************************
+5 years of total experience in development web frontend (70%) and development Java backend (30%).
+Personal information
+LinkedIn: 
+SKILLS SUMMARY
+Programming languages: Java, JavaScript, TypeScript, SQL, HTML, CSS, VBA.
+Technologies & Frameworks: Spring, Spring Boot, Spring Security, Lombok, Swagger, Hibernate, JUnit, Java Persistence API, Multithreading, Maven, jQuery, Bootstrap, REST, Kafka, Heroku, Angular, Material Design, React (Redux, Context API, Formik, Axios, Lodash, Hooks), Vue.js, Node.js.
+Environments & IDE: IntelliJ IDEA, WebStorm, Eclipse, VS Code, Xcode.
+Databases: SQL (MySQL, ), NoSQL (MongoDB, Firebase).
+Version control & Project Management: Git (BitBucket, GitHub), Jira, Agile, Scrum.
+Software Architecture: OOP, JSON, Design Patterns, Microservices, Dependency Injection.
+Operating Systems: Mac OS, Windows.
+Additional skills: Adobe Creative Suite: Photoshop, Illustrator, XD, Dreamweaver, Acrobat Professional; MS Office: Access, Excel, Word; Figma, Mailchimp.
+Spoken languages: English, Hebrew, Russian.
+EXPERIENCE
+Web Developer			Naya Technologies, migVisor, Herzliya, Israel — 2020-present
+Cloud database migration assessment 
+Developing responsive frontend website on Angular, Material Design.
+Troubleshooting and debugging application.
+Tools summary: TypeScript, Angular, HTML, CSS, Material Design, REST, Firebase.
+*************************						Inetex Ltd., Rehovot, Israel — 2018-2020
+P2P car sharing
+Developing responsive frontend websites on Angular and React.
+Developing backend website application. RESTful web service based on Spring Boot. 
+Creation, integration, and management of NoSQL databases on Firebase. 
+Troubleshooting and debugging application.
+Tools summary: TypeScript, Angular, JavaScript, React, HTML, CSS, Material Design, Bootstrap, REST, Google map API, Firebase, Spring, Spring Boot,  Spring Security, Swagger, Dependency Injection.
+Web Developer							Regions Group, Moscow, Russia — 2015-2017
+							Development and commercial real estate management
+Production, maintenance, updating and optimization of frontend websites based on usability.
+Creating cascading style sheets that are consistent across all browsers and platforms.
+Identifying and troubleshooting various website issues and coding problems.
+EDUCATION
+Master of mathematics and computer science in Finance,
+Plekhanov Russian University of Economics, 2004, Moscow, Russia
+HTML, 2006, Moscow, Russia
+Web-Development, 2015, Moscow, Russia
+Full Stack Java Development, 2018, Rehovot, Israel	
+Email: | City of Residence: Ashdod"
+4.docx,"**************
+JAVA BACKEND DEVELOPER WITH 3 YEARS OF HANDS-ON EXPERIENCE
+A fast self-learner and an excellent team player with passion for the quality of the code and the product
+Looking for the next place to apply my skills and experience, i.e. for a full time back-end developer position
+Phone:		**********
+E-mail:		
+Birthdate:		
+Residence:		Petah Tikva
+Languages:		Hebrew, English, Russian	
+EXPERIENCE SUMMARY
+Programming languages:		JAVA, Go, JavaScript, TypeScript
+Databases:				MySQL, PostgreSQL, MongoDB, Couchbase
+Frameworks and technologies:	Spring, ORM Hibernate, JDBC, Apache Kafka, Apache Camel, Broadleaf, Angular 4, Maven, JUnit, REST, WSDL
+Environments – IDE/tools:		Eclipse, IntelliJ IDEA, WebStorm, VS Code, Postman, Git, SVN, Perforce, Jenkins, Docker, IBM WebSphere, JBoss Fuse, TFS, JIRA
+EXPERIENCE
+2019 – 2020:	Amdocs (Raanana) – Java Back-End Developer
+Working as a Java Back-End Developer inside a cross-functional scrum team, I participated in development and maintenance of a web application for customer management and commerce. Following the Agile methodology, I designed some new features of the app, refactored existing code, and often was a go-to person for some of my teammates.
+Technologies: 	Java 8, Spring Boot, Hibernate, REST, Broadleaf, Apache Camel
+Databases: 		MySQL, PostgreSQL, Couchbase
+Tools: 		IntelliJ IDEA, JBoss Fuse, Postman, Jenkins, Docker, TFS
+2018 – 2019:	Most Technologies (Petah Tikva) – Java Developer
+As a part of a small team, I participated in development and maintaining of a desktop client-service application for insurance companies and pension funds. The work included deep understanding and refactoring of the existing code, designing some new essential features, solving critical problems in the app’s infrastructure itself, version control and deployment. Besides, I have written several manuals for my fellow developers in order to help them understand some parts of the system better.
+Technologies: 	Java 6, IBM WebSphere, Web-Services (WSDL), Printboss utilities, Mainframe, UDB
+EDUCATION
+2017 – 2018:	Tel-Ran Educational Center (Rehovot) – Java Full-Stack           	             
+During my studies, I have participated in several commercial and educational projects:
+A web service for browsing restaurants and purchasing meals vouchers. Java 8, ORM Hibernate, Spring MVC, Spring Boot, MySQL, MongoDB, Angular 4.
+A service for collecting and processing data from various rooms sensors. Generating randomized mocked data, maintaining back-end server (Java MVC, REST API), MySQL database (ORM Hibernate, Spring Boot), reducing and analyzing data (Apache Kafka), informing end user about alerts via emails.
+A web service for browsing articles. Back-end server development (Java MVC, REST API), maintaining database with articles and user data (ORM Hibernate, Spring Boot).
+Experimental development of a light-weight map reduce Big Data system. Back-end development using Go language, parallel mapping and reducing data.
+Recommendations are available upon request"
+5.docx,"6 years of proven experience
+(4 years in Java Backend/1 year in NodeJS /1 year in React/Angular) 
+Phone:**********  Residence: Hod-Hasharon  
+Relevant Experience Summary:
+Programming languages: Java, JavaScript, Python, Go
+Technologies & Frameworks: Spring, Nodejs, Angular, React, Microservices Architecture
+Environments: Eclipse, IntelliJ IDEA , Visual Studio, WebStorm, PyCharm
+Databases: MySQL, HBase, Cassandra, MongoDB, Couchbase 
+Streaming: Kafka
+Clouding: Heroku, Firebase, Docker/Kubernetes/OpenShift 
+Operating systems: Linux, Windows
+Professional Experience:
+2019 - 2020: Java Microservices / Python Developer, Amdocs (Israel, Raanana)
+Was involved in CPQ project which allows Telecom industry to provide price configuration on delivering internet products to its customers. An example would be delivering Business Internet/Wifi to hundreds of MacDonald’s branches.
+• Eclipse, IntelliJ, PyCharm • Kafka (Spring Cloud Stream) • RESTful Web service (Spring Boot Starter Web) • MySQL and Couchbase (MySQL Connector Java, Starter Data JPA) • OpenShift/Docker/Kubernetes, Jenkins • PyTest/Python, JUnit • Jira, Confluence, Rally • Linux, Windows
+2017 - 2019: Fullstack  Java/JS Developer, Inetex LTD (Israel, Rehovot), 
+Project: Health Care Monitoring System. Application using massaging allows to doctor immediately react on abnormal state of the patients health data
+Kafka (Spring Cloud Stream)
+RESTfull Web service (Spring Boot Starter Web)
+Authentication/Authorization (Spring Security)
+MySQL  and MongoDB (MySQL Connector Java, Starter Data JPA)
+Project: Social network inside the company that allows users to share knowledge (sharing and posting)
+Angular CLI
+NodeJS, Express , MongoDB
+2014-2017:  Full stack  Java/JS Developer, WebSoft (Russia, Smolensk)
+Project: Car renting. Service was built for the company that rents its own car to  clients
+RESTfull Web service (Spring Boot Starter Web)
+Authentication/Authorization/Accounting (Spring Security)
+Interface with MySQL (MySQL Connector Java, Starter Data JPA)
+Project: Web-Scrapping application that enables user to get prices of the competitors.
+Nodejs, MongoDB, CLI
+Education:
+2011-2013: Masters in Business Administration (Touro College, Germany)
+2006-2011: Masters in Computerized Economics (University of Economics, Russia)
+Language:
+Hebrew(fluent), English(fluent), Russian               
+Recommendations are available upon request.
+Java/JS Developer"
+6.docx,"LEONID SHALAEV FULL STACK DEVELOPER with 1+ year experience
+70% Back-end (Java/Spring/SQL/NoSQL)   30% Front-end (JavaScript/TypeScript/React/Redux/CSS/HTML)
+********** |   |  | English, Hebrew, Russian | Beer Sheva, Israel | 1987
+TECHNICAL SKILLS
+Programming languages: Java, JavaScript, TypeScript, C#, C++, PHP, Pascal, Assembler, VBA 
+Backend & Technologies: JAVA Collections, JAVA Streams, Multithreading, JDBC API, Spring, Spring Boot, Spring AOP, Spring MVC, Spring Security, Spring Cloud, Spring Data, Hibernate, Maven, Gradle, Jackson, Project Lombok, JPA, Apache Tomcat, Apache Kafka, JUnit, JSON, XML, YML, REST, Docker, 
+ELK Stack, Log4j, Firebase, Heroku, JWT, Node.js, Postman, Kubernetes, Stomp, JPQL
+Frontend:  React, Redux, RxJS, Redux-Thunk, JQuery, HTML5, CSS3, Bootstrap, Material UI, lodash, axios, Webpack, NPM, JWT, JSON, XML, REST API	Operating Systems: Windows, Linux, Mac OS
+Databases: SQL: PostgreSQL, MySQL, MariaDB, H2; NoSQL: MongoDB, Firebase
+Methodologies of software development: Agile/SCRUM, AOP, OOP, OOD
+Network protocols: TCP, UDP, IP, HTTP		IDE/tools: IntelliJ IDEA, Eclipse, WebStorm, VSCode 
+Version control & Project Management: Git (BitBucket, GitHub), Jira, Trello
+EXPERIENCE
+2021 - present, FULL STACK DEVELOPER, , Rehovot, Israel. 
+Participated in design and development of an engine for any online ordering system. 
+Responsibilities: Overall architecture design and implementation of User’s Management, Shopping Cart, Ordering, Order’s Management, Product’s Management, Report’s Generation, Persistence, CRUD.
+Stack and technologies: Java, Stream API, Multithreading, Docker, Spring Boot, Spring Web, Spring AOP, Spring Security, Spring Data, Hibernate, Jackson, Project Lombok, Maven, Tomcat, JavaScript, TypeScript, React, Redux, Redux-Thunk, HTML5, CSS3, JSON, Firebase, Bootstrap, lodash.js, JWT, Material UI, NPM, Webpack, REST, WebSockets, Stomp, PostgreSQL, MongoDB.
+2012 - 2021, Network Planning & Optimization Engineer, , Moscow, Russia. Full cycle of SWAP projects during upgrade mobile networks 2G/3G/LTE. Responsible for achieving target KPI during customer’s cluster acceptance. Troubleshooting. Scripts preparation and implementation. BTS, BSC, RNC, eNodeB.
+2010 - 2012, Network Engineer, , Volgograd, Russia.
+Planning and optimization of mobile network 2G/3G. Configuring of the radio access subsystem. Measurement of the main indicators of network quality. Calculation of coverage maps. Analysis of statistics.
+2009 - 2010, System Administrator, , Volgograd, Russia.
+Deploying of office infrastructure. Domain/controller, Windows Server 2008, AD, DNS, DHCP, LAN, WAN, VPN, WSUS, IIS, 1C 8.********************************************, MS Exchange 2007, PBX Panasonic KX-TDA100.
+EDUCATION
+2004-2009, Master, Computer science and information technology, , Volgograd, Russia
+2020-2021, , Online course for learning Java programming.
+2021, Tel Ran Educational Center, Special program for software developers' adaptation in accordance with Israel IT technologies by the Ministry of Absorption and Jewish Agency of Israel.
+Recommendations are available upon request"
+7.docx,"***************
+FRONTEND DEVELOPER
+2 years of experience in frontend development (React / Redux)
+Phone:********** 						     Residence: Netanya, Israel
+E-mail:  					      
+LinkedIn:  	     Languages: English, Russian
+EXPERIENCE SUMMARY
+Programming language: JavaScript, Python, Java, C#, .NET.
+Web: React, Redux, Redux Toolkit, Styled-components, React Hook Form, HTML5, CSS3, SCSS, Bootstrap, jQuery, Google Map API.
+Technologies: Node JS, JSX, JSON, XML, NPM, YARN, AJAX, UML.
+Environments – IDE/tools: Microsoft Visual Studio Code, WebStorm, IntelliJ IDEA, Eclipse,
+iRidium Mobile, Extron Global Configurator, Crestron SW-SIMPL, GitHub, Heroku, Firebase, Adobe Photoshop, Adobe Illustrator, Figma, Jira, Slack.
+Web-services: REST API.
+QA tools: Postman, React Profiler, Redux DevTools.
+DataBases: MySQL, MongoDB, T-SQL.				  System: Windows, Linux
+EXPERIENCE
+2021 - present: Frontend Developer,  (Rehovot, Israel)
+Main project: platform for finding employees for companies.
+Participation in the project development. The following modules were in my area of responsibility: Creating platform visually according to template file. Creating users with the definition of access roles. Code refactoring. Creation forms: to send data to database, authorization forms. Sorting algorithms depending on the option selected by the user. Rendering UI using React router dom. Integrated new technologies and replaced the outdated. Represented team interests in front of company’s supervisors.
+Participated in projects in all stages of the product life cycle. Extensively utilized Github for version control in an agile development environment. 
+Used: HTML, CSS, JavaScript, React, React Router DOM, React Hook Form, Redux.
+2019- 2021: 	MES Architect, UI Developer,  (St.Petersburg, Russia)
+Main project: MES system for ALROSA mines.
+Designed UI for MES Systems, designed data-flow diagrams and all logic for MES System, Support for C# applications. Wonderware System Platform project testing, maintenance and deployment. Arrangement of reservation, stage-by-stage updating of the system at the facility. Communication with technical support, installation of fixes. Participated in the development of the BI service on Vanilla JavaScript.
+Used: C#, .NET, JavaScript, Wonderware Quick Script, Adobe Illustrator.
+2015- 2019: Control System Programmer,  (St.Petersburg, Russia)
+Main project: School of Engineering and Technology. Development of a management system.  Development of control interfaces for smart equipment, Designed UI interface for Desktop App, Designed UI interface for Mobile (Tablet), Writing utilities in C# for integrating various equipment with control systems. 
+Used: JavaScript, C#, Python, Adobe Illustrator, Extron Global Configurator, iRidium Mobile.
+EDUCATION AND COURSES
+2010- 2014: Bachelor in Informatics - Polytechnic University (SPbPU), 
+Faculty of Technical Cybernetics, St.Petersburg, Russia
+2019: Online courses «T-SQL for beginners» from Udemy
+2020: Online courses «Web Development for Developers» from Scrimba
+Recommendations are available upon request"
+8.docx,"*******************
+Android developer with 3 years experience			
+E-mail: 	
+LinkedIn: 	Phone:**********
+Languages: English, Hebrew, Russian	Residence: Tel Aviv, Israel	
+SKILLS
+Programming languages: Kotlin, Java, C++, Dart
+Technologies: Android SDK, Android NDK, Android Architecture Components, Embedded programming, Kotlin Coroutines, RxJava2, Dagger2, Koin, Retrofit2, OkHttp, Google Maps API, Picasso, Material Design, REST API, Joda-Time, Gson, Flutter, JSON, HTML5, CSS3, XML, QT, DOORS, MKS.
+IDE: Android Studio, , IntelliJ IDEA, Eclipse, WebStorm
+Used principles: Clean architecture, MVVM Pattern, MVP Pattern
+Version control system: Git, Mercurial
+Agile: JIRA
+Databases: SQLite
+PROFESSIONAL EXPERIENCE
+2019 – present | Inetex LTD (Israel, Rehovot) |  
+Android Developer
+Project: Android application for multiplatform car rental portal ilCarro. It allows people all over Israel share their private cars to others for a limited period or time with an affordable price for clients. Mobile client offers full functionality of the portal, making the searching and booking processes easier and available from anywhere.
+Area of responsibility – developing application from scratch, fixing problems, adding and testing new features, code deployment.
+Technologies:  RxJava2, LiveData, MVVM pattern, Clean Architecture, Dagger2, Retrofit2, OkHttp, Google Maps, Cloudinary API, Picasso, Gson.
+2017 – 2019 | NTC Astrosoft MIR (Saint Petersburg, Russia) | 
+Android Developer
+Project: Mobile platform for AUDI E-Tron. It is based on Android OS and provides all needed information about car state to the driver and gives him control of several systems. (remote control, car alarm system etc.)
+Area of responsibility – refactoring existing code base, participating in embedded controlling system development, implementing and testing new functionalities, requirements checking, code deployment.
+Technologies: Android NDK, RxJaxa2, Dagger2, Retrofit2, JSON, MVP pattern, CMake, DOORS, MKS.
+Project: Mobile system for malfunction detection module of gas turbine engine of military ship.
+System is based on Android OS and allows operators to observe and control all parameters of working gas turbine engine anywhere in the ship accelerating malfunction detection process.
+Area of responsibility – participating in developing and refactoring code base, fixing problems, code deployment.
+Technologies: Android NDK, C++, RxJaxa2, Dagger2, Retrofit2, JSON, MVP pattern, MVVM pattern, QNX, NPS, QT, CMake, DOORS, MKS
+EDUCATION 2017 – 2019 | Saint Petersburg Electrotechnical University, Master’s degree of Computer Engineering Technology
+Recommendations are available upon request."
+9.docx,"**************
+Frontend developer
+Languages: English, Hebrew, Russian, German, Kazakh
+Residence: Tel-Aviv Area, Israel
+Phone:**********
+E-mail:  
+EXPERIENCE SUMMARY: 
+Programming languages: JavaScript ES6+, familiar with Java, C#, C++/C. 
+Web: HTML5/CSS3, NPM, webpack, Babel, Bootstrap, Material UI, React, LESS. 
+Technologies & Frameworks: JSON, AJAX. 
+Environments-IDE: WebStorm, Eclipse, Intellij IDEA, Android Studio, Visual Studio, Visual Studio Code, GitHub, Agile, UML, Adobe Photoshop, Figma. 
+Collaboration tools: Slack, MS Teams, Trello
+PROFESSIONAL EXPERIENCE: 
+2020-2022 | Customer Care Associate | CGS (Netanya, Israel) | 
+Project: Customer care for Dell (***************** in CIS.
+Areas of responsibilities: 
+Support Dell customers and service providers in CIS
+2019 – 2020 | Frontend React developer | Inetex Ltd (Rehovot, Israel) |  
+Project: A single page web application of ticket service: 1) Administrator/ moderator control panel: simple and clear mechanism for managing events; for setting up the structure of concert halls with prices and capacity; 2) User part: user-friendly interface for booking and buying tickets through PayPal service. 
+Areas of responsibilities: 
+developing responsive UI;
+building and maintaining code, participating in code review;
+adding new features, fixing problems; 
+code deployment. 
+Technologies: ES6+, HTML5, CSS3, LESS, React, React Router, React DayPicker, Redux, Bootstrap, Material UI, MomentJS, JSON, NPM, Jest, ESLint, AJAX, webpack, Babel. 
+Process organization technologies: git, GitHub, Scrum, pair-programming, Trello.
+2017 – 2019 | User Support and Information Security IT Specialist | Bayer KAZ LLP (Almaty, Kazakhstan) | 
+Areas of responsibilities: 
+Developing and supporting corporate website on SharePoint, users support, physical infrastructure monitoring, IT security issues preventing and monitoring.
+2016 – 2017 | Junior Web Developer | STEAM & M (Almaty, Kazakhstan)
+Projects: enterprise management system which includes employee and equipment management, production processes management. Road display system – shows traffic level, nearest places and important information.
+Areas of responsibilities: 
+building and maintaining code, participating in code review; 
+adding and testing new features, fixing problems; 
+Technologies: Node.js, Asp.net, ES6+, HTML5, CSS3, Bootstrap, JSON, NPM, ESLint, AJAX, webpack, Babel. 
+Process organization technologies: git, GitHub, Discord, VSTS.
+EDUCATION: 
+2017 – 2018 | Software Development | STEP Computer Academy (Almaty, Kazakhstan). 
+2011 – 2015 | B.Sc. in Telematics | Kazakh-German University (Almaty, Kazakhstan)."
+10.docx,"******************
+WEB FRONTEND DEVELOPER
+5 years of experience in frontend development
+EXPERIENCE SUMMARY
+Programming languages: JavaScript, TypeScript, PHP
+Web: HTML, CSS, SASS, JavaScript, TypeScript, Pug/Jade, Haml, NodeJS, Gulp, Webpack
+Frameworks: React, React Native, Angular
+Libraries: jQuery, Redux, RxJS, Chart.js, Anime.js, TinyMCE, Material UI, Bootstrap, Tilwind and more..
+Environments – IDE/tools: PhpStorm, VS Code, GitHub, Adobe Photoshop, Figma.
+Databases: MySQL
+System: Windows, Linux, MacOS
+EXPERIENCE
+2021-present:  Frontend developer (remote, part-time)
+       -- WPG (Nitzana, Israel) 
+Support and development of game sites for cryptocurrencies casino.
+Development of a constructor and panel of social polls ""Lemur"". Improvement of functionality for entering other markets.
+2017-2021:  Frontend developer
+       -- WPG (Kharkiv , Ukraine) 
+Support and development of the functionality of a large network of auto parts stores.
+Support and development of game sites for cryptocurrencies casino. Development of new games with CSS and JavaScript animations. For one of the games, I developed an additional server part on NodeJS using WebSocket.
+Development of a constructor and panel of social polls ""Lemur"". Direct participation in the creation of a product, concept, implementation in terms of interaction of online panels (web, iOS, Android), constructors, offline applications for taking surveys without the Internet. Development of a online panel application for surveys of respondents for iOS / Android using React Native.
+Sometimes outsourcing of small projects.
+2016-2017: HTML markup
+       -- WPG (Kharkiv, Ukraine)
+Website layout (with pixel perfect, responsive, CSS and JS animations).
+2016: Freelance
+-- Kharkiv, Ukraine
+HTML markup. PSD to HTML. WordPress plugins development.
+EDUCATION
+2012- 2017: O.M. Beketov National University of Urban Economy in Kharkiv.
+Diploma in Engineering, Heat supply, gas supply and ventilation.
+Residence: Herzliya
+LinkedIn: | Languages: English, Hebrew,                                                  Ukrainian, Russian"
+11.docx,"********************
+Experience in C, C++ and C# programming
+Working knowledge of Agile, Jira and Git
+Basic knowledge of Java
+Skilled in Windows, AIX and Linux system administration.
+Common knowledge of TCP/IP protocol and SSL
+Good understanding of all stages of software development process including debugging and code analysis to troubleshoot and fix software bugs, advising software support team
+High understanding of design and working process of operating system, experience in system programming
+Working knowledge of UNIX shell scripting
+Experienced in developing user interfaces
+Skilled in understanding software security concepts and application compliance with security standards like 
+Good experience in cross-platform application development
+Higher education in computer science, master degree in computer science (neural networks).
+Motivation, potential and great desire to work well and get knowledge.
+SKILLS SUMMARY
+EDUCATION and TRAINING
+Certificate  “DB2 9 Fundamentals” in June 2014
+English Pre-advanced (IBA certificate, 2015)
+A bachelor’s degree in computer science, “Computer systems and networks” faculty, Belarusian State University of Informatics and Radio-electronics, Minsk (2013)
+A master degree in computer science, Belarusian State University of Informatics and Radio-electronics, Minsk (2016)
+Education course D8L89 IBM Lotus Domino 8.5 System Administration at the Institute of IT & Business Administration (2016)
+Certificate “Red Hat System Administration” in November 2016
+Certificate “Rocket MV Certification exam - U2 Family Application Development” in June 2017
+Education course Java Basics at the Institute of IT & Business Administration  in June 2020
+Programming Languages: | C++, C, C#, SQL, UniVerse BASIC, Java | C++, C, C#, SQL, UniVerse BASIC, Java | C++, C, C#, SQL, UniVerse BASIC, Java
+Operating Systems: | Windows, Linux, AIX, Solaris, Symbian (a mobile computing platform for smart phones). | Windows, Linux, AIX, Solaris, Symbian (a mobile computing platform for smart phones). | Windows, Linux, AIX, Solaris, Symbian (a mobile computing platform for smart phones).
+Web Technologies: | HTML, XML. | HTML, XML. | HTML, XML.
+Databases: | IBM DB2, Rocket UniVerse, UniData; | IBM DB2, Rocket UniVerse, UniData; | IBM DB2, Rocket UniVerse, UniData;
+Other Skills: | IBM Tivoli storage Manager (TSM);  IBM General Parallel File System (GPFS);   IBM Configuration Management Version Control (CMVC); Git, Jira, Agile, SVN; Unix Shells (ksh, bash); IBM Domino; Common knowledge of TCP/IP protocol and SSL; The GNU: Compiler Collection (gcc & g++), developer's tool for directing; recompilation (make), debugger (gdb); An open source developer's tool for browsing source code (cscope). MS Visual C++ (2010, 2017); WinAPI; WPF MFC, STL, Qt SDK (a cross-platform application framework), Code::Blocks SBXA, Wintegrate. | IBM Tivoli storage Manager (TSM);  IBM General Parallel File System (GPFS);   IBM Configuration Management Version Control (CMVC); Git, Jira, Agile, SVN; Unix Shells (ksh, bash); IBM Domino; Common knowledge of TCP/IP protocol and SSL; The GNU: Compiler Collection (gcc & g++), developer's tool for directing; recompilation (make), debugger (gdb); An open source developer's tool for browsing source code (cscope). MS Visual C++ (2010, 2017); WinAPI; WPF MFC, STL, Qt SDK (a cross-platform application framework), Code::Blocks SBXA, Wintegrate. | IBM Tivoli storage Manager (TSM);  IBM General Parallel File System (GPFS);   IBM Configuration Management Version Control (CMVC); Git, Jira, Agile, SVN; Unix Shells (ksh, bash); IBM Domino; Common knowledge of TCP/IP protocol and SSL; The GNU: Compiler Collection (gcc & g++), developer's tool for directing; recompilation (make), debugger (gdb); An open source developer's tool for browsing source code (cscope). MS Visual C++ (2010, 2017); WinAPI; WPF MFC, STL, Qt SDK (a cross-platform application framework), Code::Blocks SBXA, Wintegrate.
+Foreign Languages: | English | Upper Intermediate | Good knowledge of grammar. Can understand, discuss, and write texts on both business and general activities, including technical discussions, and explain a viewpoint on an issue or a particular theme."
+12.docx,"Haifa, Israel      Languages   Personal qualities Quick learner Flexibility Communication skills Problem solving Time management Leadership Critical thinking   Education Computing machines, systems, complexes, and networks            2006 – 2012  Moscow Aviation Institute (National Research University) Honours degree | Front End developer Summary A senior web developer with 10+ years development experience. Created both the web and the mobile applications utilizing JavaScript, Typescript, React. Have full-Stack development experience and deep knowledge of the databases (SQL, PostgreSQL). Participated in more than 10 successful projects. Implemented several projects from the scratch (combined the roles of a developer and a project/product manager), and in other projects led the development teams.  Experience Front End Team lead / Senior Developer                               2020 – Present AviaBit Performed a developer role while leading the web and mobile application development team. Main projects: «Aviabit Web» — a personal account application for airline/airport employees; «Personal account of the cashier» application; «Electronic Flight Bag» application.  Responsibilities: Coding for at least 60% of work time, Defining the stack and architecture, creating projects from scratch to successful industrial implementation, Hiring, adaptation and development of new team members, Creation and implementation of code quality standards and code style, Strategic planning, building Scrum processes within the team, Support and development of previously created projects, Participation in conferences and product presentations.  Key achievements: Created «Aviabit Web» — a personal account application for the airline/airport employees: Progressive Web Application adapted for the mobile devices with an ability to work offline. Implemented technically complex solutions: aircraft movement schedule (thousands of interactive objects displayed inside SVG); flight map (displaying airports, meteorological information, aircraft routes); interactive aircraft ground handling scoreboard; platform for personnel training and testing, Led the project to launch and implement «Aviabit Web» in 30+ airlines and airports. The users working with the application daily in some of the companies: 1000+ people (pilots, flight attendants, airport service workers, managers).  Stack: React, Redux, TypeScript, JS, ES6, D3, HTML, Material-UI, NodeJS, Express, T-SQL, Webpack, Jest, REST, JSON, GIT, TFS, JIRA, Trello.   Senior Front End Developer                                                        2021 – Present School Tennis League Part-time, socially significant project. Participating in the project which develops amateur tennis.  Responsibilities: Creating a web application with Server-Side Rendering SSR from the scratch. Writing a code for the key functionalities, Application publication and support, Review of developers’ and designers’ work.  Key achievements: Contributed to a creation of the first amateur children's tennis league, in which non-professional children can participate in tournaments, Implemented and launched a project with SSR in a short time: player's personal account (payment, statistics, registration for tournaments), functionality for referees (automatically generated tournament grid, account management, training platform).  Stack: React, Redux, TypeScript, JS, ES6, HTML, Material-UI, Next.JS, SSR, PostgreSQL, Jest, Babel, GIT.  Senior developer                                                                               2014 – 2020                                                      Aviabit Developed applications: «Electronic Flight Bag» for pilots; the company's business card website; «Cashier's Personal account».   Responsibilities: Web applications creation and support Work on the company's first iPad app — «Electronic Flight Bag», Communication with customers (pilots and navigators): collecting requirements, feedback analysis, product roadmap development, Application architecture design, Apache Cordova application development using React in WebView, Backend development (NodeJS, Express), Application building and publishing on the App Store.  Key achievements: A leading role in creation of the Electronic Flight Bag pilot tablet application, that allowed the pilots to work with navigational information, fill out a flight report and have access to the necessary documentation. Implementation of complex technical tasks: merge data, dynamic generation of forms based on the config, mathematical calculations when editing the route of the aircraft, optimization of the interface, solving problems with the use of the device's RAM when synchronizing data.  Stack: React, Redux, JS, ES6, HTML, CSS, SSAS, Material-UI, NodeJS, Express, REST, T-SQL, Apache Cordova, Webpack, Jest, Enzyme, Babel, GIT, TFS.  Developer / Lead Maintenance Engineer                                       2009 – 2014                                                      Aviabit Promotion from product implementation specialist to development.  Responsibilities: Customer support, Participation in the product development (C++, MFC, T-SQL). Stored procedures development for reports and analytical cubes, query optimization and participation in database design (MS OLAP, T-SQL), Web services creation and development for integration between the systems (SOAP, C#, T-SQL), Mobile applications development (Windows Phone, WPF, .Net, T-SQL), Existing products support (.Net, C#, T-SQL), Query optimization and participation in database design, Transfer of knowledge to the new team members.  Key achievements: Took over support and development of several projects in no time. Created mobile applications (control the performance of aircraft maintenance). Developed the integration with third-party systems, Designed a multidimensional data warehouse.  Stack: .Net, C#, WPF, C++, MFC, JS, HTML, CSS, Windows Phone/Mobile, SOAP, OLAP, T-SQL, TFS."
+13.docx,"*****************
+Front-end Developer
+Mobile phone:       **********
+Linkedln:	         ********************************************************
+Github:                    **************************
+Professional skills:
+•	Languages: Python 2.7 and 3.6, Javascript(ES4, ES5, ES6), HTML5, DHTML, XHTML, CSS3, SCSS, LESS, Php Fundamentals
+•	Frameworks: Django, Flask, JQuery, Foundation, Express.js
+•	Libraries: Redux, React, Redux Form, Redux Saga, Bootstrap, Material-UI, BeautifulSoup, Underscore, SQAlchemy, Lodash
+	•	Server Technologies: Node.js Fundamentals, Apache Fundamentals, MAMP, WAMP
+	•	DB: MySQL, SQLite, PostgreSQL
+	•	OS: Mac, Linux, Windows
+•	Other: Git, virtualenv, npm, Gulp, ESLint, Babel, CyPress, Zeplin, Kanban, Asana, Jira, Flux, UI/UX
+Work experience:	
+		Front-End Developer - 2019
+		Trucknet - Rishon LeZion, Israel
+	•	Developing responsive web applications using Javascript, React and Redux
+	•	Responsible for implementation of new mainframe development project
+	•	Writing new components using Material-UI and Redux Form
+	•	Analyzed UI/UX design for responsive layout for improved usability
+	•	Worked with team of developers to resolve front-end and CSS issues
+Education:		
+	•	NAU(National Aviation University). Computer science, 2012-2014 
+	•	WSEI(High School of Economics and Innovations). Programming 2014-2018
+	•	IITC/InterBit, MASA TLALIM 2018-2019
+Recommendations:
+		Trucknet - Eilat, Israel
+		Alexander Gusev**********
+Languages knowledge: 	
+	•	Native Russian,  native Ukrainian, 
+	•	Upper Intermediate English B2, Intermediate Polish B1
+Volunteering: 
+	•	Volunteering in organization “Maidan’s Hospital”. Helping people, who took part in Maidan Revolution and soldiers in ATO Zone
+	•	Helping old people in christian nursing home
+	•	Volunteering on festival of Ukrainian culture in Poland
+	•	Volunteering on Congress of Eastern European Initiatives
+	•	Volunteering on festival of Japanese culture “Nejiro”"
+14.docx,"Rehovot, Israel  
+About me
+Senior solution architect with wide experience of creating and maintaining IT systems. Deep knowledge of
+C#, JavaScript, SQL, PHP and many other technologies; 10+ experience in Microsoft technologies. I've
+implemented a large number of projects on SharePoint (2007, 2010 and 2019) platforms. Developed
+applications both for SharePoint and standalone, integrated them with external databases and web-
+services.
+Over fifteen years experience in programming and a Master degree in engineering makes me capable of
+executing complicated and challenging projects.
+My family and I did Alia last year and Im looking for a company to continue my career in Israel.
+Technical Skills Set
+ Development of environments: Asp.Net, C#, Java Script and frameworks (React, jQuery, NodeJS),
+XHTML, CSS, XML, DOM, PHP, PowerShell, Windows cmd-scripts, UNIX shell scripts.
+ Development applications for SharePoint  web-parts, timer jobs, web-services; MVC
+applications .Net and net.Core
+ Deep experience with Databases Microsoft SQL Server 2008, 2012, MySQL  writing complex SQL
+queries, creating stored procedures, views, optimization of SQL queries.
+Experience
+2008  2022 GPB, financial company
+. Senior Software Engineer
+I successfully completed the Portal migration from SharePoint 2010 to SharePoint 2019 - 25k+ active
+users, ~1Tb content databases, about 50 various applications and customizations. I made a substantial
+analysis of the existing system, its infrastructure, applications and integration with external systems. I
+created a migration plan and then managed the process, also I developed and implemented several
+applications for direct data migration from SharePoint 2010 to 2019.
+Automated the development process based on SharePoint 2019 and Net.Core applications with
+TeamCity, Bitbucket. Successfully leaded the team of 13 employees. Managed full stack development
+from receiving a task to a complete solution.
+2010 - 2015. Full-stack SharePoint Software developer.
+Full life cycle support of the Portal system based on Microsoft SharePoint. Collaborated with contractors
+to offer and then develop and implement different solutions. Integrate various features and technical
+specifications of applications, continuous functionality of the Portal system, developed SharePoint
+solutions for internal needs.
+Developed an Employee information application (Asp.net, C#, MSSQL, SharePoint) with custom database,
+integrated with employee accounting system and Active Directory. Aggregation data from several
+databases, synchronous and asynchronous exchanges between different data sources. Created a number
+of applications that use SharePoint objects as datasource, custom web-parts for SharePoint.
+2008  2010. Junior software developer.
+Development of simple applications and functions for internal needs of the company - polls, photogallery,
+making promo-pages. Simple SQL requests and usage in web-applications.
+2007  2008. Traverse avia service, air flights organization, Head engineer
+Created and supported company web-sites on PHP and MySQL using self-made CMS.
+2006  2007. Protek, pharmaceutical company, IT-specialist
+Developed a multivariable search system of drugs in pharmacies in Moscow using PHP and MySQL, a
+website search system with multivariable filters.
+. RBC, Media company, Web-master
+Member of a team of developers.
+Education:
+1998  .
+Most recent courses:
+SharePoint 2016: Administration (Microsoft); IIS 7.5 Administration and troubleshooting (Microsoft);
+Visual Studio 2012 ALM Testing Tools (Microsoft)
+Hobbies:
+Sports  fitness, snowboard, photo, arduino.
+Languages: Russian (native), English (Upper Intermediate)
+
+"
+15.docx,"
+Frontend Developer - 8 years experience
+Phone:  Email: 
+Residence: Holon Languages: Hebrew, English, Russian
+Experience Summary
+ WEB technologies: Angular, Webpack, REST, Ajax, JQuery, HTML, CSS, BootStrap
+ Programming languages: JavaScript, NodeJS, Typescript, Python, Perl
+ DataBases: SQLite, MySQL, MongoDB, neo4j, tinyDB
+ Methodology : Agile, Waterfall, SCRUM
+Experience
+ -  Britannica (Tel Aviv, Israel) Web Front End Developer
+ Description: Knowledgebase project with time and resource management for educational processes in
+commercial specialized educational institutions.
+ Responsibilities: renewed and optimized UI and UX, renewed REST API, migrated from legacy solution
+(ASPX) to newest solutions and technologies(Angular 7+), refactored code.
+ Technologies used: HTML5, CSS3 , Angular(7+), Typescript, NodeJS, WebSocket
+2017/04 - 2018/10 Athena (Holon, Israel) Web Front End Developer
+ Description: Documentation accounting system. Search engine for seeking information in open sources
+and building structured knowledge base with internal search.
+ Responsibilities: renewed and optimized UI and UX. renewed API. Migrated legacy code to newest
+solutions and technologies
+ Technologies used: HTML5, CSS3 , AngularJS(1.5), Angular(2+), NodeJS, WebSocket
+2016/03 - 2017/04 Freelance Web Front End Developer
+ ""Neighbro""
+ Description: project designed as mini social network for tenants and landlords.
+ Responsibilities: projected and implemented API and UX. written documentation
+ Technologies used: HTML5, Jquery, JavaScript, AngularJS(1.3), NodeJS
+ Panels Dashboard
+ Description: Web application/dashboard for analysis survey data, visualization statistical data.
+ Responsibilities: projected and implemented API and UX
+ Technologies used: HTML5, AJAX, JavaScript, ReactJS, Bootstrap, CSS
+2012/02 - 2016/03 WOXAPP (Dnipro, Ukraine) Web Front End Developer
+ 
+ Description: Cloud storage for photos, with social networking, forum and chat.
+ Responsibilities: projected and implemented UX and client-server logic
+ Technologies used: HTML5, AJAX, JavaScript
+Education
+2002/08  2007/06 National Mining University Dnepropetrovsk Ukraine
+ Degree: Software Developer Master Degree
+Recommendations available upon request."
+16.docx,"Senior Software Engineer (Java/Kotlin Backend Developer)
+Israel, Beer Sheva
+Contacts
+Education
+Telegram 
+WhatsApp 
+National Research University Moscow
+Power Engineering Institute
+
+
+Sep 2006 - June 2010
+Bachelor's degree, Computer Science
+Cell 
+Sep 2011 - June 2013
+Experience
+Master's degree, Engineering and Technology
+in Computer Science
+Raiffeisen Bank Russia Jan 2022 - June 2022
+Senior Software Developer
+Skills & Expertise
+ system design of a new KYC platform
+ collecting business requirements  Java
+ development from scratch (Java, Kotlin)  Spring Framework
+ SQL, Postgres, Oracle
+Deutsche Bank Aug 2018 - Dec 2021  Kafka, Cassandra
+Software Engineer / Senior Software Engineer  Git, Docker, TeamCity, GitLab
+ Agile, Scrum, SAFE methodologies
+ international teams in risk management  Basic JavaScript, HTML, CSS
+ instances in different locations across the globe  Kotlin, Scala, Python
+ Java (mainly), Python, Scala
+ development of new features Languages
+ SL3 support
+Russian native, English advanced
+QIWI Dec 2015 - Aug 2018
+Software Developer / Senior Software Developer
+ new features for payment processing engine
+ refactoring of legacy systems
+ mentor for interns
+I-Teco May 2013 - Jan 2015
+Junior Java Developer / Java Developer
+ outsource projects
+ Java, GWT, HTML, CSS"
+17.docx,"|  | LinkedIn-profile | Israel, Rishon Lezion
+Frontend developer with extensive experience designing, developing, implementing, and
+maintaining software used in sales, rental apartments, e-commerce, and human resources.
+Good knowledge and understanding of current frontend development technologies. Successful
+experience using different JS frameworks. Experience in server-side development, database
+management systems administration.
+I love my profession because it's not just a job, it's my hobby. It makes me passionate, driven
+and an effective team player.
+EXPERIENCE
+2020  Present Frontend developer at Noviopus, Rishon Lezion, Israel
+ I manage and responsible for the development of two front-end applications of an
+intelligent recruitment system.
+ Extended functionality of the existing application, refactored existing code base and
+prepared the application release.
+ Develope the application from scratch based on React, designed the architecture of the
+application, implemented the core modules of the application.
+Stack: React, Redux, Material-UI, Cypress.
+2018 -  Designed, developed, and deployed frontend applications from scratch and implemented
+new features of existing projects. Used stack: React, Redux, Vue.js, Backbone.js,
+Marionette.js, jQuery, Sass.
+ Developed the API endpoints for the distributed sales management system.
+Used stack: Django Framework, PostgreSQL, Docker, Vagrant.
+ Optimized system performance by monitoring and rewriting SQL queries (PostgreSQL).
+ Collaborated with technical support and assistance team in resolving customer technical
+issues.
+2017 - 2018 Full Stack developer at kvartirka.com, Chelyabinsk, Russia
+ Migrated an Backbone.js codebase into React.
+ Developed the API endpoints (Django framework)
+ ode coverage with unit tests (pytest)
+2015 -  Build custom e-commerce shops, commercial and corporate websites based on existing
+solutions and development from scratch. (Django, HTML, CSS, Bitbucket).
+ Design, implementation and operating of database (MySQL)
+EDUCATION
+1999 - 2004 South Ural State University (SUSU), Chelyabinsk, Russia
+Engineer's Degree - Urban Construction and Management.
+2016 - GeekBrains - MAIL.RU group - course HTML/CSS, JavaScript, Python, Django.
+Languages: English, Hebrew, Russian."
+18.docx," - WhatsApp
+ - Israel
+GitHub: 
+Executive Summary
+ Simultaneously managing multiple projects with minimum direction and maintaining
+accuracy under pressure
+ Contributed to product development & product roadmap planning
+ Defined architecture of new IOS Apps and developed them broadly from engineering and
+coding features to polishing user interfaces
+ Knowledge of UI design principles, patterns and practices
+ Self-starter with a strong work ethic and a passion for problem-solving
+ English  Upper Intermediate, Russian  Fluent, Belarusian - Advanced
+Professional Experience: Independent Developer, 2021  till now
+ Performed technical designs and implementations of IOS Apps with user-friendly and
+intuitive interface
+ Improved product quality through code reviews, writing effective unit tests and collaborating
+with QA on implementing automation testing
+ Created my own application called ""Mobile Wallet"" to track finances. Therefore, Ive
+operated with Core Data, obtained data from the server and upload it to the TableView
+ Experienced in Cocoapods, Alamofire and SwiftGen, three screens are created using
+storyboard, two screens are written in code
+ Gathering functional requirements, developing technical specifications and project test &
+planning
+IOS-Developer intern at Softteco, Minsk, .2021
+ Completed commercial projects
+ Managed team working skills by participating in groups to create Apps
+ Learnt to read any code in existing code-base and change it
+ Collaborated in multi-functional tasks and worked under pressure
+IOS-Developer at 365scores, Tel-Aviv, .2022
+ Working withRestful APIs, Core Data and GCD
+ Making WatchOS App with SwiftUI
+ Testing and debugging mobile application
+ Work to expand/improve on an ongoing basis by adding new functionality and resolving
+existing issues
+Education:
+Programming School Teach me skills, Minsk  IOS Developer,  - 
+Veterinary university, Minsk  veterinary paramedic,  - 
+Technical Skills:
+ Programming Language: Swift
+ API/frameworks: Alamofire, SwiftyJSON, SwiftUI
+ Databases: CoreData, REALM, Firebase
+ Architectures: MVP, MVVM, MVC
+ Technologies: Autolayout, REST API, SOLID, GIT"
+19.docx,"Full Stack Java Developer
+
+5 years of total experience in development web frontend (70%) and development Java backend (30%).
+Personal information
+ 
+Tel:  Email:  City of Residence: Ashdod Date of birth: 
+
+LinkedIn: 
+
+SKILLS SUMMARY
+Programming languages: Java, JavaScript, TypeScript, SQL, HTML, CSS, VBA.
+
+Technologies & Frameworks: Spring, Spring Boot, Spring Security, Lombok, Swagger, Hibernate, JUnit, Java
+ 
+Persistence API, Multithreading, Maven, jQuery, Bootstrap, REST, Kafka, Heroku, Angular, Material Design,
+React (Redux, Context API, Formik, Axios, Lodash, Hooks), Vue.js, Node.js.
+
+Environments & IDE: IntelliJ IDEA, WebStorm, Eclipse, VS Code, Xcode.
+
+Databases: SQL (MySQL, PostgreSQL), NoSQL (MongoDB, Firebase).
+  
+Version control & Project Management: Git (BitBucket, GitHub), Jira, Agile, Scrum.
+
+Software Architecture: OOP, JSON, Design Patterns, Microservices, Dependency Injection.
+
+Operating Systems: Mac OS, Windows.
+
+Additional skills: Adobe Creative Suite: Photoshop, Illustrator, XD, Dreamweaver, Acrobat Professional; MS
+
+Office: Access, Excel, Word; Figma, Mailchimp.
+Spoken languages: English, Hebrew, Russian.
+
+EXPERIENCE
+Web Developer Naya Technologies, migVisor, Herzliya, Israel  2020-present
+Cloud database migration assessment
+Developing responsive frontend website on Angular, Material Design.
+Troubleshooting and debugging application.
+Tools summary: TypeScript, Angular, HTML, CSS, Material Design, REST, Firebase.
+
+Full Stack Java Developer Inetex Ltd., Rehovot, Israel  
+P2P car sharing
+Developing responsive frontend websites on Angular and React.
+Developing backend website application. RESTful web service based on Spring Boot.
+Creation, integration, and management of NoSQL databases on Firebase.
+Troubleshooting and debugging application.
+Tools summary: TypeScript, Angular, JavaScript, React, HTML, CSS, Material Design, Bootstrap, REST, Google map API,
+
+Firebase, Spring, Spring Boot, Spring Security, Swagger, Dependency Injection.
+
+Web Developer Regions Group, Moscow, Russia  
+Development and commercial real estate management
+Production, maintenance, updating and optimization of frontend websites based on usability.
+Creating cascading style sheets that are consistent across all browsers and platforms.
+Identifying and troubleshooting various website issues and coding problems.
+EDUCATION
+Master of mathematics and computer science in Finance,
+Plekhanov Russian University of Economics, 2004, Moscow, Russia
+HTML, 2006, Moscow, Russia
+
+Web-Development, 2015, Moscow, Russia
+ 
+Full Stack Java Development, 2018, Rehovot, Israel
+"
+20.docx,"Full-Stack Developer
+SUMMARY Main stack: PHP, Node.js, React.js (Redux, Mobx), MySQL/PostgreSQL.
+Don't have experience but would like to develop skills with Python, Golang, MongoDB,
+Angular, and Vue.js.
+Don't want to work with CSS/LESS/SASS.
+WORK Tanndu  Full Stack Developer (  now)
+EXPERIENCE Experience with external APIs;
+Integrated PayPal and authorization with Apple/Google/Facebook;
+Gained experience in ReactJS (Redux, MobX), ReactNative, PHP, MySQL, Docker, Chrome
+Extensions;
+Deployed projects on AWS/Heroku;
+Was involved in the hiring process developer positions, interviewed candidates.
+BOOKIE iGaming  Full-Stack Developer (  )
+Implemented new features;
+Developed strong skills in React JS, Backbone.js, Node.js, PHP;
+Migrated the project from gulp + RequireJS to Webpack (ES6);
+Acquired software design pattern knowledge;
+Gained eld relevant experience;
+On-job skills advancement for career growth;
+Learned good programming practices from seasoned developers.
+Mapsoft  Junior Full-Stack Developer (  )
+Implemented new features;
+Managed bug xes;
+Gained experience in Symfony 2.8, ExtJS.
+EDUCATION Belarusian State University of Informatics and Radioelectronics  Bachelor's Degree (2017 
+2021)
+Engineering-Psychological Maintenance Of Information Technologies
+MCB  Associate's Degree (2012  2017)
+Information Technology Software
+SOFT SKILLS Team player
+Condent
+Getting things done
+Independent
+Passionate and enthusiastic
+CONTACTS linkedin: 
+email: 
+
+whatsapp: 
+Powered by"
+21.docx,"PROFILE
+Im from Saratov, Russian Federation. I was a lawyer with experience in
+contract law. It has always been my desire to work in IT. Now I am looking
+for an opportunity to change my eld of activity and nally come to what
+I wanted for a long time. Previously I studied the MS SQL by myself and
+was an intern in writing requests. Now I am studying to be a web
+developer, namely studying interaction of HTML, CSS and JavaScript.
+I am MASA program graduated in the eld of web development. As a
+result of the course, I gained the skills necessary for Front-end
+development.
+ANGELINA NISSIM
+I did my internship in SerVC, Herzlia, Israel. As part of the MASA program,
+FRONT END DEVELOPER
+I studied React framework, during the internship I was taught a new
+framework for me - Angular on which the project was written and with
+which I worked throughout the entire internship.
+CONTACT INFO
+ + 
+EXPERIENCE
+ 
+ JAN 2022 - APR 2022 FRONT END DEVELOPER INTERN
+www.linkedin.com/angelina- SERVC During the internship I did many tasks among which:
+nissim
+Redesigned all tables in the project in accordance
+ 
+with the layout in Figma and thus improved the user
+ Tel Aviv, Israel experience based on customer feedback.
+Created a library of components such as inputs,
+selectors, icons to improve DX.
+EDUCATION
+Was responsible for rewriting the login page (both
+October 2021-December 2021 frontend and backend).
+MASA Web Development
+Cource | Israel OCT 2021 - DEC 2021 STUDENT
+MASA During the cource I created projects that helped me
+ improve my front-end development skills.
+MA In Jurisprudence
+For example, this is a quiz game project and simple
+Saratov State Law Academy |
+calculator.
+Russia
+These and other projects created by me are attached
+to the portfolio.
+
+BA In Jurisprudence
+Saratov State Law Academy | APRIL 2021 SQL FREELANCE
+Russia FREELANCE Compilation of SQL queries
+Ensuring the operation of databases
+OCT 2020 - DEC 2020 LEGAL ADVISER
+LANGUAGES NORNICKEL Norilsk Nikel is the worlds largest producer of nickel
+and palladium.
+Hebrew Created and edited over 200 contracts
+Negotiated with more than 10 counterparties,
+English including government agencies
+User of corporate database systems
+Russian
+PROFESSIONAL SKILLS
+HTML
+CSS
+JAVASCRIPT
+SQL
+ANGULAR"
+22.docx,"Birth year: 1990 | City: Kiriat Yam, Israel | LinkedIn
+     
+Email:  | Telegram:  | Phone: 
+      
+Summary:
+I have 6+ years of experience in server-side development. I have been developing DWH with
+ETL processes, data input forms and OLAP reports. I have been implementing business
+logic in PL/SQL. Now I am learning Hebrew on MASA in Kiriat Yam.
+Professional skills: SQL (Oracle), PL/SQL, C#, Python
+
+Languages: Russian: native; English: B1.
+
+Experience:
+   Pro IT Resource  Oracle developer Perm, Russia
+
+Development and support of OLAP financial data monitoring systems.
+The business logic of the systems was implemented as PL/SQL packages. Main tasks
+which were implemented:
+ Data loading from external systems in form of incremental daily updates in XML;
+ Maintenance of various directories and indicators, data input according to them;
+ Development of OLAP reports based on input data.
+   KIBERone  Tutor Perm, Russia
+
+   ER-Telecom  Oracle developer Perm, Russia
+
+ Support of the Equipment Manager system (network equipment accounting
+system);
+ Finalization of the electronic document management system in Equipment
+Manager: transferring documents to 1C and billing system;
+   JSC PROGNOZ  Junior tester Perm, Russia
+
+The Perm State Regional Universal Library
+   named after A.M.Gorky  Perm, Russia
+
+Computer lab administrator
+Education:
+Perm National Research Polytechnic University
+2011  2017 Electrical Engineering Faculty, speciality: automated control and
+information processing systems (extramural, incomplete)
+Perm State National Research University
+2007  2010 Faculty of Mechanics and Mathematics, speciality: mechanics, applied
+mathematics (incomplete)
+Hobbies and other activity: I like running, fencing and hiking. I have experience as a
+
+volunteer."
+23.docx," Israel, Rishon LeTsiyon
+Software Developer / Linux Kernel Developer / Database developer
+Contacts:
+
+L inkedIn
+Phone/WhatsApp: 
+Skills:
+Linux, Linux kernel development, POSIX, TCP/IP, IPv6, GTK, ProtoBuf, C/C++, Java, Go,
+Perl, Python, JavaScript/jQuery, PHP, Ruby, D lang, bash/csh/ksh scripting, FreeBSD
+administration, SQLite, MySQL, PostgreSQL, PlPgSQL, KVM, Docker, Ant, Autotools, GNU
+make, Cmake, Git, Subversion, Mercurial, Redmine, JIRA, Jenkins
+Languages:
+English  Intermediate
+Russian  Native
+Hebrew  Learning
+Employment History:
+Linux Kernel Developer / Senior Linux Kernel Developer
+4/2016  5/2022, LLC Confident/SoftProject
+ Design, development and maintaining of the filesystem access control system based
+on LSM (C, Linux kernel: LSM, VFS, scheduler).
+ Development of the external ports control management subsystem (C++, udev).
+ Partial development of the building/deploying infrastructure for the projects.
+Software Developer
+5/2012  10/2014, Motorola Solutions
+ Development of the inner company telecom products and tools (C/C++, IDL,
+ethereal/wireshark dissection API).
+ Source control management and automation (Clearcase, bash, Solaris ksh, Active
+Perl).
+Freelance Software Developer
+8/2011  4/2012, customer  St. Petersburg Psychology and Acmeology Private University
+ Full cycle development of the crossplatform psychology testing software (GTK, librsvg,
+D language).
+Database Developer
+9/2010  12/2011, LLC ProxyCentre
+ Redesign and rework the legacy DBMS to support the first stage of the APEC Russia
+2012 event (PostgreSQL).
+ Development of the DB ordinary stored procedures and procedures/libraries to
+intercommunicate to other APEC infrastructure units (plPgSQL/plRuby/libpq).
+Software Engineer / Senior Software Engineer
+8/2008  12/2009, CJSC NTC RIF
+ Embedded systems programming (C, QNX).
+ Development of realtime analog signal processing software.
+ Application development for Windows platform (Visual C/C++).
+ Project management, software architecture and development of the computer control
+system for the mobile diesel power plant.
+Software Engineer
+10/2005  7/2008, CJSC NPP Systema
+ Software development for Windows and Linux platforms (C/C++, Java).
+ Partial development and testing of the military survivability expert system for a ship.
+ Partial development of the weapons accounting and management software.
+ OSS systems and technologies integration (Linux, FreeBSD, PostgreSQL).
+Web developer / System Administrator
+2/2004  5/2005, LLC BlackCat
+ Development of the content management system (Apache, PHP, MySQL).
+ Development and support of the accounting system of payments (Perl, MySQL).
+ Database administration.
+ Local server administration (FreeBSD).
+Education:
+, St. Petersburg State Technological Institute
+, St. Petersburg Electrotechnical University"
+24.docx,"
+iOS developer
+Ashdod, Israel
+
+
+EXPERIENCE
+SuperUp, Ashdod, Israel
+ iOS developer
+February 2017  Present
+Development of applications for iOS 10,11,12 in S wift according to G itFlow and J ira
+Scrum. C I experience. Using of C ocoaTouch, Foundation, Alamofire, XIBs,
+Storyboards, CoreData, Realm etc. Publishing to App Store.
+Integration with back-end R EST API, Firebase and other Google services.
+ Full stack developer
+March 2016  February 2017
+Development of high loaded Back-end software on PHP (Symphony, Laravel) and
+Java (Spring) with PostgreSQL database.
+Front-end development on A ngular JS, Backbone JS, Bootstrap.
+Data analytics in BigQuery by G oogle Data Studio. System monitoring by Zabbix, ELK.
+Mobile Web on F ramework 7, JQuery Mobile. Mobile bots for WhatsApp, Telegram,
+Facebook.
+Infosoft, Barnaul, Russia
+ B ack-end developer
+June 2014  September 2015
+Back-end development on C# (.NET) with M ySQL database.
+System administration and monitoring.
+SKILLS
+Swift, Java, PHP, C, C++, C#, Lua, JS,CSS, HTML, SQL, Xcode, Intellij Idea, Eclipse, Visual
+Studio, Realm, PostgreSQL, BigQuery, MySQL, MongoDB.
+EDUCATION
+App Brewery school, London, UK  course
+November 2016  February 2017 / IOS and Swift - The complete IOS App development.
+Tel Ran College, Rehovot, Israel  c ourse
+September 2015  March 2016 / Web and mobile applications development.
+Altai Technical State University, B arnaul, Russia  Bachelor degree
+September 2010  May 2015 / S oftware engineering.
+LANGUAGES Hebrew, English, Russian."
+25.docx,", Senior .NET Engineer,   ""
+,  , 36 "" , 
+Skills  C#, .NET Core, Web API, GraphQL, ASP.NET MVC, TypeScript, Angular 4+, RxJS,
+NgRx, NGXS, Bootstrap, Material, Node.js, Expres, HTML, CSS, MS SQL, EF Core,
+Dapper, Redis, MongoDB, Database design, T-SQL, LINQ, MS Dynamics CRM;
+ Microsoft Azure: AppService, Functions, Service Bus, Redis, Queues, Key-
+Vault, Application Insights; Azure DevOps; AWS; DigitalOcean, Heroku;
+ Auth0, PowerBI, SSRS, Git;
+Work experience 04/2022  07/2022 (project employment)
+Full Stack Engineer,  , Jerusalem, Israel
+Designed and developed the educational application for the teachers and students using .NET Core, Angular
+13, and MongoDB.
+08/2021  07/2022 (project employment)
+.NET Team/Tech Lead, Management Consultant, A-TeamGlobal, Zaporizhya, Ukraine
+Working as a team lead on a backend of mobile project related to European political parties, set up an working
+environment and proper SDLC, providing management and delivery consultations to company management,
+closely working with customers with working scope negotiations, considering human resources, participating
+in interviews.
+04/2020  08/2021
+.NET Team Lead, WebLegends Kyiv, Ukraine
+Leading software development of two projects simultaneously, making a decision about the technical stack
+and priorities, allocating human resources, communicating with stakeholders.
+10/2019  03/2020 (project employment)
+Bootcamp Manager/.NET Teacher, Tbilisi, Georgia
+Lecturing programming classes for several groups of students, managing another teaching members, creating
+workflow for final students project including creating project from scratch, setting up all the development and
+task tracking environments, supervising of creating specifications and prototypes for project, leading 15
+trainee developers finishing MVP and making demo.
+02/2011  10/2019
+.NET Developer, various companies, Ukraine
+Web development using ASP.NET MVC, Web API, JavaScript.
+Education Bachelor's degree 01/2022
+Mykolaiv Building College Ethereum Blockchain Developer Bootcamp With
+Software Engineering Solidity  Udemy
+09/2008 - 06//2021
+Flashloans  EatTheBlocks
+01/2014
+ASP.NET MVC Advanced  CyberBionicSystematics
+06/2013
+C# for Professionals  CyberBionicSystematics
+About Have perfect communication skills, decent experience in mentorship and education.
+Im amateur runner, have completed certificate of first aid courses, good sense of humor.
+Hebrew  \ , English  professional proficiency, Ukrainian/Russian  native."
+26.docx,"
+Tel Aviv
+(cid:72) 
+(cid:66) 
+Senior Software Developer (cid:205)
+agrml.github.io/me/
+For more than 5 years I develop software with an urge to help people
+solve their problems. I develop product rather than close issues.
+Proactivity, empathy, focusing on the product result, end-user
+experience, and runtime stability  these are the qualities I value most
+both in colleagues and myself. Do we match?
+Skills summary
+Pro-level Backend development [Python/Django/asyncio/PyTest, PostgreSQL, Docker]
+Mid-level Kubernets, Elastic Search. Mentoring. Team leading
+Languages English (fluent), Russian (mothertongue)
+Professional Experience
+20212021 BestDoctor, Senior backend dev in the medical insurance sphere.
+Python/Django/PyTest, Docker, zero-code intergrations
+(cid:123) Implemented multiple features in a huge Django Admin with a bit of JS
+(cid:123) Solved a problem by a paid service instead of a month of coding from scratch
+20202021 Domclick (Sberbank), Tech lead and backend dev in a new buildings storefront.
+Python/asyncio/FastAPI/PyTest, Docker, Kubernets, PostgreSQL, Elastic
+(cid:123) Improved stability, performance, test-coverage and architecture of several micro-services
+(cid:123) Introduced SRE practices (monitorings, safe migrations) and processes on keeping them go
+(cid:123) Improved work processes, e.g. made scrum work as much as it was possible.
+(cid:123) Closely worked with the product manager (designed principal implementations; helped to fit features to sprints)
+20182020 Yandex, Backend development in the intranet department.
+Python/Django/Celery/PyTest, Docker, PostgreSQL/YQL
+(cid:123) Worked with more than 10 projects, mainly with the internal hiring system.
+(cid:123) Increased Yandex employee hiring rate and decreased leaving rate by developing reference giving system and
+employee rotation system
+(cid:123) Launched a negotiation service. Designed a state machine for creating a new negotiation.
+(cid:123) LeadedmigrationtoanewPaaS.Improved5affectedlibs/tools,migrated3projectsmyself,managedmigration
+of 10 other projects.
+(cid:123) Mentored in Yandex Backend Development school
+20162017 ARCCN, RnD in the field of Software-Defined Networking.
+(cid:123) Developed of a link state monitoring system (C++, Python. BFD, OpenFlow protocols)
+(cid:123) Designed a rule caching system for OpenFlow software switches (C, Intel DPDK. P4 protocol)
+Education
+20142018 Bachelor of Computer Science, Moscow State University.
+Department of Computational Mathematics and Cybernetics
+Publications and teaching
+2021 ""Developing backend using Django,"" an online course author and lecturer: 
+2021 ""The way I develop software,"" an article on Medium [RU]: 
+2017 ""UsinghashfunctionstoaccelerateperformanceofOpenFlowswitches,""AgranovskiyM.,ShalimovA.//Program
+systems and toolware, MSU, 2017"
+27.docx,"
+Golang Developer
+KarmiEl, Israel (Able to relocate)
+
+
+Telegram: 
+Github: entertainment-veks
+GENERAL
+Im a Golang Back-end developer who migrated from Android (Java/Kotlin) 7
+month ago. Got a half+ of a year of development web-apps near blockchain and
+digital currency. Also have 2.5 years of experience in developing android-apps.
+Also took a couple of courses from Yandex.Practicum. More details below 
+SKILLS
+Golang:Go standard library, Gorilla, Go testing,Gogoc, Go database, Go vet + Go analyze
+(custom linters), Go Validation (ozzo/playground), FacebookGo inject, Loggers
+Architecture:MVC, MVP, MVVM, SOLID, ACID, OOP, Goproject layout
+Android/General:Java Core, Kotlin Core, Hibernate,JPA, SQL, Firebase, JDBC, some Spring
+modules, REST, Websocket, Migrate, Docker, Docker Compose, Makefiles, Cron, MySQL,
+PostgreSQL, SQLite, LiveData, Multithreading, Coroutines, Room, Dagger2, Koin, Hilt, NavUI, Rx
+basic, Glide, Gson, Android design components, Android Jetpack, Espresso, JUnit etc..
+Language:Ukrainian, Russian - Native, English - UpperIntermediate, Hebrew - Beginner
+PROJECTS
+Golang:
+Demo Project Gophermart-web service for accumulativeloyalty system[still in progress]
+Application X*-client for one of the digital currencyexchange likeBinance(in Company X*)
+Application X*-client for one of the digital currencywallets storagelikeMetamask(in Company X*)
+Android:
+Demo Project ""News App""- news app (June 2021)
+GoDog-app for training dogs (in LeverX)
+Application X* -shop-app for the biggest Germanycustomer (in LeverX)
+Consulty -platform for expert consultations on alltopics (in Sk.WebStudio)
+WORK EXPERIENCE
+Golang Developer - Company X* (Kyiv, remote) - product/outsourceIT company
+ Casual developer. Has finished a few projects.
+ Generally was making clients for services which related with blockchain
+and digital currency like Binance, Metamask etc.
+ Got knowledge of how blockchain and digital currency works, also got knowledge about
+microservice architecture and instruments like Kaa or websockets
+ from November 2021 till now
+Android Developer - LeverX (Kyiv office, local) -outsource IT company
+ Participated in few projects, mostly casual client-side android front-end apps.
+ Was leading a small part of the team (2-5 developers).
+ from March 2021 till November 2021
+Android Developer - Sk.WebStudio (International, remote) - outsource IT company
+ Casual developer. First experience in an international team.
+ from July 2020 till March 2021
+EDUCATION
+Couple of courses Go web inYandex.Practicum-asbeta-tester
+ A Tour of Go
+ Go Web
+ Go Web Advanced
+ Multithreading in Go
+Java Back-end inMate Academy-IT academy
+ Java Core
+ JDBC + Hibernate
+ Java Web
+ Spring
+ Multithreading
+ertificateAndroid-development onCoursera-quickstart in Android-development.
+Course from MIPT.
+ Android components and interface elements
+ Multithreading and networking in Android
+ Android Application Architecture
+Notes:
+Application X - cannot tell the name of the application cause of NDA
+Company X - cannot tell the name of the company cause of NDA"
+28.docx,"
+FULL STACK DEVELOPER WITH 7+ YEARS OF EXPERIENCE
+70% FRONT END: TypeScript / React / Redux
+30% BACK END: JavaScript / NodeJS / MongoDB
+Phone:  E-mail: 
+LinkedIn:  Residence: Netanya, Israel
+Birthday:  Languages: Hebrew, English, Russian
+PROFESSIONAL SKILLS:
+Programming languages: JavaScript, TypeScript, JAVA, PHP, C++
+Web: HTML5, CSS3, Flex, Grid, CSS Modules, Node JS, REST API, JQuery, Bootstrap, Material Design, React,
+React Icon, React Day Picker, React Carousel, React Router, Redux, Redux Thunk, Redux DevTools, Styled
+component, Context API, Axios, Fetch, Lodash, Nodemon, Google Map API, Google Geocoding API
+IDE/Tools: Eclipse, IntelliJ IDEA, WebStorm, VS Code, GitHub, Heroku, Firebase, Postman, MongoDB Atlas
+Technologies: Express, Spring, Spring Boot, Multithreading, Maven, Lombok, Swagger, Hibernate
+Databases: NoSQL (MongoDB, Firebase), SQL (MySQL) OS: Mac OS, Windows, Linux
+Additional skills: Graphic & 3D design (Photoshop, Illustrator, CorelDraw, 3Ds Max)
+PROFESSIONAL EXPERIENCE:
+2021 - current time: Full Stack Developer at Optisor LTD (Rehovot, Israel)
+Latest project: Corporate web application for a creative event agency.
+My tasks: Thinking over and developing the web application interface, integrating the approved design
+layout, creating and filling the site pages, creating components, galleries, adding a registration and
+authorization system for potential customers, administrators, setting up a content management system,
+creating and optimizing the database.
+Used: TypeScript, React, Redux, MUI, Axios, JavaScript, NodeJS, Express, Nodemon, Google MAP API
+2019 - 2021: Front End Developer at VClouds (Moscow, Russia)
+Latest project: Development and maintenance of the corporate website of the company VClouds.
+My tasks: Layout and organization of the functionality of the web application components based on the
+approved interface and design layout. Implementation of the order management system, registration of new
+customers, content administration.
+Used: JavaScript, React, Redux, Bootstrap, HTML, CSS, Firebase
+2014 - 2019: Front End Developer at Insight (Moscow, Russia)
+Project: Web application for automating the work of the training center.
+My tasks: Creating components for displaying current training courses with the ability to apply various filters
+and sorting options, creating an authorization system for various user groups, organizing routing based on
+the type of current authorized user, setting up statistics components with a visual display of data for the
+internal needs of the company.
+Used: HTML, CSS, JavaScript, PHP, Laravel, Bootstrap, MySQL
+Project: Online store for a supermarket chain.
+My tasks: Creating an order management system through an online service, creating a registration and
+authorization system, developing an order administration system, writing site pages and filling content,
+creating a database and a site management system.
+Used: HTML, CSS, JavaScript, PHP, MySQL
+MY EDUCATION:
+2005 - 2009: MSU, Faculty of Computational Mathematics and Cybernetics, Department of System
+Programming, Bachelor degree
+2020 - 2021: Tel-Ran Educational Center, Israel. Special program for adaptation of software developer
+according to Israel IT technologies
+Recommendations are available upon request"
+29.docx,"Israel, Netanya tel: , e-mail: 
+Frontend Developer/ Full stack Developer
+An energetic, motivated and responsible young developer. I enjoy learning new technologies and want to
+improve my skills that I acquired at university and studied independently and grow as a developer. Now I'm
+developing on React.js/Node.js. I graduated from Art School, like design and my creativity helps me in front-
+end development, and I would like to use it in my work.
+Technologies: React.js, Redux, Node.js, Express.js, JavaScript, HTML, CSS, SCSS, MongoDB, Java, Spring
+Boot, Spring MVC, OOP, Hibernate, Bootstrap, PostgreSQL, SQL, Git.
+Experience
+   Gold ventures investment Israel, Java software developer
+Technologies: Java, Spring Boot, Spring Data JPA, Spring Security, Spring MVC, Hibernate, Maven,
+Thymeleaf, HTML, CSS, Bootstrap, PostgreSQL, Debian, GitHub.
+Responsibilities:
+ Develop database structure, develop backend on Spring Boot/MVC/Security/JPA
+ Develop frontend with Thymeleaf, HTML and Bootstrap, Deploy project
+ Group management
+Key Achievements:
+I worked as a team leader, developed a working application, and deployed it to a web server.
+   Neolines, Frontend developer
+Technologies: Drupal, Photoshop, Bootstrap, HTML, CSS.
+Responsibilities:
+ Develop frontend elements, using HTML, CSS, Photoshop, Bootstrap
+ Content management and copywriting, using Drupal 6/7
+Key Achievements:
+Participated in the development and support of four projects.
+Education
+   Udemy course. Development on React.js/Node.js
+ Development Internet market Build Ecommerce Website Like Amazon [React & Node &
+MongoDB].
+ Technologies: Node.js, Express.js, React.js, Redux, MongoDB, CSS
+   Masa Tlalim Israel education program: Java programming.
+Studied: Java core, Collection API, Android.
+   Bachelor's Degree Software engineering at Moscow Technological
+University
+Studied: Java, C++, JavaScript, Pascal, Programming, Data Structure, Algorithms, OOP, Software,
+engineering, Mathematics, SQL, Databases, Cisco.
+Graduation work: Inventorys program for department of the institute. Technologies: Android, Java, Spring
+Boot, Spring Data JPA, Spring MVC, Hibernate, Maven, PostgreSQL, Mustache.
+Certificates:
+ Cisco, CCNA course. Routing and switching. Introduction to network technologies
+ IITC College, Certificate. Course: Java and Android Programming
+Links
+Github: 
+Linkedln: 
+Artstation: 
+Languages: English (professional working proficiency), Russian (native), Hebrew(basic)"
+30.docx,"FRONT END DEVELOPER
+ Tel-Aviv, Israel  Age: 28 years old
+WORK EXPERIENCE 
+CONTACTS   Elpisor Ltd, Rehovot, Israel
+
+Front End Developer
+ 
+Migrated layout to responsive BEM based model
+ 
+from legacy adaptive, use of code minification
+m
+methods, css sprites, as well as the optimization of
+  all images, which decreased time to support all
+/in/christina-lorman- possible device resolutions on avg by 20%.
+/
+  EDUCATION 
+anChristina
+2019 Tel-Ran Educational Center Ltd. Israel
+Citizenship: Front-End Developer
+Israel
+ABOUT ME 
+LANGUAGES
+I have finished one-year course and have one-year experiance. I
+keep studying Java and planning to become a full-stack
+English
+developer.
+B2 - Upper Intermediate
+Recommendations are available upon request.
+Hebrew
+B2 - Upper Intermediate
+RECOMMENDATIONS 
+Russian
+C2 - Proficiency Pavel Rosenfeld, Front End Team Lead, Elpisor Ltd, Israel
+ (+972) 
+SKILLS
+ HTML5
+ CSS + SASS/LESS
+ Bootstrap
+ ES6
+ JavaScript
+ REST API
+ React + Redux
+ Webpack
+ Git
+ Node.js"

@@ -14,3 +14,5 @@ scikit-learn
 pymupdf
 python-docx
 docx2pdf
+sentence-transformers
+gensim

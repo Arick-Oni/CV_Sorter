@@ -1,4 +1,6 @@
 import threading
+import queue
+import concurrent.futures
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from fastapi.responses import Response
@@ -231,80 +233,127 @@ def rank_by_jd(body: RankRequest, db: Session = Depends(get_db)):
 def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
                           ollama_url: str, llm_model: str, top_n: int, method: str, project_id: Optional[int] = None) -> None:
     try:
+        # Split ollama_url on commas to support multiple concurrent tunnels
+        urls = [u.strip() for u in ollama_url.split(",") if u.strip()]
+        if not urls:
+            urls = [ollama_url]
+            
+        tunnel_queue = queue.Queue()
+        for url in urls:
+            tunnel_queue.put(url)
+            
         if method == "llm_multilayer":
-            # --- STAGE 1: SOFT FILTERING ---
+            # --- STAGE 1: SOFT FILTERING (Parallel) ---
+            if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                return
             rank_jobs.update_job(job_id, phase="filtering", completed=0, total=len(cv_dicts))
             relevant_candidates = []
             filtered_out_results = []
+            completed_count = 0
             
-            for idx, cv in enumerate(cv_dicts):
+            def filter_worker(cv):
+                nonlocal completed_count
+                if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                    return cv, False
+                url = tunnel_queue.get()
+                rank_jobs.update_tunnel_activity(job_id, url, f"Filtering: {cv['filename']}")
                 rank_jobs.update_job(job_id, current_filename=cv["filename"])
                 try:
                     is_rel = llm_ranking_service.filter_candidate(
-                        jd_text, cv["raw_text"], ollama_url, llm_model
+                        jd_text, cv["raw_text"], url, llm_model
                     )
                 except Exception:
                     is_rel = True  # Fallback to True on error
+                finally:
+                    rank_jobs.update_tunnel_activity(job_id, url, None)
+                    tunnel_queue.put(url)
+                    tunnel_queue.task_done()
+                return cv, is_rel
                 
-                if is_rel:
-                    relevant_candidates.append(cv)
-                else:
-                    filtered_out_results.append({
-                        "id": cv["id"],
-                        "filename": cv["filename"],
-                        "name": cv["name"],
-                        "email": cv["email"],
-                        "skills": cv["skills"],
-                        "match_score": 0.0,
-                        "llm_justification": "Filtered out in Stage 1: Marked as not relevant to the Job Description.",
-                        "years_of_experience": cv.get("years_of_experience"),
-                        "seniority_level": cv.get("seniority_level"),
-                    })
-                rank_jobs.update_job(job_id, completed=idx + 1)
+            with concurrent.futures.ThreadPoolExecutor(max_workers=len(urls)) as executor:
+                futures = {executor.submit(filter_worker, cv): cv for cv in cv_dicts}
+                for fut in concurrent.futures.as_completed(futures):
+                    if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                        return
+                    cv, is_rel = fut.result()
+                    completed_count += 1
+                    if is_rel:
+                        relevant_candidates.append(cv)
+                    else:
+                        filtered_out_results.append({
+                            "id": cv["id"],
+                            "filename": cv["filename"],
+                            "name": cv["name"],
+                            "email": cv["email"],
+                            "skills": cv["skills"],
+                            "match_score": 0.0,
+                            "llm_justification": "Filtered out in Stage 1: Marked as not relevant to the Job Description.",
+                            "years_of_experience": cv.get("years_of_experience"),
+                            "seniority_level": cv.get("seniority_level"),
+                        })
+                    rank_jobs.update_job(job_id, completed=completed_count)
 
-            # --- STAGE 2: BATCH SCORING (groups of 3) ---
-            rank_jobs.update_job(job_id, phase="batch_scoring", completed=0, total=len(relevant_candidates))
+            # --- STAGE 2: BATCH SCORING (groups of 3) (Parallel) ---
+            if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                return
             stage2_scored_candidates = []
-            
             batches = [relevant_candidates[i:i+3] for i in range(0, len(relevant_candidates), 3)]
+            rank_jobs.update_job(job_id, phase="batch_scoring", completed=0, total=len(relevant_candidates))
             processed_relevant = 0
-            for batch in batches:
+            
+            def batch_scoring_worker(batch):
+                if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                    return batch, []
+                url = tunnel_queue.get()
                 filenames_str = ", ".join([c["filename"] for c in batch])
+                rank_jobs.update_tunnel_activity(job_id, url, f"Scoring batch: {filenames_str}")
                 rank_jobs.update_job(job_id, current_filename=filenames_str)
-                
                 try:
-                    scores_list = llm_ranking_service.score_batch(jd_text, batch, ollama_url, llm_model)
+                    scores_list = llm_ranking_service.score_batch(jd_text, batch, url, llm_model)
                 except Exception:
                     scores_list = []
+                finally:
+                    rank_jobs.update_tunnel_activity(job_id, url, None)
+                    tunnel_queue.put(url)
+                    tunnel_queue.task_done()
+                return batch, scores_list
                 
-                for cv in batch:
-                    match = next((s for s in scores_list if s.get("filename") == cv["filename"]), None)
-                    if match:
-                        score_val = float(match.get("score", 0.0))
-                        just_val = str(match.get("justification", ""))
-                    else:
-                        score_val = 0.0
-                        just_val = "Could not parse batch score for this candidate."
+            with concurrent.futures.ThreadPoolExecutor(max_workers=len(urls)) as executor:
+                futures = {executor.submit(batch_scoring_worker, b): b for b in batches}
+                for fut in concurrent.futures.as_completed(futures):
+                    if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                        return
+                    batch, scores_list = fut.result()
+                    processed_relevant += len(batch)
                     
-                    stage2_scored_candidates.append({
-                        "id": cv["id"],
-                        "filename": cv["filename"],
-                        "name": cv["name"],
-                        "email": cv["email"],
-                        "skills": cv["skills"],
-                        "raw_text": cv["raw_text"],
-                        "previous_score": score_val,
-                        "previous_justification": just_val,
-                        "match_score": score_val,
-                        "llm_justification": just_val,
-                        "years_of_experience": cv.get("years_of_experience"),
-                        "seniority_level": cv.get("seniority_level"),
-                    })
-                
-                processed_relevant += len(batch)
-                rank_jobs.update_job(job_id, completed=processed_relevant)
+                    for cv in batch:
+                        match = next((s for s in scores_list if s.get("filename") == cv["filename"]), None)
+                        if match:
+                            score_val = float(match.get("score", 0.0))
+                            just_val = str(match.get("justification", ""))
+                        else:
+                            score_val = 0.0
+                            just_val = "Could not parse batch score for this candidate."
+                        
+                        stage2_scored_candidates.append({
+                            "id": cv["id"],
+                            "filename": cv["filename"],
+                            "name": cv["name"],
+                            "email": cv["email"],
+                            "skills": cv["skills"],
+                            "raw_text": cv["raw_text"],
+                            "previous_score": score_val,
+                            "previous_justification": just_val,
+                            "match_score": score_val,
+                            "llm_justification": just_val,
+                            "years_of_experience": cv.get("years_of_experience"),
+                            "seniority_level": cv.get("seniority_level"),
+                        })
+                    rank_jobs.update_job(job_id, completed=processed_relevant)
 
             # --- STAGE 3: RE-RANKING TOP 10 ---
+            if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                return
             rank_jobs.update_job(job_id, phase="re_ranking", completed=0, total=1)
             
             stage2_scored_candidates.sort(key=lambda x: x["match_score"], reverse=True)
@@ -312,9 +361,11 @@ def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
             remaining = stage2_scored_candidates[10:]
             
             if top_10:
+                if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                    return
                 rank_jobs.update_job(job_id, current_filename="Re-ranking top candidates...")
                 try:
-                    rerank_results = llm_ranking_service.rerank_top_candidates(jd_text, top_10, ollama_url, llm_model)
+                    rerank_results = llm_ranking_service.rerank_top_candidates(jd_text, top_10, urls[0], llm_model)
                 except Exception:
                     rerank_results = []
                 
@@ -335,6 +386,9 @@ def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
                 r.pop("previous_score", None)
                 r.pop("previous_justification", None)
 
+            if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                return
+                
             rank_jobs.update_job(
                 job_id,
                 results=final_results,
@@ -367,28 +421,103 @@ def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
                 rubric_or_jd = jd_text
                 rank_jobs.update_job(job_id, phase="scoring", rubric=jd_text)
             else:
+                if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                    return
                 rank_jobs.update_job(job_id, phase="rubric")
-                rubric_or_jd = llm_ranking_service.build_rubric(jd_text, ollama_url, llm_model)
+                rubric_or_jd = llm_ranking_service.build_rubric(jd_text, urls[0], llm_model)
+                if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                    return
                 rank_jobs.update_job(job_id, phase="scoring", rubric=rubric_or_jd)
 
-            for cv in cv_dicts:
+            # Precompute TF-IDF and embedding scores if hybrid
+            precomputed = {}
+            if method == "hybrid":
+                # Compute TF-IDF
+                tfidf_results = ranking_service.rank_cvs(jd_text, cv_dicts, method="tfidf")
+                tfidf_map = {r["id"]: r["match_score"] for r in tfidf_results}
+                
+                # Compute model-best (model1) embeddings
+                model1_results = ranking_service.rank_cvs(jd_text, cv_dicts, method="model1")
+                model1_map = {r["id"]: r["match_score"] for r in model1_results}
+                
+                # Compute model-best2 (model2) embeddings
+                model2_results = ranking_service.rank_cvs(jd_text, cv_dicts, method="model2")
+                model2_map = {r["id"]: r["match_score"] for r in model2_results}
+                
+                for cv in cv_dicts:
+                    cv_id = cv["id"]
+                    precomputed[cv_id] = {
+                        "tfidf": tfidf_map.get(cv_id, 0.0),
+                        "model1": model1_map.get(cv_id, 0.0),
+                        "model2": model2_map.get(cv_id, 0.0),
+                    }
+
+            # --- STANDARD LLM EVALUATION (Parallel) ---
+            completed_count = 0
+            
+            def standard_scoring_worker(cv):
+                nonlocal completed_count
+                if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                    return
+                url = tunnel_queue.get()
+                rank_jobs.update_tunnel_activity(job_id, url, f"Scoring: {cv['filename']}")
                 rank_jobs.update_job(job_id, current_filename=cv["filename"])
                 try:
-                    outcome = llm_ranking_service.score_cv(rubric_or_jd, cv["raw_text"], ollama_url, llm_model, is_jd=is_jd)
+                    outcome = llm_ranking_service.score_cv(rubric_or_jd, cv["raw_text"], url, llm_model, is_jd=is_jd)
                 except Exception as e:
                     outcome = {"score": 0.0, "justification": f"LLM call failed: {e}"}
+                finally:
+                    rank_jobs.update_tunnel_activity(job_id, url, None)
+                    tunnel_queue.put(url)
+                    tunnel_queue.task_done()
+                    
+                if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                    return
+                
+                llm_score = float(outcome.get("score", 0.0))
+                if method == "hybrid":
+                    scores = precomputed.get(cv["id"], {"tfidf": 0.0, "model1": 0.0, "model2": 0.0})
+                    final_score = (
+                        0.50 * llm_score +
+                        0.20 * scores["model2"] +
+                        0.20 * scores["model1"] +
+                        0.10 * scores["tfidf"]
+                    )
+                    justification = (
+                        f"Hybrid Score: LLM Rubric ({llm_score} * 50%) + "
+                        f"model-best2 ({scores['model2']} * 20%) + "
+                        f"model-best ({scores['model1']} * 20%) + "
+                        f"TF-IDF ({scores['tfidf']} * 10%). "
+                        f"Details: {outcome.get('justification', '')}"
+                    )
+                    score_to_append = round(final_score, 2)
+                else:
+                    score_to_append = round(llm_score, 2)
+                    justification = outcome.get("justification", "")
+
                 rank_jobs.append_result(job_id, {
                     "id": cv["id"],
                     "filename": cv["filename"],
                     "name": cv["name"],
                     "email": cv["email"],
                     "skills": cv["skills"],
-                    "match_score": round(outcome["score"], 2),
-                    "llm_justification": outcome["justification"],
+                    "match_score": score_to_append,
+                    "llm_justification": justification,
                     "years_of_experience": cv.get("years_of_experience"),
                     "seniority_level": cv.get("seniority_level"),
                 })
+                completed_count += 1
+                rank_jobs.update_job(job_id, completed=completed_count)
+                
+            with concurrent.futures.ThreadPoolExecutor(max_workers=len(urls)) as executor:
+                futures = [executor.submit(standard_scoring_worker, cv) for cv in cv_dicts]
+                for fut in concurrent.futures.as_completed(futures):
+                    if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                        return
+                    fut.result()
 
+            if rank_jobs.get_job(job_id).get("status") == "cancelled":
+                return
             rank_jobs.finish_job(job_id, top_n)
 
             # Get sorted results
@@ -420,7 +549,7 @@ def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
 
 @router.post("/rank/llm/start")
 def start_llm_rank(body: RankRequest, db: Session = Depends(get_db)):
-    if body.method not in ("llm", "llm_no_rubric", "llm_multilayer"):
+    if body.method not in ("llm", "llm_no_rubric", "llm_multilayer", "hybrid"):
         raise HTTPException(400, f"Unsupported method for LLM ranker: {body.method}")
     if not body.ollama_url:
         raise HTTPException(400, f"ollama_url is required for method={body.method}")
@@ -465,6 +594,15 @@ def get_llm_rank_status(job_id: str):
     if not job:
         raise HTTPException(404, "Job not found")
     return job
+
+
+@router.post("/rank/llm/cancel/{job_id}")
+def cancel_llm_rank(job_id: str):
+    job = rank_jobs.get_job(job_id)
+    if not job:
+        raise HTTPException(404, "Job not found")
+    rank_jobs.cancel_job(job_id)
+    return {"status": "ok"}
 
 
 # ── Get single ────────────────────────────────────────────────────────────────
@@ -750,18 +888,40 @@ def compare_semantic(cv_id: int, body: SemanticCompareRequest, db: Session = Dep
                         break
                 
                 if best_score < 1.0 and cv_items:
-                    token_jd = nlp(jd_item_clean)
-                    for cv_item in cv_items:
-                        token_cv = nlp(cv_item)
-                        if token_jd.vector_norm and token_cv.vector_norm:
-                            sim = float(token_jd.similarity(token_cv))
-                        else:
-                            import difflib
-                            sim = difflib.SequenceMatcher(None, jd_clean, cv_clean).ratio()
+                    if body.method in ("sentence_transformer", "sentence_transformer_hybrid"):
+                        try:
+                            from sklearn.metrics.pairwise import cosine_similarity
+                            from ..services.ranking import _get_transformer_model
+                            st_model = _get_transformer_model()
                             
-                        if sim > best_score:
-                            best_score = sim
-                            best_match = cv_item
+                            jd_emb = st_model.encode(jd_item_clean).reshape(1, -1)
+                            cv_embs = st_model.encode(cv_items)
+                            sims = cosine_similarity(jd_emb, cv_embs)[0]
+                            for cv_item, sim in zip(cv_items, sims):
+                                if sim > best_score:
+                                    best_score = float(sim)
+                                    best_match = cv_item
+                        except Exception:
+                            for cv_item in cv_items:
+                                import difflib
+                                sim = difflib.SequenceMatcher(None, jd_clean, cv_item.strip().lower()).ratio()
+                                if sim > best_score:
+                                    best_score = sim
+                                    best_match = cv_item
+                    else:
+                        token_jd = nlp(jd_item_clean)
+                        for cv_item in cv_items:
+                            token_cv = nlp(cv_item)
+                            if token_jd.vector_norm and token_cv.vector_norm:
+                                sim = float(token_jd.similarity(token_cv))
+                            else:
+                                import difflib
+                                sim = difflib.SequenceMatcher(None, jd_clean, cv_item.strip().lower()).ratio()
+                                
+                            if sim > best_score:
+                                best_score = sim
+                                align_item = cv_item
+                                best_match = cv_item
                             
                 results.append({
                     "jd_item": jd_item_clean,

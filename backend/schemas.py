@@ -46,7 +46,7 @@ class AssignProjectRequest(BaseModel):
 class RankRequest(BaseModel):
     jd_text: str
     top_n: int = 20
-    method: str = "tfidf"   # "tfidf", "model1", "model2", "model1_hybrid", "model2_hybrid", "llm", "llm_no_rubric", or "llm_multilayer"
+    method: str = "tfidf"   # "tfidf", "model1", "model2", "model1_hybrid", "model2_hybrid", "sentence_transformer", "sentence_transformer_hybrid", "lda", "doc2vec", "llm", "llm_no_rubric", "llm_multilayer", or "hybrid"
     project_id: Optional[int] = None   # None = all projects (global)
-    llm_model: Optional[str] = None    # required when method starts with "llm" — Ollama model tag
-    ollama_url: Optional[str] = None   # required when method starts with "llm" — tunnel URL to the Ollama server
+    llm_model: Optional[str] = None    # required when method starts with "llm" or is "hybrid" — Ollama model tag
+    ollama_url: Optional[str] = None   # required when method starts with "llm" or is "hybrid" — tunnel URL to the Ollama server

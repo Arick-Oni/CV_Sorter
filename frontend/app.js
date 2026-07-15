@@ -102,19 +102,50 @@ async function loadProjects() {
   populateProjectSelect(document.getElementById('upload-project-select'), {
     includeNew: true, selected: currentProjectId,
   });
+  
+  const rankProjectSelect = document.getElementById('rank-project-select');
+  if (rankProjectSelect) {
+    populateProjectSelect(rankProjectSelect, {
+      includeAll: true, selected: currentProjectId,
+    });
+  }
 }
 
-document.getElementById('global-project-select').addEventListener('change', function () {
-  currentProjectId = this.value ? Number(this.value) : null;
-  // mirror the active project into the upload form as the default tag for new CVs
-  const uploadSelect = document.getElementById('upload-project-select');
+function syncActiveProject(projectIdVal) {
+  currentProjectId = projectIdVal ? Number(projectIdVal) : null;
   const targetVal = currentProjectId != null ? String(currentProjectId) : '';
+  
+  document.getElementById('global-project-select').value = targetVal;
+  
+  const uploadSelect = document.getElementById('upload-project-select');
   if ([...uploadSelect.options].some(o => o.value === targetVal)) {
     uploadSelect.value = targetVal;
     document.getElementById('upload-new-project-group').style.display = 'none';
   }
+  
+  const rankSelect = document.getElementById('rank-project-select');
+  if (rankSelect && [...rankSelect.options].some(o => o.value === targetVal)) {
+    rankSelect.value = targetVal;
+  }
+  
+  const deleteBtn = document.getElementById('delete-project-btn');
+  if (deleteBtn) {
+    deleteBtn.style.display = currentProjectId != null ? 'inline-block' : 'none';
+  }
+  
   if (document.getElementById('tab-library').style.display !== 'none') loadLibrary();
+}
+
+document.getElementById('global-project-select').addEventListener('change', function () {
+  syncActiveProject(this.value);
 });
+
+const rankProjectSelectEl = document.getElementById('rank-project-select');
+if (rankProjectSelectEl) {
+  rankProjectSelectEl.addEventListener('change', function () {
+    syncActiveProject(this.value);
+  });
+}
 
 document.getElementById('new-project-btn').addEventListener('click', async () => {
   const name = prompt('New project name:');
@@ -127,11 +158,8 @@ document.getElementById('new-project-btn').addEventListener('click', async () =>
     });
     const data = await safeJson(res);
     if (!res.ok) throw new Error(data.detail || 'Failed to create project');
-    currentProjectId = data.id;
     await loadProjects();
-    document.getElementById('global-project-select').value = String(data.id);
-    document.getElementById('upload-project-select').value = String(data.id);
-    if (document.getElementById('tab-library').style.display !== 'none') loadLibrary();
+    syncActiveProject(data.id);
   } catch (err) {
     alert(`Error: ${err.message}`);
   }
@@ -426,7 +454,8 @@ const llmModelSelect   = document.getElementById('llm-model-select');
 const llmModelCustom   = document.getElementById('llm-model-custom');
 
 rankMethodSelect.addEventListener('change', () => {
-  llmOptionsGroup.style.display = rankMethodSelect.value.startsWith('llm') ? 'flex' : 'none';
+  const val = rankMethodSelect.value;
+  llmOptionsGroup.style.display = (val.startsWith('llm') || val === 'hybrid') ? 'flex' : 'none';
 });
 
 llmModelSelect.addEventListener('change', () => {
@@ -830,6 +859,14 @@ function renderRankResultsTable(resultsEl, results, options) {
   currentRankPage = 1;
   currentRankResultsOptions = options || {};
   renderCurrentRankPage();
+  
+  // Show consensus matcher card and reset it
+  const consensusCard = document.getElementById('consensus-matcher-card');
+  if (consensusCard) {
+    showEl(consensusCard);
+    document.getElementById('consensus-input').value = '';
+    hideEl(document.getElementById('consensus-results'));
+  }
 }
 
 function renderCurrentRankPage() {
@@ -924,6 +961,23 @@ async function pollLlmRankJob(jobId, resultsEl, llmModel, method) {
   const progressText = document.getElementById('llm-progress-text');
   showEl(progressEl, 'block');
 
+  const cancelBtn = document.getElementById('cancel-llm-btn');
+  if (cancelBtn) {
+    cancelBtn.disabled = false;
+    cancelBtn.textContent = 'Cancel Matching';
+    const newCancelBtn = cancelBtn.cloneNode(true);
+    cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+    newCancelBtn.addEventListener('click', async () => {
+      newCancelBtn.disabled = true;
+      newCancelBtn.textContent = 'Cancelling...';
+      try {
+        await fetch(`${API}/cvs/rank/llm/cancel/${jobId}`, { method: 'POST' });
+      } catch (err) {
+        console.error('Failed to send cancel request:', err);
+      }
+    });
+  }
+
   try {
     while (true) {
       const res = await fetch(`${API}/cvs/rank/llm/${jobId}`);
@@ -951,11 +1005,37 @@ async function pollLlmRankJob(jobId, resultsEl, llmModel, method) {
       lastRankResults = job.results || [];
       renderRankResultsTable(resultsEl, job.results || [], { isHybrid: false, isLlm: true, rubric: job.rubric, llmModel, method });
 
+      // Render live tunnel activity monitor
+      const activityEl = document.getElementById('llm-tunnel-activity');
+      const listEl = document.getElementById('llm-tunnel-list');
+      if (activityEl && listEl) {
+        const act = job.tunnel_activity || {};
+        const entries = Object.entries(act);
+        if (entries.length > 0) {
+          listEl.innerHTML = entries.map(([url, cv]) => {
+            let displayUrl = url;
+            try {
+              const parsed = new URL(url);
+              displayUrl = parsed.host;
+            } catch (e) {}
+            const safeUrl = String(displayUrl).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const safeCv = String(cv).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return `<li><strong style="color: #4f46e5;">${safeUrl}</strong>: <span style="font-family: monospace; color: #0f172a;">${safeCv}</span></li>`;
+          }).join('');
+          activityEl.style.display = 'block';
+        } else {
+          activityEl.style.display = 'none';
+        }
+      }
+
       if (job.status === 'done') {
         progressText.textContent = `Done — scored ${job.total}/${job.total} CVs.`;
         loadRankHistory();
         renderRankingBarChart(lastRankResults);
         return;
+      }
+      if (job.status === 'cancelled') {
+        throw new Error('Ranking job was cancelled by the user.');
       }
       if (job.status === 'error') {
         throw new Error(job.error || 'LLM ranking failed');
@@ -983,7 +1063,7 @@ document.getElementById('rank-form').addEventListener('submit', async e => {
 
   setJdFormCollapsed(true);
 
-  const isLlm = method.startsWith('llm');
+  const isLlm = method.startsWith('llm') || method === 'hybrid';
   let llmModel, llmOllamaUrl;
   if (isLlm) {
     llmModel     = resolveLlmModel();
@@ -1001,6 +1081,7 @@ document.getElementById('rank-form').addEventListener('submit', async e => {
     llm: `LLM Judge (rubric-based) (${llmModel || ''})`,
     llm_no_rubric: `LLM Judge (no rubric, direct JD) (${llmModel || ''})`,
     llm_multilayer: `LLM Judge (multilayer: filter -> score -> re-rank) (${llmModel || ''})`,
+    hybrid: `Hybrid (50% LLM Rubric + 20% model-best2 + 20% model-best + 10% TF-IDF) (${llmModel || ''})`,
   }[method];
   const isHybrid = method.endsWith('_hybrid');
   btn.disabled = true;
@@ -1095,10 +1176,11 @@ async function loadRankHistory() {
         model2_hybrid: 'Hybrid M2',
         llm: 'LLM Rubric',
         llm_no_rubric: 'LLM Direct',
-        llm_multilayer: 'LLM Multi'
+        llm_multilayer: 'LLM Multi',
+        hybrid: 'Hybrid'
       }[item.method] || item.method;
       
-      const badgeClass = item.method.startsWith('llm') ? 'badge-yellow' : 'badge-blue';
+      const badgeClass = (item.method.startsWith('llm') || item.method === 'hybrid') ? 'badge-yellow' : 'badge-blue';
       const projBadge = item.project_name
         ? `<span class="badge badge-gray" style="padding:.1rem .4rem; font-size:.65rem; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" title="${escapeHtml(item.project_name)}">${escapeHtml(item.project_name)}</span>`
         : `<span class="badge badge-gray" style="padding:.1rem .4rem; font-size:.65rem; color:#6b7280; font-style:italic">Global</span>`;
@@ -1141,7 +1223,7 @@ async function loadHistoryDetail(id) {
     document.getElementById('jd-text').value = data.jd_text;
     document.getElementById('rank-method').value = data.method;
     
-    const isLlm = data.method.startsWith('llm');
+    const isLlm = data.method.startsWith('llm') || data.method === 'hybrid';
     const optionsGroup = document.getElementById('llm-options-group');
     if (optionsGroup) {
       optionsGroup.style.display = isLlm ? 'flex' : 'none';
@@ -1177,7 +1259,8 @@ async function loadHistoryDetail(id) {
         model2_hybrid: 'Hybrid M2',
         llm: 'LLM Rubric',
         llm_no_rubric: 'LLM Direct',
-        llm_multilayer: 'LLM Multi'
+        llm_multilayer: 'LLM Multi',
+        hybrid: 'Hybrid'
       }[data.method] || data.method;
       document.getElementById('loaded-history-meta').textContent = `(${dt} — ${methodLabel})`;
       banner.style.display = 'flex';
@@ -1283,3 +1366,135 @@ if (toggleJdBtn) {
     setJdFormCollapsed(!isCollapsed);
   });
 }
+
+// ── Delete Project Modal & Logic ───────────────────────────────────────────────
+const deleteProjectBtn = document.getElementById('delete-project-btn');
+const deleteProjectModal = document.getElementById('delete-project-modal');
+const deleteProjectModalClose = document.getElementById('delete-project-modal-close');
+const deleteProjectCancelBtn = document.getElementById('delete-project-cancel-btn');
+const deleteProjectConfirmBtn = document.getElementById('delete-project-confirm-btn');
+const deleteProjectModalName = document.getElementById('delete-project-modal-name');
+
+if (deleteProjectBtn) {
+  deleteProjectBtn.addEventListener('click', () => {
+    if (currentProjectId == null) return;
+    const project = projects.find(p => p.id === currentProjectId);
+    if (!project) return;
+    
+    deleteProjectModalName.textContent = project.name;
+    // Reset selection to soft delete
+    const softRadio = deleteProjectModal.querySelector('input[value="soft"]');
+    if (softRadio) softRadio.checked = true;
+    
+    deleteProjectModal.style.display = 'flex';
+  });
+}
+
+const hideDeleteProjectModal = () => {
+  if (deleteProjectModal) deleteProjectModal.style.display = 'none';
+};
+
+if (deleteProjectModalClose) {
+  deleteProjectModalClose.addEventListener('click', hideDeleteProjectModal);
+}
+if (deleteProjectCancelBtn) {
+  deleteProjectCancelBtn.addEventListener('click', hideDeleteProjectModal);
+}
+
+if (deleteProjectConfirmBtn) {
+  deleteProjectConfirmBtn.addEventListener('click', async () => {
+    if (currentProjectId == null) return;
+    
+    const selectedOption = deleteProjectModal.querySelector('input[name="delete-option"]:checked').value;
+    const cascade = selectedOption === 'hard';
+    
+    deleteProjectConfirmBtn.disabled = true;
+    deleteProjectConfirmBtn.textContent = 'Deleting...';
+    
+    try {
+      const res = await fetch(`${API}/projects/${currentProjectId}?cascade=${cascade}`, {
+        method: 'DELETE'
+      });
+      
+      if (!res.ok) {
+        const data = await safeJson(res);
+        throw new Error(data.detail || 'Failed to delete project');
+      }
+      
+      hideDeleteProjectModal();
+      await loadProjects();
+      syncActiveProject(null); // Reset to All Projects / global view
+      loadRankHistory(); // Refresh history sidebar
+      
+    } catch (err) {
+      alert(`Error: ${err.message}`);
+    } finally {
+      deleteProjectConfirmBtn.disabled = false;
+      deleteProjectConfirmBtn.textContent = 'Delete';
+    }
+  });
+}
+
+// ── Custom Consensus Matcher ──────────────────────────────────────────────────
+function normalizeConsensusFilename(item) {
+  let cleaned = item.trim().toLowerCase();
+  if (!cleaned) return null;
+  
+  // Match ^a(\d+)$ (e.g. a1)
+  let aMatch = cleaned.match(/^a(\d+)$/);
+  if (aMatch) {
+    return `${aMatch[1]}.docx`;
+  }
+  
+  // Match raw digits (e.g. 1)
+  if (/^\d+$/.test(cleaned)) {
+    return `${cleaned}.docx`;
+  }
+  
+  // Ensure extension is .docx
+  if (!cleaned.endsWith('.docx') && !cleaned.includes('.')) {
+    cleaned += '.docx';
+  }
+  return cleaned;
+}
+
+document.getElementById('btn-calculate-consensus').addEventListener('click', () => {
+  const inputVal = document.getElementById('consensus-input').value.trim();
+  if (!inputVal) return;
+  
+  const rawItems = inputVal.split(',');
+  const inputList = rawItems
+    .map(normalizeConsensusFilename)
+    .filter(Boolean);
+    
+  if (inputList.length === 0) {
+    alert('Please enter a valid list of filenames or numbers.');
+    return;
+  }
+  
+  const n = inputList.length;
+  const topNResults = currentRankResults.slice(0, n);
+  const topNFilenames = topNResults.map(cv => (cv.filename || '').toLowerCase());
+  
+  let matchCount = 0;
+  const matchedChips = [];
+  const missingChips = [];
+  
+  topNFilenames.forEach(genFilename => {
+    if (inputList.includes(genFilename)) {
+      matchCount++;
+      matchedChips.push(`<span class="consensus-chip consensus-chip-green">${genFilename}</span>`);
+    } else {
+      missingChips.push(`<span class="consensus-chip consensus-chip-red">${genFilename}</span>`);
+    }
+  });
+  
+  const scoreDisplay = document.getElementById('consensus-score-display');
+  const pct = ((matchCount / n) * 100).toFixed(1);
+  scoreDisplay.textContent = `${matchCount}/${n} (${pct}%)`;
+  
+  document.getElementById('consensus-matched-chips').innerHTML = matchedChips.join(' ') || '<span style="color:#64748b">None</span>';
+  document.getElementById('consensus-missing-chips').innerHTML = missingChips.join(' ') || '<span style="color:#64748b">None</span>';
+  
+  showEl(document.getElementById('consensus-results'));
+});

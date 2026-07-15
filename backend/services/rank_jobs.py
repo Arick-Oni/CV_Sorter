@@ -25,6 +25,7 @@ def create_job(total: int) -> str:
             "total": total,
             "completed": 0,
             "current_filename": None,
+            "tunnel_activity": {},
             "rubric": None,
             "results": [],
             "error": None,
@@ -71,3 +72,26 @@ def get_job(job_id: str) -> dict:
     with _LOCK:
         job = _JOBS.get(job_id)
         return dict(job) if job else {}
+
+
+def cancel_job(job_id: str) -> None:
+    with _LOCK:
+        job = _JOBS.get(job_id)
+        if job is None:
+            return
+        job["status"] = "cancelled"
+        job["phase"] = "cancelled"
+        job["error"] = "Job was cancelled by the user."
+
+
+def update_tunnel_activity(job_id: str, url: str, filename: str | None) -> None:
+    with _LOCK:
+        job = _JOBS.get(job_id)
+        if job is None:
+            return
+        if "tunnel_activity" not in job:
+            job["tunnel_activity"] = {}
+        if filename:
+            job["tunnel_activity"][url] = filename
+        else:
+            job["tunnel_activity"].pop(url, None)
