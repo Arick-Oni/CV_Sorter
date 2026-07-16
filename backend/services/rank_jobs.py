@@ -29,6 +29,7 @@ def create_job(total: int) -> str:
             "rubric": None,
             "results": [],
             "error": None,
+            "disabled_tunnels": [],
         }
     return job_id
 
@@ -95,3 +96,20 @@ def update_tunnel_activity(job_id: str, url: str, filename: str | None) -> None:
             job["tunnel_activity"][url] = filename
         else:
             job["tunnel_activity"].pop(url, None)
+
+
+def disable_tunnel(job_id: str, url: str) -> None:
+    with _LOCK:
+        job = _JOBS.get(job_id)
+        if job:
+            if "disabled_tunnels" not in job:
+                job["disabled_tunnels"] = []
+            if url not in job["disabled_tunnels"]:
+                job["disabled_tunnels"].append(url)
+
+
+def get_disabled_tunnels(job_id: str) -> list[str]:
+    with _LOCK:
+        job = _JOBS.get(job_id)
+        return job.get("disabled_tunnels", []) if job else []
+

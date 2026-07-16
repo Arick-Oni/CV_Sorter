@@ -172,6 +172,7 @@ document.getElementById('upload-project-select').addEventListener('change', func
 loadProjects();
 // Initial history load
 loadRankHistory();
+renderTunnelHistory();
 
 // ── Tab switching ─────────────────────────────────────────────────────────────
 const TAB_IDS = ['upload', 'library', 'rank'];
@@ -1020,7 +1021,11 @@ async function pollLlmRankJob(jobId, resultsEl, llmModel, method) {
             } catch (e) {}
             const safeUrl = String(displayUrl).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
             const safeCv = String(cv).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            return `<li><strong style="color: #4f46e5;">${safeUrl}</strong>: <span style="font-family: monospace; color: #0f172a;">${safeCv}</span></li>`;
+            const isTunnelDisabled = (job.disabled_tunnels || []).includes(url);
+            const buttonHtml = isTunnelDisabled 
+              ? `<span style="color: #94a3b8; margin-left: 10px; font-style: italic;">Frozen</span>`
+              : `<button class="btn-secondary" style="margin-left: 10px; padding: 2px 6px; font-size: 11px; background: #fee2e2; color: #991b1b; border-color: #fecaca; cursor: pointer;" onclick="freezeTunnel('${jobId}', '${url.replace(/'/g, "\\'")}', this)">Freeze</button>`;
+            return `<li><strong style="color: #4f46e5;">${safeUrl}</strong>: <span style="font-family: monospace; color: #0f172a;">${safeCv}</span>${buttonHtml}</li>`;
           }).join('');
           activityEl.style.display = 'block';
         } else {
@@ -1079,6 +1084,7 @@ document.getElementById('rank-form').addEventListener('submit', async e => {
     model1_hybrid: 'model-best hybrid (embedding + NER)',
     model2_hybrid: 'model-best 2 hybrid (embedding + NER)',
     llm: `LLM Judge (rubric-based) (${llmModel || ''})`,
+    llm_split_rubric: `LLM Judge (split rubric, 5 criteria scoring) (${llmModel || ''})`,
     llm_no_rubric: `LLM Judge (no rubric, direct JD) (${llmModel || ''})`,
     llm_multilayer: `LLM Judge (multilayer: filter -> score -> re-rank) (${llmModel || ''})`,
     hybrid: `Hybrid (50% LLM Rubric + 20% model-best2 + 20% model-best + 10% TF-IDF) (${llmModel || ''})`,
@@ -1093,6 +1099,7 @@ document.getElementById('rank-form').addEventListener('submit', async e => {
 
   try {
     if (isLlm) {
+      updateTunnelHistory(llmOllamaUrl);
       const startRes = await fetch(`${API}/cvs/rank/llm/start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1498,3 +1505,60 @@ document.getElementById('btn-calculate-consensus').addEventListener('click', () 
   
   showEl(document.getElementById('consensus-results'));
 });
+
+// ── Tunnel History Helper Functions ───────────────────────────────────────────
+function updateTunnelHistory(url) {
+  if (!url || !url.trim()) return;
+  const trimmed = url.trim();
+  let history = JSON.parse(localStorage.getItem('tunnel_history') || '[]');
+  history = history.filter(u => u !== trimmed);
+  history.unshift(trimmed);
+  history = history.slice(0, 5);
+  localStorage.setItem('tunnel_history', JSON.stringify(history));
+  renderTunnelHistory();
+}
+
+function renderTunnelHistory() {
+  const container = document.getElementById('tunnel-history');
+  if (!container) return;
+  const history = JSON.parse(localStorage.getItem('tunnel_history') || '[]');
+  if (history.length === 0) {
+    container.style.display = 'none';
+    return;
+  }
+  container.style.display = 'block';
+  container.innerHTML = '<strong>Recent tunnels (click to select):</strong><br/>' + history.map(url => {
+    const displayUrl = url.length > 50 ? url.substring(0, 47) + '...' : url;
+    return `<span class="tunnel-history-pill" onclick="selectTunnel('${url.replace(/'/g, "\\'")}')" title="${escapeHtml(url)}">${escapeHtml(displayUrl)}</span>`;
+  }).join(' ');
+}
+
+window.selectTunnel = function(url) {
+  const input = document.getElementById('llm-ollama-url');
+  if (input) {
+    input.value = url;
+  }
+};
+
+window.freezeTunnel = async function(jobId, url, btn) {
+  btn.disabled = true;
+  btn.textContent = 'Freezing...';
+  try {
+    const res = await fetch(`${API}/cvs/rank/llm/disable-tunnel/${jobId}?url=${encodeURIComponent(url)}`, {
+      method: 'POST'
+    });
+    if (res.ok) {
+      btn.outerHTML = `<span style="color: #94a3b8; margin-left: 10px; font-style: italic;">Frozen</span>`;
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Freeze';
+      alert('Failed to freeze tunnel');
+    }
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Freeze';
+    console.error('Error freezing tunnel:', err);
+  }
+};
+
+

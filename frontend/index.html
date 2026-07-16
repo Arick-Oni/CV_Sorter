@@ -119,6 +119,7 @@
                     <option value="sentence_transformer">Sentence Transformer (embeddings)</option>
                     <option value="sentence_transformer_hybrid">Sentence Transformer (hybrid: 67% embedding + 33% NER)</option>
                     <option value="llm">LLM Judge (rubric-based)</option>
+                    <option value="llm_split_rubric">LLM Judge (split rubric, 5 criteria scoring)</option>
                     <option value="llm_no_rubric">LLM Judge (no rubric, direct JD)</option>
                     <option value="llm_multilayer">LLM Judge (multilayer: filter -> score -> re-rank)</option>
                     <option value="hybrid">Hybrid (50% LLM Rubric + 20% model-best2 + 20% model-best + 10% TF-IDF)</option>
@@ -139,6 +140,7 @@
                 <input type="text" id="llm-model-custom" style="display:none" placeholder="e.g. llama3.1:8b" />
                 <label class="inline-label" style="flex:1">Ollama / ngrok / cloudflare URL(s)
                   <input type="text" id="llm-ollama-url" placeholder="https://tunnel1.ngrok-free.app, https://tunnel2.trycloudflare.com (comma-separated for parallel speedup)" style="width:100%" />
+                  <div id="tunnel-history" style="margin-top: 6px; font-size: 11px; display: none; line-height: 1.6;"></div>
                 </label>
               </div>
             </div>

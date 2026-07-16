@@ -993,3 +993,24 @@ pre#raw-text-pre {
   color: #991b1b;
   border: 1px solid #fee2e2;
 }
+
+/* Tunnel History Pills */
+.tunnel-history-pill {
+  display: inline-block;
+  background-color: #f1f5f9;
+  color: #475569;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  border: 1px solid #cbd5e1;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+.tunnel-history-pill:hover {
+  background-color: #cbd5e1;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+

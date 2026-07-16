@@ -308,3 +308,94 @@ def rerank_top_candidates(jd_text: str, top_candidates: list[dict], ollama_url: 
         return parsed.get("ranks", [])
     except Exception:
         return []
+
+
+CRITERIA_EXTRACTION_SYSTEM_PROMPT = (
+    "You are an expert technical recruiter. Analyze the given job description and divide it into "
+    "exactly 5 major, non-overlapping criteria for screening candidates. Each criterion must represent "
+    "a distinct category (e.g., Core programming stack, Frameworks, Architecture/Databases, Process/Soft skills, Domain experience). "
+    "Allocate a weight percentage (integer) to each of the 5 criteria such that they sum to exactly 100%. "
+    "Respond with valid JSON only matching the schema."
+)
+
+CRITERIA_EXTRACTION_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "criteria": {
+            "type": "array",
+            "minItems": 5,
+            "maxItems": 5,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "weight": {"type": "integer"},
+                    "description": {"type": "string"},
+                    "sub_criteria": {
+                        "type": "array",
+                        "items": {"type": "string"}
+                    }
+                },
+                "required": ["name", "weight", "description", "sub_criteria"]
+            }
+        }
+    },
+    "required": ["criteria"]
+}
+
+SCORE_CRITERION_SYSTEM_PROMPT = (
+    "You are an expert technical recruiter. You score candidate CVs against one specific rubric criterion "
+    "from 0-100 based on candidate fit. "
+    "CRITICAL GUARDRAIL: If the CV is a blank template containing placeholder text, formatting guides, "
+    "or writing instructions, score it as 0. Respond with valid JSON only matching the schema."
+)
+
+SCORE_CRITERION_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "score": {"type": "number"},
+        "justification": {"type": "string"},
+    },
+    "required": ["score", "justification"],
+}
+
+def extract_rubric_criteria(jd_text: str, ollama_url: str, model: str) -> list[dict]:
+    """Split the job description into exactly 5 weighted criteria."""
+    user_text = f"Job Description:\n{jd_text}\n\nExtract exactly 5 criteria and their weights."
+    content = _ollama_chat(ollama_url, model, CRITERIA_EXTRACTION_SYSTEM_PROMPT, user_text, json_schema=CRITERIA_EXTRACTION_SCHEMA)
+    try:
+        parsed = json.loads(content)
+        criteria = parsed.get("criteria", [])
+        if len(criteria) != 5:
+            raise ValueError("Expected exactly 5 criteria")
+        return criteria
+    except Exception as e:
+        print(f"Failed to parse criteria JSON: {e}. Using fallback criteria.")
+        return [
+            {"name": "Core Technical Skills", "weight": 20, "description": "Required languages, frameworks, and tools", "sub_criteria": []},
+            {"name": "Experience & Seniority", "weight": 20, "description": "Years of experience and role seniority", "sub_criteria": []},
+            {"name": "Architecture & Design", "weight": 20, "description": "System design, OOP, and patterns", "sub_criteria": []},
+            {"name": "Database & Cloud", "weight": 20, "description": "Databases, cloud platforms, and DevOps", "sub_criteria": []},
+            {"name": "Methodology & Soft Skills", "weight": 20, "description": "Agile, team-work, and communication", "sub_criteria": []}
+        ]
+
+def score_cv_criterion(criterion: dict, cv_text: str, ollama_url: str, model: str) -> dict:
+    """Score one candidate CV raw text against a single criterion. Returns {"score": float, "justification": str}."""
+    user_text = (
+        f"Criterion: {criterion['name']}\n"
+        f"Weight: {criterion['weight']}%\n"
+        f"Description: {criterion['description']}\n"
+        f"Sub-criteria: {', '.join(criterion.get('sub_criteria', []))}\n\n"
+        f"Candidate CV:\n{cv_text}\n\n"
+        f"Score this candidate's fit for this specific criterion on a scale from 0 to 100, and provide a one-sentence justification."
+    )
+    content = _ollama_chat(ollama_url, model, SCORE_CRITERION_SYSTEM_PROMPT, user_text, json_schema=SCORE_CRITERION_SCHEMA)
+    try:
+        parsed = json.loads(content)
+        return {
+            "score": float(parsed.get("score", 0.0)),
+            "justification": str(parsed.get("justification", "")),
+        }
+    except Exception as e:
+        return {"score": 0.0, "justification": f"Parsing failed for this criterion: {e}."}
+
