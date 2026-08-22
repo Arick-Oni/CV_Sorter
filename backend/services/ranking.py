@@ -1,9 +1,6 @@
 import re
 import os
 import ssl
-import spacy
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 
 # Bypass corporate network SSL intercept verify failures using robust monkeypatching
 import requests
@@ -36,6 +33,7 @@ _nlp = None
 def _get_nlp():
     global _nlp
     if _nlp is None:
+        import spacy
         _nlp = spacy.load("en_core_web_sm", disable=["ner", "parser"])
     return _nlp
 
@@ -53,6 +51,9 @@ def _clean_for_tfidf(text: str) -> str:
 
 def _rank_tfidf(jd_text: str, cvs: list) -> list:
     """Rank CVs against a job description using TF-IDF cosine similarity."""
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+
     jd_clean = _clean_for_tfidf(jd_text)
     cv_cleans = [_clean_for_tfidf(cv.get("raw_text") or "") for cv in cvs]
 
@@ -104,6 +105,7 @@ def _rank_model(jd_text: str, cvs: list, loader, ner_field: str, hybrid: bool) -
     Rank CVs using a spaCy model's doc.vector cosine similarity, optionally blended
     with an NER-keyword-overlap score: 2/3 embedding + 1/3 keyword match.
     """
+    from sklearn.metrics.pairwise import cosine_similarity
     nlp = loader()
     jd_text = jd_text or ""
     jd_vec = nlp(jd_text).vector.reshape(1, -1)
@@ -144,6 +146,7 @@ def _get_transformer_model():
 
 def _rank_transformer(jd_text: str, cvs: list, hybrid: bool) -> list:
     """Rank CVs using SentenceTransformer 'all-MiniLM-L6-v2' similarity, optionally blending keyword overlap."""
+    from sklearn.metrics.pairwise import cosine_similarity
     model = _get_transformer_model()
     jd_emb = model.encode(jd_text or "")
     

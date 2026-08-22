@@ -1,6 +1,5 @@
 import re
 import os
-import spacy
 from pathlib import Path
 from collections import defaultdict
 from dotenv import load_dotenv
@@ -12,6 +11,7 @@ _RESOURCES = Path(__file__).parent.parent.parent / "resources"
 
 
 def _load(key: str, path: str):
+    import spacy
     if key not in _models:
         _models[key] = spacy.load(path)
     return _models[key]
@@ -23,6 +23,7 @@ def get_model2():
     return _load("model2", os.getenv("MODEL2_PATH"))
 
 def get_skills_nlp():
+    import spacy
     if "skills" not in _models:
         nlp = spacy.load("en_core_web_sm")
         ruler = nlp.add_pipe("entity_ruler", before="ner")
