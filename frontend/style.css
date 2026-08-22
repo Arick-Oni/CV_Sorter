@@ -1023,3 +1023,142 @@ pre#raw-text-pre {
   margin-top: 0.5rem;
 }
 
+/* ── Responsive Styling ─────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  /* JD Match grid layout stack */
+  .rank-tab-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .history-sidebar {
+    position: static;
+    max-height: 250px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Header & Navigation */
+  header {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    position: relative; /* Unstick header if it takes too much vertical space on mobile */
+  }
+
+  .header-left {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  nav {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .tab-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .project-switcher {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .project-switcher select {
+    max-width: 100%;
+    flex: 1;
+  }
+
+  /* Padding reductions */
+  .tab {
+    padding: 1rem 0.5rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Forms & Controls */
+  .rank-controls, .action-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .inline-label {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.25rem;
+  }
+
+  .rank-controls select, .rank-controls input, .rank-controls button,
+  .action-group select, .action-group input, .action-group button {
+    width: 100% !important;
+  }
+
+  .btn-primary, .btn-secondary, .btn-danger {
+    align-self: stretch;
+    text-align: center;
+  }
+
+  /* Modals */
+  .modal {
+    padding: 0.5rem;
+  }
+
+  .modal-content {
+    padding: 1.25rem;
+    max-height: 95vh;
+  }
+
+  .modal-tabs {
+    gap: 0.3rem;
+  }
+
+  .mtab {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.78rem;
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  #cv-pdf-embed {
+    height: 350px !important;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  /* Table styling */
+  #cv-table th, #cv-table td, #rank-results .ner-table th, #rank-results .ner-table td {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .row-actions {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .row-actions button {
+    width: 100%;
+    padding: 0.3rem 0.5rem;
+  }
+}
+
