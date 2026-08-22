@@ -1,0 +1,111 @@
+=======================================================================================================================================
+RANK AND SCORE COMPARISON: AKIBUL HAQUE vs SREEZON DAS GUPTA vs ROKIB HASAN
+=======================================================================================================================================
+Generated at: 2026-07-21 15:00:00
+
+Candidates Profile:
+  1. AKIBUL HAQUE (116.docx)
+  2. SREEZON DAS GUPTA (219.docx)
+  3. ROKIB HASAN (10.docx)
+
+---------------------------------------------------------------------------------------------------------------------------------------
+COMPARISON SUMMARY TABLE:
+---------------------------------------------------------------------------------------------------------------------------------------
+Run ID | Method                                   | Model/Backbone | AKIBUL Rank | AKIBUL Score | SREEZON Rank | SREEZON Score | ROKIB Rank | ROKIB Score
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+104    | llm rubric                               | gpt-oss:20b    | 34          | 47.00        | 46           | 40.00         | 35         | 47.00      
+103    | nbk_ats_semantic                         | N/A            | 158         | 52.79        | 102          | 57.18         | 157        | 52.97      
+92     | Split_rubric                             | llama3.1:8b    | 5           | 74.25        | 88           | 48.75         | 7          | 72.00      
+91     | llm rubric                               | llama3.1:8b    | 3           | 85.00        | 85           | 55.00         | 17         | 85.00      
+90     | llm rubric                               | phi4:14b       | 10          | 67.00        | 95           | 45.00         | 21         | 67.00      
+89     | Split_rubric                             | qwen2.5vl:7b   | 38          | 34.00        | 58           | 30.25         | 74         | 25.25      
+88     | llm rubric                               | gemma3:12b     | 5           | 78.00        | 53           | 68.00         | 15         | 78.00      
+83     | model1_hybrid                            | N/A            | 59          | 58.13        | 88           | 56.88         | 68         | 57.74      
+82     | model2_hybrid                            | N/A            | 51          | 61.06        | 75           | 59.89         | 67         | 60.35      
+81     | model1                                   | N/A            | 45          | 83.86        | 92           | 81.98         | 8          | 86.62      
+79     | model2                                   | N/A            | 24          | 87.75        | 63           | 85.99         | 4          | 90.53      
+78     | tfidf                                    | N/A            | 84          | 3.68         | 19           | 8.22          | 24         | 7.77       
+-      | machine_learning_engineer_rankings (1)   | N/A            | 31          | 68.05        | 9            | 74.59         | 46         | 65.66      
+-      | machine_learning_engineer_rankings (2) 1 | N/A            | 41          | 66.15        | 9            | 75.00         | 20         | 70.52      
+-      | machine_learning_engineer_rankings (2)   | N/A            | 80          | 48.09        | 163          | 40.33         | 94         | 47.07      
+-      | machine_learning_engineer_rankings       | N/A            | 36          | 53.72        | 68           | 51.03         | 38         | 53.49      
+-      | machine_learning_engineer_rankings_FINAL | N/A            | 29          | 66.42        | 16           | 68.91         | 41         | 64.77      
+
+=======================================================================================================================================
+JOB DESCRIPTION
+=======================================================================================================================================
+Job Description: Trainee AI Engineer
+Department: TechHub – Save the Children International
+Contract Type: Trainee / Fixed-term
+About Save the Children International
+Save the Children International works in over 100 countries to ensure children survive, learn, and are protected.
+The TechHub supports this mission by building digital, data, and AI-driven solutions that strengthen programs and
+improve outcomes for children worldwide.
+Role Purpose
+The Trainee AI Engineer will support the development and testing of AI and data-driven solutions under the
+guidance of senior engineers and data scientists. This role provides hands-on exposure to real-world AI systems
+used in humanitarian and development contexts.
+Key Responsibilities
+•
+Assist in developing machine learning and AI models for prediction, classification, and automation.
+•
+Support data preprocessing, feature engineering, and exploratory data analysis.
+•
+Help integrate AI components into existing digital platforms and dashboards.
+•
+Maintain documentation, code repositories, and model versions.
+•
+Conduct research on emerging AI techniques relevant to social impact.
+•
+Follow responsible AI practices, including data privacy and safeguarding principles.
+•
+Collaborate with engineers, analysts, and program teams within TechHub.
+Required Qualifications & Skills
+•
+Bachelor's degree (completed or final year) in Computer Science, Data Science, AI, or related fields.
+•
+Basic to intermediate programming skills in Python.
+•
+Understanding of core machine learning concepts.
+•
+Familiarity with libraries such as Pandas, NumPy, and scikit-learn.
+•
+Basic knowledge of Git or version control.
+•
+Strong analytical skills and eagerness to learn.
+Desirable (Not Mandatory)
+•
+Exposure to TensorFlow or PyTorch.
+•
+Experience with SQL, APIs, or cloud platforms.
+•
+Familiarity with data visualization tools.
+•
+Prior academic or personal AI-related projects.
+Safeguarding
+Save the Children is committed to protecting children and preventing abuse. All staff and trainees are expected to
+adhere to the organization's Safeguarding Policy and Code of Conduct.
+
+=======================================================================================================================================
+CV TEXT: AKIBUL HAQUE (116.docx)
+=======================================================================================================================================
+NAME: AKIBUL HAQUE
+Email: akibul.haque1999@gmail.com | Phone: 1732619194
+Gender: Male | Date of Birth: 2/21/2001
+Address: 248, Kabirajbag, Donia, Jatrabari, Dhaka-1236, Dhaka, Dhaka Portfolio Link: https://github.com/Platinum-Pluto EDUCATION University: East West University Subject: Computer Science and Engineering Major: Intelligent Systems and Data Science Year of Completion: 2024 CGPA: 3.8 WORK EXPERIENCE - Designation: Undergraduate Teaching Assistant at East West University (From: 2/5/2023, To: 9/14/2023) - Designation: Web Developer at Bookibud (From: 10/7/2024, To: 6/15/2025) CERTIFICATIONS & COURSES - IBM Data Science Professional Certification course (Duration: 4 months, Started: 1/16/2025) - Elementary Course in Japanese (Duration: 6 months, Started: 11/9/2024) SKILLS Digital: MS Word, MS Excel, MS PowerPoint, Google Docs, Google Sheets, Power BI Technical: Python, C, FastAPI, Streamlit, Docker, REST API development, Git, Linux, Data Analysis, LLM fine tuning Language: English, Bengali, Japanese Soft: Analytical thinking, Problem solving, Research skills, Time management, Communication, Adaptability, Teamwork
+
+=======================================================================================================================================
+CV TEXT: SREEZON DAS GUPTA (219.docx)
+=======================================================================================================================================
+NAME: Sreezon Das Gupta
+Email: sreezon23@gmail.com | Phone: 8801718620835
+Gender: Male | Date of Birth: 12/15/2000
+Address: M-31, Merul Badda, Gulshan, Dhaka-1212, Dhaka, Dhaka Portfolio Link: https://sreezondasgupta.floot.app/ EDUCATION University: BRAC University Subject: Bachelor of Science Major: Computer Science Year of Completion: 2025 CGPA: 3.11 WORK EXPERIENCE - Designation: Intern Developer at Itransition (From: 11/21/2025, To: 1/18/2026) - Designation: ASP .NET Core Intern at Neurochip Industries Limited (From: 6/4/2024, To: 9/18/2024) CERTIFICATIONS & COURSES - Certified AI Prompt Engineer (Duration: 2 months, Started: 6/1/2025) SKILLS Digital: SDLC, MS Word, MS Excel, MS PowerPoint, Git Version Control, GitHub, Docker, Android Studio, CI or CD Workflow, Internet Research, Technical Documentation Technical: Python, Java, C, PHP, Dart, Android Studio, MySQL, SQLite, MongoDB, ASP.NET Core, Django, Laravel, Flutter, Symfony Language: English, Bengali Soft: Analytical Thinking, Problem Solving, Teamwork & Collaboration, Leadership, Communication Skills, Strategic Planning, Time Management, Adaptability, Quick Learning Ability
+
+=======================================================================================================================================
+CV TEXT: ROKIB HASAN (10.docx)
+=======================================================================================================================================
+NAME: Rokib Hasan
+Email: rokibhasan5039l@gmail.com | Phone: 8801716529578
+Gender: Male | Date of Birth: 11/10/2001
+Address: Savar, Dhaka, Tangail, Dhaka Portfolio Link: https://sites.google.com/diu.edu.bd/rokib-hasan/home EDUCATION University: Daffodil International University Subject: Software Engineering Major: Data Science Year of Completion: 2025 CGPA: 3.87 WORK EXPERIENCE - Designation: Artificial Intelligence Trainer at Outlier (From: 8/15/2024, To: 4/1/2025) CERTIFICATIONS & COURSES - Supervised Machine Learning Regression and Classification (Duration: 6 months, Started: 7/29/2024) - AWS Academy Graduate - Machine Learning Foundations - AWS Academy Graduate - Machine Learning for Natural Language Processing SKILLS Digital: Power BI, Excel, Custom AI Development, RAG Systems Technical: PyTorch, Deep Learning, Model Development & Training, Language: English, Bengali Soft: Problem Decomposition, Critical Thinking & Intellectual Curiosity, Proactive Learning & Adaptability, Clear Technical Communication, Collaboration & Cross-functional Teamwork

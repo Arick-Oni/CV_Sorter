@@ -178,6 +178,110 @@ def _rank_transformer(jd_text: str, cvs: list, hybrid: bool) -> list:
     return results
 
 
+_nbk_model = None
+_nbk_tokenizer = None
+
+def _get_nbk_model_and_tokenizer():
+    global _nbk_model, _nbk_tokenizer
+    if _nbk_model is None or _nbk_tokenizer is None:
+        import sys
+        import torch
+        from types import ModuleType
+        
+        # Apply compatibility patches for HF / PyTorch v5
+        if 'transformers.onnx' not in sys.modules:
+            transformers_onnx_mock = ModuleType('transformers.onnx')
+            transformers_onnx_mock.OnnxConfig = object
+            sys.modules['transformers.onnx'] = transformers_onnx_mock
+            
+        import transformers.pytorch_utils
+        if not hasattr(transformers.pytorch_utils, 'find_pruneable_heads_and_indices'):
+            def find_pruneable_heads_and_indices(heads, n_heads, head_size, already_pruned_heads):
+                mask = torch.ones(n_heads, head_size)
+                heads = sorted(list(set(heads) - already_pruned_heads))
+                for head in heads:
+                    mask[head] = 0
+                heads = set(heads) | already_pruned_heads
+                indices = mask.view(-1).nonzero().view(-1)
+                return heads, indices
+            transformers.pytorch_utils.find_pruneable_heads_and_indices = find_pruneable_heads_and_indices
+            
+        from transformers.configuration_utils import PretrainedConfig
+        if not hasattr(PretrainedConfig, '__patched_getattribute'):
+            orig_getattribute = PretrainedConfig.__getattribute__
+            def patched_getattribute(self, key):
+                try:
+                    return orig_getattribute(self, key)
+                except AttributeError:
+                    if key in ('is_decoder', 'add_cross_attention'):
+                        return False
+                    raise
+            PretrainedConfig.__getattribute__ = patched_getattribute
+            PretrainedConfig.__patched_getattribute = True
+            
+        import transformers
+        if not hasattr(transformers.PreTrainedModel, 'get_head_mask'):
+            def get_head_mask(self, head_mask, num_hidden_layers, is_attention_chunked=False):
+                if head_mask is None:
+                    return [None] * num_hidden_layers
+                return [None] * num_hidden_layers
+            transformers.PreTrainedModel.get_head_mask = get_head_mask
+
+        from transformers import AutoModel, AutoTokenizer
+        _nbk_tokenizer = AutoTokenizer.from_pretrained('0xnbk/nbk-ats-semantic-v1-en', trust_remote_code=True)
+        _nbk_model = AutoModel.from_pretrained('0xnbk/nbk-ats-semantic-v1-en', trust_remote_code=True)
+        _nbk_model.eval()
+        
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        _nbk_model = _nbk_model.to(device)
+        
+    return _nbk_model, _nbk_tokenizer
+
+
+def _rank_nbk_ats_semantic(jd_text: str, cvs: list) -> list:
+    """Rank CVs against a job description using fine-tuned 0xnbk/nbk-ats-semantic-v1-en model."""
+    import torch
+    import numpy as np
+    
+    model, tokenizer = _get_nbk_model_and_tokenizer()
+    device = next(model.parameters()).device
+    
+    jd_text_val = jd_text or ""
+    cv_texts = [cv.get("raw_text") or "" for cv in cvs]
+    if not cv_texts:
+        return []
+        
+    def mean_pooling(model_output, attention_mask):
+        token_embeddings = model_output[0]
+        input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
+        return torch.sum(token_embeddings * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)
+        
+    # Encode Job Description
+    with torch.no_grad():
+        jd_inputs = tokenizer(jd_text_val, padding=True, truncation=True, max_length=8192, return_tensors='pt').to(device)
+        jd_output = model(**jd_inputs)
+        jd_emb = mean_pooling(jd_output, jd_inputs['attention_mask']).cpu().numpy()[0]
+        
+    # Encode CVs
+    scores = []
+    for cv_text in cv_texts:
+        with torch.no_grad():
+            cv_inputs = tokenizer(cv_text, padding=True, truncation=True, max_length=8192, return_tensors='pt').to(device)
+            cv_output = model(**cv_inputs)
+            cv_emb = mean_pooling(cv_output, cv_inputs['attention_mask']).cpu().numpy()[0]
+            
+            # Cosine similarity
+            similarity = np.dot(jd_emb, cv_emb) / (np.linalg.norm(jd_emb) * np.linalg.norm(cv_emb))
+            score = float(similarity * 100)
+            scores.append(score)
+            
+    results = []
+    for cv, score in zip(cvs, scores):
+        results.append({**cv, "match_score": round(score, 2)})
+        
+    return results
+
+
 def _rank_lda(jd_text: str, cvs: list) -> list:
     """Rank CVs against a job description using LDA Topic modeling cosine similarity."""
     from sklearn.feature_extraction.text import CountVectorizer
@@ -269,6 +373,8 @@ def rank_cvs(jd_text: str, cvs: list, method: str = "tfidf") -> list:
         results = _rank_doc2vec(jd_text, cvs)
     elif method == "lda":
         results = _rank_lda(jd_text, cvs)
+    elif method == "nbk_ats_semantic":
+        results = _rank_nbk_ats_semantic(jd_text, cvs)
     elif method in ("sentence_transformer", "sentence_transformer_hybrid"):
         results = _rank_transformer(jd_text, cvs, hybrid=(method == "sentence_transformer_hybrid"))
     elif method in _METHOD_CONFIG:

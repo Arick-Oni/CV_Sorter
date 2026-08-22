@@ -427,15 +427,6 @@ def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
                 if method == "llm_split_rubric":
                     import json
                     criteria = llm_ranking_service.extract_rubric_criteria(jd_text, urls[0], llm_model)
-                    sum_weights = sum(c.get("weight", 0) for c in criteria)
-                    if sum_weights > 0:
-                        current_sum = 0
-                        for i, c in enumerate(criteria):
-                            if i == len(criteria) - 1:
-                                c["weight"] = 100 - current_sum
-                            else:
-                                c["weight"] = round(c.get("weight", 0) * 100 / sum_weights)
-                                current_sum += c["weight"]
                     rubric_or_jd = json.dumps(criteria, indent=2)
                 else:
                     rubric_or_jd = llm_ranking_service.build_rubric(jd_text, urls[0], llm_model)
@@ -478,26 +469,33 @@ def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
                     criteria_list = json.loads(rubric_or_jd)
                     total_score = 0.0
                     details_list = []
+                    subcriteria_breakdown = []
                     for i, criterion in enumerate(criteria_list):
                         if rank_jobs.get_job(job_id).get("status") == "cancelled":
                             return
                         url = tunnel_queue.get()
-                        rank_jobs.update_tunnel_activity(job_id, url, f"Scoring {cv['filename']} ({i+1}/5: {criterion['name']})")
+                        rank_jobs.update_tunnel_activity(job_id, url, f"Scoring {cv['filename']} ({i+1}/{len(criteria_list)}: {criterion['name']})")
                         rank_jobs.update_job(job_id, current_filename=f"{cv['filename']} - {criterion['name']}")
                         try:
                             res = llm_ranking_service.score_cv_criterion(criterion, cv["raw_text"], url, llm_model)
                             raw_score = float(res.get("score", 0.0))
                             weighted_val = (raw_score * criterion["weight"]) / 100.0
                             total_score += weighted_val
-                            details_list.append(f"{criterion['name']} ({weighted_val:.1f}/{criterion['weight']}): {res.get('justification', '')}")
+                            details_list.append(f"### {criterion['name']} ({weighted_val:.2f}/{criterion['weight']})\n{res.get('justification', '')}")
+                            if "subcriteria_breakdown" in res:
+                                subcriteria_breakdown.append({
+                                    "criterion_name": criterion["name"],
+                                    "criterion_weight": criterion["weight"],
+                                    "subcriteria": res["subcriteria_breakdown"]
+                                })
                         except Exception as e:
-                            details_list.append(f"{criterion['name']} (0/{criterion['weight']}): Failed: {e}")
+                            details_list.append(f"### {criterion['name']} (0/{criterion['weight']})\nFailed: {e}")
                         finally:
                             rank_jobs.update_tunnel_activity(job_id, url, None)
                             tunnel_queue.put(url)
                             tunnel_queue.task_done()
                     llm_score = total_score
-                    justification = " | ".join(details_list)
+                    justification = "\n\n".join(details_list)
                 else:
                     url = tunnel_queue.get()
                     rank_jobs.update_tunnel_activity(job_id, url, f"Scoring: {cv['filename']}")
@@ -535,7 +533,7 @@ def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
                 else:
                     score_to_append = round(llm_score, 2)
 
-                rank_jobs.append_result(job_id, {
+                result_payload = {
                     "id": cv["id"],
                     "filename": cv["filename"],
                     "name": cv["name"],
@@ -545,7 +543,11 @@ def _run_llm_ranking_job(job_id: str, cv_dicts: list[dict], jd_text: str,
                     "llm_justification": justification,
                     "years_of_experience": cv.get("years_of_experience"),
                     "seniority_level": cv.get("seniority_level"),
-                })
+                }
+                if method == "llm_split_rubric":
+                    result_payload["subcriteria_breakdown"] = subcriteria_breakdown
+
+                rank_jobs.append_result(job_id, result_payload)
                 completed_count += 1
                 rank_jobs.update_job(job_id, completed=completed_count)
                 

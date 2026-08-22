@@ -1014,3 +1014,12 @@ pre#raw-text-pre {
   border-color: #94a3b8;
 }
 
+.justification-content {
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #334155;
+  margin-top: 0.5rem;
+}
+

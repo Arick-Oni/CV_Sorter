@@ -1,0 +1,26 @@
+Serial ,Full Name ,Email Address,Phone number ,Area of Interest ,University Name ,Marks,Exists in CSV,Match Criteria
+1,Antara Firoz Parsa,antaraparsa@gmail.com,1816548773,"Data, AI & Python",BRAC University (ব্র্যাক ইউনিভার্সিটি),40.0,Yes,"Email, Phone, Name"
+2,FATEMA ISLAM,fi1877084@gmail.com,8801312644520,"Data, AI & Python",Rajshahi University of Engineering and Technology (রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়),45.0,Yes,"Email, Phone, Name"
+3,Tusher Bhomik,tusherbhomik@gmail.com,1690090528,"Data, AI & Python",Bangladesh University of Engineering and Technology (BUET) (বাংলাদেশ প্রকৌশল বিশ্ববিদ্যালয়),65.0,No,N/A
+4,AKIBUL HAQUE,akibul.haque1999@gmail.com,1732619194,"Data, AI & Python",East West University (ইস্ট ওয়েস্ট ইউনিভার্সিটি),73.0,Yes,"Email, Phone, Name"
+5,Hasin Md. Daiyan,daiyanhasin07@gmail.com,1533376565,"Data, AI & Python",Ahsanullah University of Science and Technology (আহসানউল্লাহ ইউনিভার্সিটি অব সায়েন্স অ্যান্ড টেকনোলজি),75.0,Yes,"Email, Phone, Name"
+6,Utshob Bose,officialutshob@gmail.com,1752830344,"Data, AI & Python",BRAC University (ব্র্যাক ইউনিভার্সিটি),85.0,Yes,"Email, Phone, Name"
+7,Yasin Rahman,yasinrahman10141516@gmail.com,1752833184,"Data, AI & Python",BRAC University (ব্র্যাক ইউনিভার্সিটি),95.0,Yes,"Email, Phone, Name"
+8,Sreezon Das Gupta,sreezon23@gmail.com,8801718620835,"Data, AI & Python",BRAC University (ব্র্যাক ইউনিভার্সিটি),95.0,Yes,"Email, Phone, Name"
+9,Tanzim Hossain Safin,tanzimhossainsafin756@gmail.com,1752329950,"Data, AI & Python",BRAC University (ব্র্যাক ইউনিভার্সিটি),42.0,Yes,"Email, Phone, Name"
+10,Rokib Hasan,rokibhasan5039l@gmail.com,8801716529578,"Data, AI & Python",Daffodil International University (ড্যাফোডিল ইন্টারন্যাশনাল ইউনিভার্সিটি),82.0,Yes,"Email, Phone, Name"
+11,Arick Sarkar,aricksarkar@gmail.com,1314439331,"Data, AI & Python",BRAC University (ব্র্যাক ইউনিভার্সিটি),80.0,No,N/A
+12,Safkat Kalam,safkatkalamacademic@gmail.com,1567888560,"Data, AI & Python",American International University-Bangladesh (আমেরিকান ইন্টারন্যাশনাল ইউনিভার্সিটি বাংলাদেশ),100.0,No,N/A
+13,Saiful Islam,saiful.islam5.cse@ulab.edu.bd,1830557125,"Data, AI & Python",University of Liberal Arts Bangladesh (ইউনিভার্সিটি অব লিবারাল আর্টস বাংলাদেশ),91.0,No,N/A
+14,Waseque Chowdhury,waseque.chow199@gmail.com,1540786520,"Data, AI & Python",BRAC University (ব্র্যাক ইউনিভার্সিটি),12.0,Yes,"Email, Phone, Name"
+15,RAJAOUL HAQUE MAHI ,rezamahi323@gmail.com,8801647010423,"Data, AI & Python",Rajshahi University of Engineering and Technology (রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়),0.0,Yes,"Email, Phone, Name"
+16,Ahmad Farruk Towsif,towsif2000@gmail.com,1731494118,"Data, AI & Python",BRAC University (ব্র্যাক ইউনিভার্সিটি),71.0,No,N/A
+17,Md Ratul Mushfique,ratulmushfique33@gmail.com,1991833447,"Data, AI & Python",BRAC University (ব্র্যাক ইউনিভার্সিটি),78.5,Yes,"Email, Phone, Name"
+18,Meherose Hossain Tasnia,tasnia22205341191@diu.edu.bd,1838602697,"Data, AI & Python",Daffodil International University (ড্যাফোডিল ইন্টারন্যাশনাল ইউনিভার্সিটি),39.5,No,N/A
+19,Turjoy Saha Dip,turjoydip.2000@gmail.com,1621024462,"Data, AI & Python",Mawlana Bhashani Science & Technology University (মাওলানা ভাসানী বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয়),10.0,Yes,"Email, Phone, Name"
+20,Md Tuhin Rana,rana2hin@gmail.com,8801521425818,"Data, AI & Python",University of Dhaka (ঢাকা বিশ্ববিদ্যালয়),77.0,Yes,"Email, Phone, Name"
+21,Sumaiya Islam Sonali,sumaiyasonali421@gmail.com,1830178700,"Data, AI & Python",Notre Dame University Bangladesh (নটর ডেম ইউনিভার্সিটি বাংলাদেশ),41.0,No,N/A
+22,Rifat Mahamud Mukul,rifat.mahamud.mukul@gmail.com,1570266741,"Data, AI & Python",BRAC University (ব্র্যাক ইউনিভার্সিটি),76.0,Yes,"Email, Phone, Name"
+23,Md. Yeasin,mdy850.my@gmail.com,1789111021,"Data, AI & Python",North South University (নর্থ সাউথ ইউনিভার্সিটি),79.0,No,N/A
+24,Md. Mahir Uddin,mahir.uddin.0@gmail.com,1859990434,"Data, AI & Python",Bangladesh University of Textiles (বাংলাদেশ টেক্সটাইল বিশ্ববিদ্যালয়),0.0,No,N/A
+25,Mostafic Yellahy Nahid,mostafic2003@gmail.com,1734442198,"Data, AI & Python",Daffodil International University (ড্যাফোডিল ইন্টারন্যাশনাল ইউনিভার্সিটি),56.5,Yes,"Email, Phone, Name"

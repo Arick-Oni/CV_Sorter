@@ -1,0 +1,39 @@
+{
+  "total_samples": 6865,
+  "validation_results": {
+    "empty_texts": "0",
+    "duplicates": "2"
+  },
+  "statistics": {
+    "score_distribution": {
+      "count": 6865.0,
+      "mean": 47.18647050254916,
+      "std": 24.941265006867923,
+      "min": 18.28,
+      "25%": 24.8,
+      "50%": 29.9,
+      "75%": 59.8,
+      "max": 90.68
+    },
+    "text_length_distribution": {
+      "count": 6865.0,
+      "mean": 8480.135906773488,
+      "std": 3300.6841604711535,
+      "min": 1427.0,
+      "25%": 6227.0,
+      "50%": 7869.0,
+      "75%": 10067.0,
+      "max": 22567.0
+    },
+    "label_distribution": {
+      "No Fit": 3457,
+      "Potential Fit": 1716,
+      "Good Fit": 1692
+    }
+  },
+  "quality_issues": [
+    "Found 2 duplicate entries",
+    "Found 6553 very long texts (>4000 chars)"
+  ],
+  "overall_quality_score": 90.45
+}

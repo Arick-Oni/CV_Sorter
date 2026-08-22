@@ -1,0 +1,37 @@
+================================================================================
+MATCHING CV FILENAMES BETWEEN EXCEL MARKS LIST AND EXTRACTED CVS (231.CSV)
+================================================================================
+Total matching candidates found: 16 / 25
+You can copy and paste these lists directly as needed.
+
+--------------------------------------------------------------------------------
+1. COMMA-SEPARATED FILENAMES (SORTED NUMERICALLY):
+--------------------------------------------------------------------------------
+4.docx, 10.docx, 46.docx, 54.docx, 55.docx, 82.docx, 94.docx, 106.docx, 115.docx, 116.docx, 136.docx, 152.docx, 176.docx, 191.docx, 202.docx, 219.docx
+
+--------------------------------------------------------------------------------
+2. COMMA-SEPARATED FILENAMES (EXCEL ORDER):
+--------------------------------------------------------------------------------
+191.docx, 55.docx, 116.docx, 152.docx, 202.docx, 106.docx, 219.docx, 46.docx, 10.docx, 115.docx, 54.docx, 94.docx, 176.docx, 82.docx, 4.docx, 136.docx
+
+--------------------------------------------------------------------------------
+3. DETAILED MATCH BREAKDOWN:
+--------------------------------------------------------------------------------
+Excel Serial    | Excel Candidate Name           | CSV Filename    | Match Criteria 
+--------------------------------------------------------------------------------
+1               | Antara Firoz Parsa             | 191.docx        | Email          
+2               | FATEMA ISLAM                   | 55.docx         | Email          
+4               | AKIBUL HAQUE                   | 116.docx        | Email          
+5               | Hasin Md. Daiyan               | 152.docx        | Email          
+6               | Utshob Bose                    | 202.docx        | Email          
+7               | Yasin Rahman                   | 106.docx        | Email          
+8               | Sreezon Das Gupta              | 219.docx        | Email          
+9               | Tanzim Hossain Safin           | 46.docx         | Email          
+10              | Rokib Hasan                    | 10.docx         | Email          
+14              | Waseque Chowdhury              | 115.docx        | Email          
+15              | RAJAOUL HAQUE MAHI             | 54.docx         | Email          
+17              | Md Ratul Mushfique             | 94.docx         | Email          
+19              | Turjoy Saha Dip                | 176.docx        | Email          
+20              | Md Tuhin Rana                  | 82.docx         | Email          
+22              | Rifat Mahamud Mukul            | 4.docx          | Email          
+25              | Mostafic Yellahy Nahid         | 136.docx        | Email          

@@ -208,38 +208,60 @@ document.getElementById('upload-form').addEventListener('submit', async e => {
   e.preventDefault();
   const statusEl = document.getElementById('upload-status');
   const btn = document.getElementById('upload-btn');
-  const file = document.getElementById('cv-file').files[0];
-  if (!file) return;
+  const files = Array.from(document.getElementById('cv-file').files || []);
+  if (!files.length) return;
 
   const projectSelectVal = document.getElementById('upload-project-select').value;
 
-  const fd = new FormData();
-  fd.append('file', file);
-  fd.append('extraction_method', extractionMethod.value);
-  if (extractionMethod.value === 'minicpm-v') {
-    fd.append('ollama_url', document.getElementById('ollama-url').value);
-  }
-  if (projectSelectVal === '__new__') {
-    const newName = document.getElementById('upload-new-project-name').value.trim();
-    if (!newName) { setStatus(document.getElementById('upload-status'), 'Enter a name for the new project', 'error'); return; }
-    fd.append('new_project_name', newName);
-  } else if (projectSelectVal) {
-    fd.append('project_id', projectSelectVal);
-  }
-
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Processing...';
-  setStatus(statusEl, 'Uploading and processing CV - this may take a moment...', 'info');
+  setStatus(statusEl, `Uploading ${files.length} file(s)...`, 'info');
 
   try {
-    const res = await fetch(`${API}/cvs/upload`, { method: 'POST', body: fd });
-    const data = await safeJson(res);
-    if (!res.ok) throw new Error(data.detail || 'Upload failed');
-    setStatus(statusEl, `CV uploaded and classified (ID: ${data.id})`, 'success');
+    let projectIdToUse = null;
+
+    // If user requested creating a new project, create it first so all uploads use the same project
+    if (projectSelectVal === '__new__') {
+      const newName = document.getElementById('upload-new-project-name').value.trim();
+      if (!newName) { setStatus(statusEl, 'Enter a name for the new project', 'error'); btn.disabled = false; btn.textContent = 'Upload & Process'; return; }
+      const pres = await fetch(`${API}/projects/`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: newName })
+      });
+      const pdata = await safeJson(pres);
+      if (!pres.ok) throw new Error(pdata.detail || 'Failed to create project');
+      projectIdToUse = pdata.id;
+      await loadProjects();
+    } else if (projectSelectVal) {
+      projectIdToUse = projectSelectVal;
+    }
+
+    let success = 0, failed = 0;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      setStatus(statusEl, `Processing ${i + 1}/${files.length}: ${file.name}`, 'info');
+
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('extraction_method', extractionMethod.value);
+      if (extractionMethod.value === 'minicpm-v') fd.append('ollama_url', document.getElementById('ollama-url').value);
+      if (projectIdToUse) fd.append('project_id', projectIdToUse);
+
+      try {
+        const res = await fetch(`${API}/cvs/upload`, { method: 'POST', body: fd });
+        const data = await safeJson(res);
+        if (!res.ok) throw new Error(data.detail || 'Upload failed');
+        success++;
+      } catch (err) {
+        failed++;
+        console.error('Upload failed for', file.name, err);
+      }
+    }
+
+    setStatus(statusEl, `Completed: ${success} succeeded, ${failed} failed.`, failed ? 'error' : 'success');
     e.target.reset();
-    ollamaUrlGroup.style.display = 'none';
     document.getElementById('upload-new-project-group').style.display = 'none';
-    if (data.project_id && !projects.some(p => p.id === data.project_id)) await loadProjects();
+    ollamaUrlGroup.style.display = 'none';
+    if (projectIdToUse && !projects.some(p => p.id === projectIdToUse)) await loadProjects();
     document.getElementById('upload-project-select').value = currentProjectId || '';
   } catch (err) {
     setStatus(statusEl, `Error: ${err.message}`, 'error');
@@ -1083,8 +1105,13 @@ document.getElementById('rank-form').addEventListener('submit', async e => {
     model2: 'model-best 2 embedding',
     model1_hybrid: 'model-best hybrid (embedding + NER)',
     model2_hybrid: 'model-best 2 hybrid (embedding + NER)',
+    sentence_transformer: 'Sentence Transformer',
+    sentence_transformer_hybrid: 'Sentence Transformer hybrid (embedding + NER)',
+    nbk_ats_semantic: 'NBK ATS Semantic',
+    lda: 'LDA Topic Matching',
+    doc2vec: 'Doc2Vec Context Matching',
     llm: `LLM Judge (rubric-based) (${llmModel || ''})`,
-    llm_split_rubric: `LLM Judge (split rubric, 5 criteria scoring) (${llmModel || ''})`,
+    llm_split_rubric: `LLM Judge (split rubric, 5-8 criteria scoring) (${llmModel || ''})`,
     llm_no_rubric: `LLM Judge (no rubric, direct JD) (${llmModel || ''})`,
     llm_multilayer: `LLM Judge (multilayer: filter -> score -> re-rank) (${llmModel || ''})`,
     hybrid: `Hybrid (50% LLM Rubric + 20% model-best2 + 20% model-best + 10% TF-IDF) (${llmModel || ''})`,

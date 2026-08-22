@@ -30,8 +30,9 @@
     <div class="card">
       <h2>Upload a CV</h2>
       <form id="upload-form">
-        <label>CV File (image, PDF, or DOCX)
-          <input type="file" id="cv-file" accept=".png,.jpg,.jpeg,.webp,.pdf,.docx" required />
+        <label>CV Files (image, PDF, or DOCX) — select a file or a folder
+          <input type="file" id="cv-file" accept=".png,.jpg,.jpeg,.webp,.pdf,.docx" required multiple webkitdirectory />
+          <div style="font-size:0.85rem;color:#64748b;margin-top:6px">Tip: In Chromium-based browsers you can select a folder to upload all files inside.</div>
         </label>
 
         <label>Project
@@ -118,8 +119,9 @@
                     <option value="model1_hybrid">model-best (hybrid: 67% embedding + 33% NER)</option>
                     <option value="sentence_transformer">Sentence Transformer (embeddings)</option>
                     <option value="sentence_transformer_hybrid">Sentence Transformer (hybrid: 67% embedding + 33% NER)</option>
+                    <option value="nbk_ats_semantic">NBK ATS Semantic (0xnbk/nbk-ats-semantic-v1-en)</option>
                     <option value="llm">LLM Judge (rubric-based)</option>
-                    <option value="llm_split_rubric">LLM Judge (split rubric, 5 criteria scoring)</option>
+                    <option value="llm_split_rubric">LLM Judge (split rubric, 5-8 criteria scoring)</option>
                     <option value="llm_no_rubric">LLM Judge (no rubric, direct JD)</option>
                     <option value="llm_multilayer">LLM Judge (multilayer: filter -> score -> re-rank)</option>
                     <option value="hybrid">Hybrid (50% LLM Rubric + 20% model-best2 + 20% model-best + 10% TF-IDF)</option>

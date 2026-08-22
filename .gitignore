@@ -1,0 +1,22 @@
+# Environments
+.env
+.env.local
+.venv
+env/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Backups and temp
+backups/
+*.log
+
+# Editor settings
+.vscode/
+.idea/

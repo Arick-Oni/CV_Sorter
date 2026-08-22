@@ -1,0 +1,319 @@
+Rank,Name,Email,Category,Tech Match (%),Semantic Match (%),Matched Skills,Missing Skills,Portfolio URL
+1,Antara Firoz Parsa,antaraparsa@gmail.com,Python Developer,100,66.68,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,,
+2,S. M. Faizul Islam Fair,faizulislamfair@gmail.com,Machine Learning Engineer,41.67,78.19,python; pandas; scikit-learn; tensorflow; sql,numpy; pytorch; spacy; nltk; rest; fastapi; flask,https://faizul-islam.vercel.app/
+3,Md. Mominul Islam,mominul.diu.cse@gmail.com,Python Developer,58.33,71.74,python; numpy; pandas; scikit-learn; pytorch; flask; sql,tensorflow; spacy; nltk; rest; fastapi,https://mominulislam.netlify.app/
+4,Md. Tarek Mahmud,tarekmahmud500@gmail.com,Python Developer,50,66.08,python; numpy; pandas; scikit-learn; tensorflow; pytorch,spacy; nltk; rest; fastapi; flask; sql,https://github.com/ronisback
+5,Md. Irfan Hossain,mdirfanhossain212@gmail.com,Python Developer,16.67,76.69,python; flask,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; sql,https://md-irfan-hossain-c6310lv.gamma.site/
+6,Samiya Rahman Faiza,samiyafaiza9@gmail.com,Python Developer,50,69.17,python; numpy; pandas; scikit-learn; tensorflow; sql,pytorch; spacy; nltk; rest; fastapi; flask,https://samiyafaiza.vercel.app/
+7,Shah Nafis Mohammad Kavi,kavinafis@gmail.com,Python Developer,50,66.52,python; tensorflow; pytorch; fastapi; flask; sql,numpy; pandas; scikit-learn; spacy; nltk; rest,https://www.linkedin.com/in/shah-nafis-mohammad-kavi/
+8,Shadia Akther,shadia2169@gmail.com,Python Developer,25,66.41,python; tensorflow; sql,numpy; pandas; scikit-learn; pytorch; spacy; nltk; rest; fastapi; flask,https://github.com/Sha-diya
+9,ATHAR NOOR MOHAMMAD RAFEE,noor.mohammad.rafee@g.bracu.ac.bd,Python Developer,41.67,67.28,python; scikit-learn; tensorflow; pytorch; sql,numpy; pandas; spacy; nltk; rest; fastapi; flask,https://github.com/Inmoresentum
+10,Vaskor Roy Chowdhury Sowrav,vaskor15-4689@diu.edu.bd,Python Developer,41.67,65.04,python; numpy; pandas; scikit-learn; sql,tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://www.linkedin.com/in/vaskor-roy-chowdhury/
+11,Sumaiya Islam Sonali,sumaiyasonali421@gmail.com,Python Developer,50,66.81,python; numpy; pandas; scikit-learn; rest; sql,tensorflow; pytorch; spacy; nltk; fastapi; flask,https://portfolio-mauve-rho-dj8prp5j80.vercel.app/
+12,Meherose Hossain Tasnia,tasnia22205341191@diu.edu.bd,Python Developer,33.33,71.3,python; scikit-learn; tensorflow; sql,numpy; pandas; pytorch; spacy; nltk; rest; fastapi; flask,
+13,Sadab Jaowad,sadabjaowad24@gmail.com,Python Developer,25,62.55,python; pandas; tensorflow,numpy; scikit-learn; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/sadab-jaowad
+14,Rehnuma Tarannum,rehnumatarannumanokhee@gmail.com,Unknown,41.67,67.41,python; numpy; pandas; scikit-learn; tensorflow,pytorch; spacy; nltk; rest; fastapi; flask; sql,
+15,Tariful Islam Tarif,tarifuli639@gmail.com,Python Developer,58.33,62.06,python; scikit-learn; tensorflow; pytorch; rest; fastapi; sql,numpy; pandas; spacy; nltk; flask,https://github.com/imTariful
+16,Hasin Md. Daiyan,daiyanhasin07@gmail.com,Unknown,33.33,69.63,python; numpy; pandas; scikit-learn,tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+17,Nur-E-Jannat,nur.e.jannat.akanto@gmail.com,Machine Learning Engineer,41.67,65.68,python; numpy; pandas; scikit-learn; rest,tensorflow; pytorch; spacy; nltk; fastapi; flask; sql,
+18,Md. Mahir Uddin,mahir.uddin.0@gmail.com,Unknown,58.33,57.46,python; numpy; pandas; scikit-learn; tensorflow; pytorch; sql,spacy; nltk; rest; fastapi; flask,https://mahiruddin.vercel.app/
+19,Sadia Islam,me.sadiamaliha@gmail.com,Unknown,58.33,62.15,python; pandas; scikit-learn; tensorflow; pytorch; flask; sql,numpy; spacy; nltk; rest; fastapi,
+20,Mushfiqur Rahman,mushfiq181250@gmail.com,Python Developer,25,68.65,python; pytorch; sql,numpy; pandas; scikit-learn; tensorflow; spacy; nltk; rest; fastapi; flask,
+21,Md. Adnan Sami Pavel,adnansamipavel@gmail.com,Python Developer,41.67,67.77,python; numpy; pandas; pytorch; fastapi,scikit-learn; tensorflow; spacy; nltk; rest; flask; sql,https://www.linkedin.com/in/adnansamipavel-ai
+22,Faiza Binte Arif,faizabintearif.22@gmail.com,Unknown,41.67,67.39,python; numpy; pandas; scikit-learn; sql,tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+23,Md. Rakib Sheikh,rakibrakib0179@gmail.com,Unknown,25,61.17,python; fastapi; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; flask,https://Sheikhrakib.netlify.app
+24,Adiba Amreen Alam,adibaamreenalam@gmail.com,Python Developer,33.33,67.61,python; pandas; scikit-learn; tensorflow,numpy; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/infernora
+25,Md. Mahinuzzaman Shaan,mahinuzzaman.shaan@gmail.com,Python Developer,58.33,58.93,python; numpy; pandas; scikit-learn; tensorflow; pytorch; fastapi,spacy; nltk; rest; flask; sql,https://shaanzeeeee.vercel.app
+26,Ali Ashraf Abir,aliashrafabir19@gmail.com,Python Developer,41.67,61.69,python; numpy; scikit-learn; pytorch; sql,pandas; tensorflow; spacy; nltk; rest; fastapi; flask,https://aliashrafabirportfolio.vercel.app/
+27,Mohammed Ali Hossain,imohammedali101@gmail.com,Python Developer,8.33,69.49,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+28,Koushik Roy,roykoushik106@gmail.com,Python Developer,8.33,69.93,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://koushik-portfolio-032.netlify.app/
+29,Mahabubur Rahman,mrmafi32@gmail.com,Python Developer,16.67,72.08,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://github.com/mahabub-rah
+30,Shawana Maliha,malihashawana@gmail.com,Python Developer,8.33,68.51,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://shawanasportfolio.vercel.app/
+31,Md. Nasif Safwan,nasifsafwan@gmail.com,Unknown,16.67,67.93,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://tinyurl.com/nasifsafwan
+32,Tirtha Debnath,debnathtirtha391@gmail.com,Python Developer,33.33,66.15,python; tensorflow; pytorch; sql,numpy; pandas; scikit-learn; spacy; nltk; rest; fastapi; flask,https://github.com/darkangrycoder
+33,Arick Sarkar,aricksarkar@gmail.com,Unknown,25,63.45,python; rest; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; fastapi; flask,https://github.com/Arick-Oni
+34,Afsarul Amin Bhuiyan,afsarulamin10@gmail.com,Python Developer,8.33,71.63,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+35,Mir Musfiq Rahman Ramim,musfiqrahman@iut-dhaka.edu,Python Developer,16.67,65.05,python; pytorch,numpy; pandas; scikit-learn; tensorflow; spacy; nltk; rest; fastapi; flask; sql,https://github.com/loser70
+36,Farah Ulfat Athoi,athoi35-1040@diu.edu.bd,Python Developer,8.33,65.2,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://sites.google.com/diu.edu.bd/farahathoi/home?authuser=0
+37,Tustee Mazumdar,tusteemazumdarcontact@gmail.com,Python Developer,58.33,61.01,python; numpy; pandas; scikit-learn; tensorflow; pytorch; sql,spacy; nltk; rest; fastapi; flask,https://github.com/TusteeMazumdar
+38,MD. SAKIB,mdsakibahmed848@gmail.com,Python Developer,33.33,62.79,python; rest; fastapi; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; flask,
+39,Lamia Nurtaj,nurtajlamia27@gmail.com,Python Developer,8.33,71.97,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://www.linkedin.com/in/lamia-nurtaj-64229b209/
+40,Rumaysa Mumtahana,rumaysa.kainat85@gmail.com,Python Developer,25,66.57,python; scikit-learn; pytorch,numpy; pandas; tensorflow; spacy; nltk; rest; fastapi; flask; sql,
+41,Raziun Hasan Rahat,raziunhasan@gmail.com,Python Developer,8.33,66.46,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+42,Farah Ulfat Athoi,athoi35-1040@diu.edu.bd,Unknown,8.33,65.08,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://sites.google.com/diu.edu.bd/farahathoi/home?authuser=0
+43,Tushar Chandra Sarker,tusharsarker412@gmail.com,Unknown,50,60,python; numpy; pandas; scikit-learn; rest; sql,tensorflow; pytorch; spacy; nltk; fastapi; flask,https://github.com/Tushar-20
+44,Md Arafat Zaman,arafatzamanakib@gmail.com,Python Developer,8.33,67.01,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+45,Md Abu Sufyan,abusufyan.cse20@gmail.com,Python Developer,8.33,69.7,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+46,Tusher Bhomik,tusherbhomik@gmail.com,Unknown,8.33,66.73,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://drive.google.com/file/d/1URYOXPKzaHM-ZpGJOpUJVxbRBX2i2tsj/view?usp=drivesdk
+47,Sabira Rahman,sabirar358@gmail.com,Python Developer,33.33,61.26,python; numpy; pandas; sql,scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+48,Sagar Chowdhury,mranalystchowdhury@gmail.com,Unknown,25,62.68,python; pandas; sql,numpy; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://GitHub: https://github.com/mranalystchowdhury  LinkedIn: https://linkedin.com/in/sagar-chowdhury-08881a330 ✅ Portfolio Link  https://www.datascienceportfol.io/mranalystchowdhury
+49,Shamura Ahmad,shamuraanim7@gmail.com,Cloud Engineer,25,65.11,python; fastapi; flask,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; sql,https://github.com/animshamura
+50,Rifat Mahamud Mukul,rifat.mahamud.mukul@gmail.com,Python Developer,16.67,64.59,python; flask,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; sql,
+51,Farzana Akter Mily,farzanamily272@gmail.com,Python Developer,8.33,66.49,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/FAM-50341
+52,Utsho Heaven Chowdhury,utshozi11@gmail.com,Machine Learning Engineer,16.67,63.41,tensorflow; pytorch,python; numpy; pandas; scikit-learn; spacy; nltk; rest; fastapi; flask; sql,https://www.utshochowdhury.me
+53,Ashabul Yamin Tuhin,ashabulyamintuhin@gmail.com,Unknown,33.33,62.04,python; numpy; scikit-learn; sql,pandas; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://ashabulyamin.netlify.app/
+54,Yasin Rahman,yasinrahman10141516@gmail.com,Python Developer,16.67,65.66,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://github.com/Yasout141516
+55,Md. Abdullah Al Moin,midulhasan081@gmail.com,Python Developer,33.33,61.11,python; numpy; pandas; scikit-learn,tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://moin70-portfolio.netlify.app/
+56,Shafin Kader Tamim,sktamim2000@gmail.com,Python Developer,41.67,59.3,python; numpy; pandas; scikit-learn; tensorflow,pytorch; spacy; nltk; rest; fastapi; flask; sql,https://shafintamim.netlify.app/
+57,Sabit Ahamed Preanto,preanto15-5059@diu.edu.bd,Python Developer,16.67,64.89,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://github.com/preanto
+58,Nusrat Jahan Nuha,nuha95nusratjahan@gmail.com,Python Developer,16.67,66,python; fastapi,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; flask; sql,https://nuha-95-github-io.vercel.app/
+59,Sarkar Saima Islam,sarkar.saima.islam1@gmail.com,Cloud Engineer,8.33,66.79,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+60,Mridul Chandra Das,mridul10.ioe@gmail.com,Python Developer,8.33,56.26,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+61,Md. Zubair Ibna Mostafa,rakib129175@gmail.com,Python Developer,0,64.77,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+62,Shuva Podder,shuva.podder.kuet@outlook.com,Python Developer,8.33,67.99,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+63,Saikat Biswas,coinshy@gmail.com,Machine Learning Engineer,0,62.46,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+64,Abdullah Nafis Chowdhury,abdullahnafis256@gmail.com,Python Developer,8.33,67.62,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+65,Saiful Islam,saiful.islam5.cse@ulab.edu.bd,Python Developer,16.67,61.62,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://github.com/Saiful-Islam0
+66,Niloy Sarker,niloysarker0033@gmail.com,Python Developer,16.67,63.45,python; fastapi,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; flask; sql,https://github.com/Niloy-Sarker-T
+67,Md.Atiquzzaman,atiquezaman6@gmail.com,Python Developer,25,62.14,python; tensorflow; sql,numpy; pandas; scikit-learn; pytorch; spacy; nltk; rest; fastapi; flask,
+68,Md. Samsul Arefin,samsularefin532@gmail.com,Machine Learning Engineer,25,60.61,python; rest; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; fastapi; flask,https://github.com/Crosshairs532
+69,Preema Shil,primashill@gmail.com,Unknown,8.33,64.88,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://drive.google.com/file/d/1ihwlZZmn2c1ExqHjsAY5FkzK1TvnYB2h/view?usp=drivesdk
+70,Muktadir Haque Sarker,hq.muktadir@gmail.com,Unknown,16.67,66.23,python; numpy,pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+71,Md Robiul Islam,islamrobiul5444@gmail.com,Unknown,8.33,56.12,sql,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://github.com/robiulislam99
+72,Md.Tanjilur Rahman,antoo5949@gmail.com,Unknown,8.33,63.87,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/Antoo5949
+73,Malik Sabiha Tasnim,maliksabihatasnim@gmail.com,Unknown,41.67,53.84,python; numpy; pandas; scikit-learn; tensorflow,pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/maliksabihatasnim ; https://www.mathworks.com/matlabcentral/communitycontests/contests/8/entries?contributor_id=35482720&sort=votes_count+desc
+74,Jannatul Ferdous Nawrin,jannatulnawrin@gmail.com,Automation Testing,50,56.61,python; numpy; pandas; scikit-learn; tensorflow; rest,pytorch; spacy; nltk; fastapi; flask; sql,https://github.com/nawrin1
+75,Sarah Tasnim Diya,sarahtasnim99@gmail.com,Python Developer,25,61.87,python; tensorflow; sql,numpy; pandas; scikit-learn; pytorch; spacy; nltk; rest; fastapi; flask,https://Linkedin: https://www.linkedin.com/in/sarah-tasnim-diya-b531a014a/      Github: https://github.com/sarahtasnimdiya
+76,Fahim Chowdhury Jisun,fahimchowdhury0303@gmail.com,Python Developer,16.67,51.67,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+77,RAJAOUL HAQUE MAHI,rezamahi323@gmail.com,Python Developer,33.33,59.06,python; numpy; pandas; scikit-learn,tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+78,Piyash Basak,piyashbasak99@gmail.com,Unknown,8.33,65.01,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://piyashbasak9.github.io/My-Portfolio-Website
+79,Al Rafi Ahmed,arahmed179@gmail.com,Python Developer,25,61.13,python; tensorflow; pytorch,numpy; pandas; scikit-learn; spacy; nltk; rest; fastapi; flask; sql,
+80,Md. Asif Shahriar Arpon,shahriararpon01@gmail.com,Unknown,33.33,58.49,python; scikit-learn; tensorflow; sql,numpy; pandas; pytorch; spacy; nltk; rest; fastapi; flask,
+81,Azahar Hossen Novel,rampardnovel83@gmail.com,Unknown,25,63.68,python; rest; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; fastapi; flask,https://azahar83.github.io/portfolio/
+82,Sanjida Akter,sanjidaruhi9713@gmail.com,Python Developer,33.33,60.47,python; scikit-learn; tensorflow; pytorch,numpy; pandas; spacy; nltk; rest; fastapi; flask; sql,
+83,FAHIM MUNTASHIR,fahim.tech.me@gmail.com,Python Developer,25,58.96,python; flask; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi,https://project.fahimmuntashir.com/
+84,Jannat Khair Chowdhury,just.jannatkc@gmail.com,Python Developer,16.67,64.44,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+85,Zeshan Ahmed,zeshanahmed793@gmail.com,Python Developer,8.33,59.89,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/Zeshan793z
+86,Nusrat Jahan Ankhi,nusratj.ankhi@gmail.com,Cloud Engineer,33.33,59.94,python; numpy; pandas; flask,scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; sql,https://sites.google.com/diu.edu.bd/nusrat-jahan-ankhi?usp=sharing\
+87,Swarna Akter,swarnaakterb88@gmail.com,Python Developer,16.67,61.56,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://Linkedin: https://www.linkedin.com/in/swarna-akter-3b8ab8265/
+88,Turjoy Saha Dip,turjoydip.2000@gmail.com,Python Developer,8.33,63.49,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://drive.google.com/file/d/1HZaLjShm1HB2iFoUfpKT2zbcP_8RlKc9/view?usp=sharing
+89,Gazi Tanbhir,gazitanbhir@gmail.com,Python Developer,25,57.89,python; tensorflow; fastapi,numpy; pandas; scikit-learn; pytorch; spacy; nltk; rest; flask; sql,https://chatfolio.onrender.com/
+90,Md. Iftekhar Islam Tamim,tamimbhuiyan890@gmail.com,Python Developer,33.33,57.77,numpy; tensorflow; rest; flask,python; pandas; scikit-learn; pytorch; spacy; nltk; fastapi; sql,
+91,Tahsina Tasneem,tahsinatasneemprithee@gmail.com,Python Developer,16.67,62.54,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+92,Tasnia Nafs,tasnianafs@iut-dhaka.edu,Unknown,8.33,63.02,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://sites.google.com/iut-dhaka.edu/tasnianafs/home
+93,Utshob Bose,officialutshob@gmail.com,Unknown,41.67,55.34,python; scikit-learn; tensorflow; pytorch; fastapi,numpy; pandas; spacy; nltk; rest; flask; sql,https://www.utshobbose.me/
+94,Atul Biswash,atul.biswash11@gmail.com,Python Developer,25,62.16,python; tensorflow; pytorch,numpy; pandas; scikit-learn; spacy; nltk; rest; fastapi; flask; sql,
+95,Md. Minhazul Islam Royel,minhazulroyel001@gmail.com,Python Developer,16.67,59.62,python; fastapi,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; flask; sql,
+96,Roksana Akter,roksana18cse04@gmail.com,Python Developer,8.33,64.25,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://roksana-ai-portfolio.vercel.app/
+97,Md. SIamul islam shayon,s.i.shayon@gmail.com,Unknown,16.67,62.71,python; tensorflow,numpy; pandas; scikit-learn; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://cv-gilt-five.vercel.app/
+98,Md. Fahim Faisal Sami,fahimfaisalsami@gmail.com,Python Developer,16.67,64.61,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+99,Sibgatullah Borat,sibgatullah.borat@gmail.com,Python Developer,8.33,64.19,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+100,Mithila Das Esha,mithiladasesha@gmail.com,Unknown,25,60.85,python; tensorflow; sql,numpy; pandas; scikit-learn; pytorch; spacy; nltk; rest; fastapi; flask,
+101,Mahima Rahman Mitu,mahimamitu26@gmail.com,Unknown,0,57.83,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+102,Md. Zubayer Hasan,zubayerhasan12345@gmail.com,Unknown,8.33,65.64,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+103,Sajan Kumer Sarker,sajan.k.sarker@gmail.com,Unknown,16.67,64.09,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://github.com/sajan-sarker
+104,Al Mahee Khan,maheekhan@iut-dhaka.edu,Python Developer,8.33,65.47,pytorch,python; numpy; pandas; scikit-learn; tensorflow; spacy; nltk; rest; fastapi; flask; sql,https://github.com/AlMaheeKhan
+105,Md Tasrif Khan,tasrif.k.56@gmail.com,Unknown,8.33,60.4,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://tasrif-khan.netlify.app/
+106,Abu Sufiun Rhyme,asrhyme@isrt.ac.bd,Python Developer,16.67,63.22,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+107,Ovi Sarker,ovisk20@gmail.com,Python Developer,8.33,61.19,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+108,FATEMA ISLAM,fi1877084@gmail.com,Unknown,25,60.82,python; numpy; pandas,scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+109,Most. Mrittika Khatun,mrittikatabassum2001@gmail.com,Unknown,0,59.29,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://www.linkedin.com/in/mrittika212139?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
+110,G.M. Nazmul Hassan,nazmulsokpc@gmail.com,Python Developer,0,67.65,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+111,Md. Rasel Hosen,raselh280@gmail.com,Python Developer,16.67,63.57,python; numpy,pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://mdraselhosen.github.io/Portfolio/
+112,Md. Sakib Muballig,sakib.muballig.official@gmail.com,Data Science,16.67,62.96,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://sakibmuballig.github.io/
+113,Bonnhi Shikha Parna,bonnhi.parna@gmail.com,Python Developer,0,71.07,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+114,M A Murad,masrukahmedmurad@gmail.com,Python Developer,8.33,63.05,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+115,Mashukur Rahman,mashukur.rahmaan@gmail.com,Python Developer,16.67,61.62,python; scikit-learn,numpy; pandas; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/mashukur-rahman
+116,Md.Sajjad Ullah,01fahim84@gmail.com,Python Developer,16.67,63.84,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://mdsajjadullah.github.io
+117,Saikat Das,saikatdasmain47@gmail.com,Python Developer,8.33,64.19,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://saikatdas47.github.io/saikatdas47/index.html
+118,Md. Alamin,alamin.it20043@gmail.com,Unknown,8.33,63.52,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+119,MD. MAHAMUDUL HASAN,mh1445156@gmail.com,Unknown,16.67,61.94,python; fastapi,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; flask; sql,
+120,Mohammad Kamrul Hasan,kamrulhasanfeb2000@gmail.com,Python Developer,16.67,54.75,python; pytorch,numpy; pandas; scikit-learn; tensorflow; spacy; nltk; rest; fastapi; flask; sql,
+121,Ruhul Amin Sharif,sharif.cse.ras@gmail.com,Python Developer,16.67,61.89,python; flask,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; sql,https://ruhul-amin-sharif.netlify.app/
+122,Md Ratul Mushfique,ratulmushfique33@gmail.com,Python Developer,41.67,55.12,python; numpy; scikit-learn; tensorflow; pytorch,pandas; spacy; nltk; rest; fastapi; flask; sql,https://md-ratul-mushfique.vercel.app/
+123,Md. Tawhidul Islam,tawhid20102017@gmail.com,Python Developer,8.33,60.49,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/tawhid2017
+124,MD MAHEDI HASAN,mahedihasan572921@gmail.com,Unknown,0,66.1,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://mahedi-portfolio-site.netlify.app/
+125,Angshuman Aumi,angshumanaumi01@gmail.com,Python Developer,8.33,61.06,pytorch,python; numpy; pandas; scikit-learn; tensorflow; spacy; nltk; rest; fastapi; flask; sql,
+126,Md. Yeasin,mdy850.my@gmail.com,Database,33.33,56.89,python; numpy; pandas; rest,scikit-learn; tensorflow; pytorch; spacy; nltk; fastapi; flask; sql,
+127,Md Nahin Alam,nahinalam29@gmail.com,Unknown,8.33,59.83,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,http://mdnahinalam.github.io/
+128,Rokib Hasan,rokibhasan5039l@gmail.com,Python Developer,8.33,63.67,pytorch,python; numpy; pandas; scikit-learn; tensorflow; spacy; nltk; rest; fastapi; flask; sql,https://sites.google.com/diu.edu.bd/rokib-hasan/home
+129,Sheikh Kaif,sheikhkaif977@gmail.com,Cloud Engineer,16.67,58.32,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+130,Md. Azmain Adib,azmain.adib.arnob@gmail.com,Unknown,16.67,59.99,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://azmain005.vercel.app/
+131,Treesha Rani Robi Das,treesharanirobidas166@gmail.com,Python Developer,8.33,64.81,pytorch,python; numpy; pandas; scikit-learn; tensorflow; spacy; nltk; rest; fastapi; flask; sql,
+132,Arnob Bokshi,ararnob1415@gmail.com,Unknown,0,63.45,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://arnobbokshi.vercel.app/
+133,Ishtiaque Ahmed,zisandue@gmail.com,Python Developer,16.67,57.59,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://github.com/mashroorzisan
+134,Fahim Muntasir,fahimmuntasir115@gmail.com,Unknown,8.33,62.67,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+135,Mim Raihan,mimraihan03@gmail.com,Unknown,8.33,61.44,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+136,Bishal Biswas,abbishal25@gmail.com,Python Developer,0,57,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+137,Rakin Abser,rakinabser10@gmail.com,Unknown,16.67,61.13,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+138,Md. Amir Hamza Miraz,amirhamza11170@gmail.com,Unknown,8.33,50.56,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+139,Md. Emon Mahmud,emonmahmud083@gmail.com,Unknown,25,59.24,python; numpy; pandas,scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://emonmahmud.netlify.app/
+140,Arif Hasnat,arifhasnat83@gmail.com,Unknown,25,59.11,python; numpy; pandas,scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://arifhasnat3po.github.io/portfolio.io/
+141,AKIBUL HAQUE,akibul.haque1999@gmail.com,Python Developer,25,57.99,python; rest; fastapi,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; flask; sql,https://github.com/Platinum-Pluto
+142,Md Tuhin Rana,rana2hin@gmail.com,Python Developer,8.33,60.08,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+143,Rakibul Haque Rabbi,rbhuiyan027@gmail.com,Unknown,25,59.29,python; fastapi; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; flask,
+144,ASIF AL HOSSAIN,asifalhossain2000@gmail.com,Unknown,8.33,61.03,rest,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; fastapi; flask; sql,https://hossainasif123.github.io/asifs-portfolio/
+145,Kazi Lutfur Nahar Mithila,kazilutfurn@gmail.com,Python Developer,0,68.16,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+146,Md Noor E Hamim Nibir,nibir0079@gmail.com,Python Developer,8.33,60.35,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+147,Md Salauddin Ahmed,mdsalauddinahmed.amir@gmail.com,Python Developer,0,69.14,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+148,Abdul Hye,abhye365@gmail.com,Python Developer,0,65.13,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://portfolio12-mu-six.vercel.app
+149,Md.Nur Hassan,nurhassan1032@gmail.com,Python Developer,8.33,60.28,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+150,Mahmudul Haque Sakib,mhsakib0004@gmail.com,Unknown,0,69.15,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+151,Md. Naimur Rahman,md.naimur.rahman@g.bracu.ac.bd,Python Developer,0,65.71,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+152,Md Mahir Faysal,mahirfaysal1234@gmail.com,Python Developer,8.33,61.77,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://mahirfaysal.me/about
+153,MD ABDUL WADUD RABBI,tykffs@gmail.com,Cloud Engineer,0,56.57,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+154,Ramisa Anjum Aditi,ramisa.anjum28@gmail.com,Unknown,33.33,52.61,python; numpy; pandas; scikit-learn,tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://sites.google.com/view/ramisa-anjum-aditi/
+155,Syeda Madeha Mowla Manarat Huda,syedamadehahuda@gmail.com,Python Developer,0,67.83,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+156,Md. Farhan Farooq,faarhaanfaarooq@gmail.com,Unknown,16.67,59.06,python; scikit-learn,numpy; pandas; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://www.github.com/faarhaanfaarooq
+157,MD HELAL UDDIN SHOHAG,shohag.2896@gmail.com,Python Developer,16.67,57.52,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://github.com/helal-shohag
+158,Md. Mustakim Perveg,mustakimrifat07@gmail.com,Python Developer,16.67,57.23,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+159,Nabeel Ahsan,nabeelahsanofficial@gmail.com,Unknown,8.33,59.92,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://www.nabeelahsan.tech
+160,Mohammad Rasel Ahmed,rasel4897981@gmail.com,Python Developer,0,66.16,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://sites.google.com/d/186zorWXOsxDm_6v1fG3eMGf6d3Ozi1Bw/p/1pph2NtqbXtc_k4DCKFaBotf6hvYWiws0/edit
+161,Sirazzum Munira,smunira2k@gmail.com,Unknown,8.33,62.73,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://www.linkedin.com/in/sirazzum-munira-076139171?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
+162,Md. Eusuf,meusuf21.ban@bu.ac.bd,Database,16.67,54.86,numpy; tensorflow,python; pandas; scikit-learn; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/Eusuf2742 এবং https://www.linkedin.com/in/md-eusuf-72a74a312?utm_source=share_via&utm_content=profile&utm_medium=member_android
+163,Pranab Roy,pranab.r000y@gmail.com,Python Developer,8.33,59.54,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://drive.google.com/file/d/1d3VNkZZok74s_Iz4tPSAJgTqQDTpP0kC/view
+164,S M Najmul Alam,najmulalamrivan4@gmail.com,Python Developer,16.67,57.38,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://najmul193.github.io/portfolio-Najmul/
+165,Tahmid AHnaf,tahmidahnaf2016@gmail.com,Python Developer,8.33,60.42,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/Tahmid-03
+166,Suriya Akter,email2suriya2509@gmail.com,Python Developer,0,68.47,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+167,Mahinur Nesa Opparna,mahinuroparna5@gmail.com,Python Developer,0,65.24,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+168,Md Shamim Ahamed Sajal,shamim.msa7@gmail.com,Unknown,0,52.63,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+169,Mashia Hossain Mim,mashiahossain2@gmail.com,Python Developer,8.33,60.73,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+170,Mostafic Yellahy Nahid,mostafic2003@gmail.com,Python Developer,8.33,61.49,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://mostaficnahid.github.io/Portfolio/ff65daea-0f25-4466-8d05-7f61d171a8c3--1754661600--1f7c84be.app.yourware.app/index.html
+171,Sayad Ibna Azad,sayadibnaazad@iut-dhaka.edu,Machine Learning Engineer,25,56.11,python; rest; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; fastapi; flask,https://portfolio-two-alpha-haciittg7m.vercel.app/
+172,Fariha Mehzabin,fariha.mehzabin020@gmail.com,Python Developer,16.67,59.93,python; flask,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; sql,https://www.linkedin.com/in/farihamehzabin
+173,Rudro Addito Pantra,rudroadditopantra@gmail.com,Python Developer,8.33,59.91,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+174,Nasrin Akter,nasrin290akter@gmail.com,Unknown,16.67,58.86,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+175,Nishat Tasnim,nishattasnim06ce@gmail.com,Python Developer,8.33,60.41,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+176,Ariana Haque Ami,haqueariana123456@gmail.com,Python Developer,8.33,56.59,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+177,Rim Dilower,rim.dilower@gmail.com,Python Developer,0,60.55,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+178,RADY NOOR,radynoor030@gmail.com,Python Developer,16.67,56.68,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://github.com/RadyNoor
+179,Baizid Kamruzzaman,baizidzaman019@gmail.com,DotNet Developer,25,51.54,python; tensorflow; flask,numpy; pandas; scikit-learn; pytorch; spacy; nltk; rest; fastapi; sql,https://drive.google.com/file/d/1bJnTVQTrGUHDcOv76BBAUu6pujA-f3Yy/view?usp=sharing
+180,Tajbir Ahmed Santo,tajbirsanto6@gmail.com,Python Developer,8.33,61.23,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://tajbirsanto.github.io/
+181,Faria Sharmin,fariasharmin432@gmail.com,Python Developer,0,67.77,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+182,Poroma Biswas,poromajui20@gmail.com,Python Developer,0,62.52,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://www.linkedin.com/in/poroma-biswas-254404220
+183,KHANDAKER AZNAN ALAM SEAM,aznan333@gmail.com,DotNet Developer,16.67,56.67,python; rest,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; fastapi; flask; sql,
+184,Ahmad Farruk Towsif,towsif2000@gmail.com,Unknown,8.33,59.91,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/twsf-strugg1es
+185,Md. Tauhid-Ul-Islam,tauhidtonmoy434@gmail.com,Cloud Engineer,8.33,56.79,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://drive.google.com/drive/folders/1K2P85Qrckouz2ifREc_Zr5LXlGfBjWlZ
+186,Arundhati Sarkar Sudipta,arundhati.sarkar.sudipta@g.bracu.ac.bd,Python Developer,16.67,57.85,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+187,Syed Mohammed Abrar Mohtasim,abrarmuhtasim400@gmail.com,Python Developer,0,65.8,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://readdy.link/preview/530544fe-ce1f-40f2-908c-8c2e85405dd9/2078770
+188,Maria Akter Rimi,aktermariarimi@gmail.com,Python Developer,16.67,54.29,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+189,Avisheikh Kundu,avisheikh.kundu@gmail.com,Python Developer,0,65.29,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://sites.google.com/diu.edu.bd/avisheikh/home
+190,MAHIR DAIYAN SAFWAAN,msafwaan30@gmail.com,Python Developer,8.33,60.89,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://mahirdaiyansafwaan.vercel.app/
+191,Mohammad Abir Rahman,abirzishan32@gmail.com,Python Developer,16.67,56.94,fastapi; flask,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; sql,
+192,Thahmid Kader Riad,thahmidkaderriad@gmail.com,Unknown,0,57.42,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+193,MD. NIHAL MORSHED,nihalmorshed2000@gmail.com,Unknown,0,59.14,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://nihalmorshed.github.io/Portfolio-Website/
+194,Imtiaz Ahmmed,imtiazahmmed00@gmail.com,Unknown,8.33,55.41,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://imtiaz-ahmmed.netlify.app
+195,Nahid  Hasan,28.nahid@gmail.com,Cloud Engineer,8.33,59.17,sql,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://sites.google.com/view/nahid282k2/home?
+196,Md. Meherab Hossain,meherabm803@gmail.com,Unknown,8.33,59.04,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+197,Shopna parvin,shopna25p@gmail.com,Cloud Engineer,0,53.06,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+198,AHBAB SAKALAN,ahbabsakalan@gmail.com,Python Developer,25,55.14,python; rest; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; fastapi; flask,
+199,RAHMAT ULLAH MAHIN,gyanpapi.mahin@gmail.com,Unknown,0,64.12,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://www.linkedin.com/in/rahmatullah-mahin-53777a34a/
+200,Raisa Rashid Mim,raisa.mim17@gmail.com,Unknown,16.67,56.94,python; sql,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+201,Abdur Rohim,abdurrohimbd7124@gmail.com,Data Science,0,61.02,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+202,Mahamudul Hasan Tarek,mhtareq999@gmail.com,Unknown,0,64.33,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+203,Ataur Rahman,rahman15-4985@diu.edu.bd,Database,8.33,58.33,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/Ataur-Rahman-Samnan
+204,MAROFA AKTER SRABONE,marofasrabone@gmail.com,Data Science,0,53.76,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+205,Shakil Mia,shakil444920@gmail.com,Python Developer,0,58.62,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+206,Ashirbad Sarkar,dev.niloysarkar@gmail.com,Unknown,0,64.31,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://ashirbadsarkar.vercel.app/
+207,Mahima Rahman Waishee,mahimarahman999@gmail.com,Unknown,0,60.36,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+208,Md Tamjid Hossen,tamjidhossen0x@gmail.com,Web Developer,8.33,58.63,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://tamjidhossen.me/
+209,Alam Dewan,dewanalam63@gmail.com,Python Developer,0,59.1,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+210,S.M.Sanjida Akter Sanu,sanjidasanu245@gmail.com,Machine Learning Engineer,0,55.17,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+211,Rony Howlader,ronyhowlader010@gmail.com,Cloud Engineer,16.67,55.44,python; rest,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; fastapi; flask; sql,https://github.com/rony260699
+212,Toushif Muktashid Hasan,thasan202081@bscse.uiu.ac.bd,Cloud Engineer,0,64.53,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+213,Abu Hanif,abu75akond@gmail.com,DotNet Developer,0,52.62,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+214,Abdullah Al Noman,abdullahalnoman2144@gmail.com,Unknown,0,63.37,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://www.linkedin.com/in/noman212/
+215,Zeba Masuma Mahe,mahezebamasuma@gmail.com,Python Developer,0,58.3,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+216,Jannatul Ferdous,jannatulferdousjannat17@gmail.com,Cloud Engineer,0,61.96,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+217,Sanjid Raaz,sanjidkhu129@gmail.com,DevOps Engineer,0,62.67,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+218,Bashir Ahmed,ibnabashir12@gmail.com,Python Developer,0,53.86,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+219,Dabananda Mitra,dabananda.dev@gmail.com,DotNet Developer,8.33,55.53,sql,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://dmitra.me
+220,Ezaz Ahmed Akib,akibahaamed998@gmail.com,Python Developer,0,58.1,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/Speardrex
+221,Rasel Ahmed Antor,sraantor@gmail.com,Python Developer,0,60.15,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+222,Ikra Adiba Jahan,jahanadiba30@gmail.com,Unknown,0,60.79,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+223,Waseque Chowdhury,waseque.chow199@gmail.com,Unknown,0,60.14,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+224,Arsi Zaman,zamanarsi42@gmail.com,Python Developer,0,61.91,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+225,Md.Izaj Ahmed Sohan,ahmmadshohan41@gmil.com,Cloud Engineer,0,52.38,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+226,Shahriar Hasan,shahriar19735@gmail.com,Unknown,0,59.94,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+227,Minat Lasani Maisha,minatlasanimaisha@gmail.com,Python Developer,0,60.42,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://www.linkedin.com/in/minat-lasani-maisha-8374a8306?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
+228,JAHIRUL ISLAM,jahirulislamcse83@gmail.com,Python Developer,0,61.71,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://jahirul-portfolio.netlify.app/
+229,Sreezon Das Gupta,sreezon23@gmail.com,Database,8.33,54.05,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://sreezondasgupta.floot.app/
+230,Md. Al Imran,mdalimransahin@gmail.com,Unknown,8.33,53.45,sql,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+231,Tanjim Ahmed,tanjimhr360@gmail.com,Cloud Engineer,8.33,50.24,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+232,Md. Sajedur Rahman,sajedurrahma.ynu@gmail.com,Unknown,0,60.54,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+233,Shamima Akter Bristy,shamima19bristy24@gmail.com,Machine Learning Engineer,8.33,54.2,sql,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+234,Md. Abrar Nawar,abrarnawaralfy@gmail.com,DotNet Developer,0,54.32,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+235,Srabony Akter,srabonyakter871@gmail.com,Python Developer,0,61.95,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+236,Mohima Sarwatun,sarwatun.mohima@gmail.com,Data Science,0,61.43,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+237,Jubayer ahmed,jasamrat@gmail.com,Python Developer,0,58.98,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+238,Sagor Ahmed,sagorahmedmunna@gmail.com,Unknown,0,54.91,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/sagorahmedmunna
+239,Tahmina Akter,ta.tahmina01@gmail.com,Python Developer,0,55,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+240,Md. Titas Ahmmed,adtitas@yahoo.com,Unknown,0,60.26,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/foxbinner
+241,Sad Md. Tafhim,tafhim.sad@gmail.com,Database,8.33,53.56,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://relaxed-pastelito-42324c.netlify.app/
+242,Fahima Hossain Muna,amimuna10@gmail.com,Unknown,0,60.33,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+243,Sabiha Jahan,sabihajahanmishu@gmail.com,Unknown,0,60.55,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+244,Susmita Roy,susmitaaroy91@gmail.com,Unknown,0,54.24,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+245,Md Nazmul Hasan,mdnazmulnf@gmail.com,Unknown,0,56.31,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+246,Meher Negar,mehernegar28@gmail.com,Unknown,8.33,49.14,sql,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,
+247,Aumma salma anamika,ummeanamika647@gmail.com,Python Developer,0,56.43,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+248,Sajib Ahmed,sajibahmed12032022@gmail.com,Python Developer,0,60.41,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://mollah2022.github.io/sajib_portfolio//
+249,Tanvir,tanvir.proficient@gmail.com,Unknown,8.33,53.77,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://www.linkedin.com/in/tan-vir-422a90235?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
+250,Md. Maruf Ahmed,marufahmed.cse@diu.ac,Unknown,0,58.25,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+251,Md Joynal Hossain,hmdjoynal9@gmail.com,Python Developer,0,55.21,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+252,Mst. Sabekunnahar Naboni,sabekunnaharnaboni@gmail.com,Python Developer,0,60.15,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+253,Tabassum Tara Lamia,taralamia69@gmail.com,Unknown,8.33,50.21,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+254,Md Shefat Al Mahmud,shefat2002@gmail.com,DotNet Developer,8.33,49.88,sql,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://github.com/shefat2002
+255,Sumaiya islam,isumaiya572@gmail.com,DotNet Developer,0,54.16,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+256,Mukther Alahi,muktheralahi83@gmail.com,Unknown,8.33,47.66,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://drive.google.com/file/d/1ZmSgcuKHBF0OjaLW6lqdUx2A57TG7Ud-/view?usp=sharing
+257,Shourov Gharami,shourovgharami222@gmail.com,Unknown,8.33,46,sql,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://ephemeral-toffee-65982b.netlify.app/
+258,Arpa Barua,arpabarua711@gmail.com,Python Developer,0,56.34,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+259,Atik Shahriar Ovi,atikshahriar@iut-dhaka.edu,Unknown,0,55.24,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/atikOvi21
+260,MD. Taohid Alam,htaohid31@gmail.com,DotNet Developer,8.33,53.02,fastapi,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; flask; sql,
+261,Trisha Pal,trishapal160@gmail.com,Python Developer,0,58.68,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://drive.google.com/file/d/15M32GecWxhW9xK-DqJpjt9EU2MwBQfxb/view?usp=drivesdk
+262,Farzana Haque,farzana.haque461@gmail.com,Unknown,0,55.13,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+263,Sanjida Afrin,sanjidaafrin2707@gmail.com,Python Developer,8.33,49.73,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/Sanjida-afrin
+264,MD ASIF KHAN,asifkhanofficial2020@gmail.com,Cloud Engineer,0,57.72,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+265,Tanzim Hossain Safin,tanzimhossainsafin756@gmail.com,Python Developer,0,58.37,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://dev-personal-website.vercel.app/
+266,Md Asif Newaz Khan,asifraktim50@gmail.com,Unknown,0,57.02,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+267,MD. AL AMIN,kazialaminislam602245@gmail.com,Python Developer,0,57.24,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+268,Ratul Roy,ratulroy154@gmail.com,Cloud Engineer,0,55.93,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+269,Ajrin Khanam Orpa,orpak2001@gmail.com,Cloud Engineer,0,54.02,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+270,Fahmida Nujhat,fahmidanujhat05@gmail.com,Python Developer,0,57.22,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+271,Md.Tanvir Islam,tanvirislam29122000@gmail.com,DotNet Developer,8.33,50.3,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://my-portfolio-beryl-sigma-23.vercel.app
+272,Sanjida Islam,sajidausha.nfs.pstu@gmail.com,Data Science,0,52.36,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+273,Salsabil Aziz,salsabilaziz06@gmail.com,Unknown,0,56.5,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+274,Elma Salam,elmasalam.4@gmail.com,Unknown,8.33,49.56,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+275,Sumaiya Islam Shupty,shuptysumaiya@gmail.com,Data Science,0,50.01,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+276,Abdullah Al Sayed,abdullahalsayed087@gmail.com,DotNet Developer,8.33,49.56,sql,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://www.linkedin.com/in/abdullahsayedchy
+277,Fahima Khanom Samia,khanfahima2024@gmail.com,Machine Learning Engineer,0,54.31,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+278,Safkat Kalam,safkatkalamacademic@gmail.com,Data Science,0,53.56,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+279,Shahadat Hossain Sakib,aiubiansakib@gmail.com,Automation Testing,0,52.44,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+280,Syed Mohaiminul Hoque,syedmuhaimintahsin@gmail.com,DotNet Developer,8.33,44.93,python,numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://syedt1.github.io
+281,Tushar Basak,tusharbasak041@gmail.com,DotNet Developer,8.33,47.81,sql,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask,https://github.com/tushardacoder?tab=repositories
+282,Mir Ashikur Rahman,mirashikur109@gmail.com,DotNet Developer,16.67,46.91,pytorch; sql,python; numpy; pandas; scikit-learn; tensorflow; spacy; nltk; rest; fastapi; flask,
+283,Salma Tasrian,salmatasrian85@gmail.com,DotNet Developer,0,46.17,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+284,Md.Mohin uddin,md.mohinuddinrasel2018@gmail.com,Unknown,0,55.33,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://www.linkedin.com/in/md-mohin-uddin-9a3825398
+285,Musfiqur Rahman,musfiqur.mrs.2009@gmail.com,Data Science,0,50.01,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+286,Tanjina Akter,tanjina01627@gmail.com,DotNet Developer,0,53.88,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+287,Imon Shahriar Ifti,shahriar.ifti.01@gmail.com,DotNet Developer,0,46.89,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://shahriar789.github.io/My-portfolio/
+288,Md. Arafat Rahman,rahman.arafat59@gmail.com,Cloud Engineer,0,54.63,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+289,pinky sikder,pinky123sikder@gmail.com,Unknown,0,55.22,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+290,Sunzidul Islam,sunzidulislammahin@gmail.com,Unknown,0,51.91,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+291,Majedul Islam,islam22205101253@diu.edu.bd,Unknown,0,54.35,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://majedul.me
+292,Md.Anamul haque,rafaielanam@gmail.com,Web Developer,0,51.51,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+293,Md Mostafizur Rahman,mdmostafizurrahman704@gmail.com,DotNet Developer,0,53.4,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://mmr-p.onrender.com/
+294,Hasan Uddin,abcnizamd@gmail.com,Unknown,0,52.05,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/Hasan-Uddin
+295,Mohammad Dardaul Hoque,rudro1152@gmail.com,DotNet Developer,0,50.7,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://rudro.me
+296,MD. ANISUR RAHMAN,anissawon44@gmail.com,DotNet Developer,0,49.34,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+297,MD SHARIFUL ISLAM,shariful1997.official@gmail.com,Unknown,0,47.93,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/shariful1997
+298,Malekun Nessa Sharna,malekunnessa123@gmail.com,DotNet Developer,0,51.71,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+299,Md Maidul islam,md.maidulislammahin14@gmail.com,Web Developer,0,50.4,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://maidulislam.netlify.app/
+300,Shamim Sorkar,shamimsorkar044@gmail.com,Web Developer,0,50.76,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+301,Anupam Kumar Mondal,sourandra93@gmail.com,Unknown,0,52.36,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+302,MD BAPPY RAYHAN,bappyrayhan0000@gmail.com,Python Developer,0,50.34,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+303,Md. Yash Rohan,yashrohan22@gmail.com,Unknown,0,50.45,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+304,Md Naeem,naeem1804120@gmail.com,DotNet Developer,0,49.25,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+305,Shahadat Hossain Saad,saad.br97@gmail.com,Unknown,0,49.98,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+306,Md.Rayhan Mia,rayhan.mia582@gmail.com,DotNet Developer,0,41.82,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://www.linkedin.com/in/rayhan-mia-2018/
+307,Akil Newaz Chowdhury,akilnewazcu@gmail.com,Unknown,0,42.65,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/Akil08
+308,Nusrat Rahman,nusratwshita111@gmail.com,Unknown,0,49.22,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+309,Sunzida Moontaha,sunzidamoontaha@gmail.com,Unknown,0,46.05,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+310,Anowar Mustafa,skanowarmustafakhanpc@gmail.com,Cloud Engineer,0,49.05,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+311,Bushra Tabassum,bushra.tsm@gmail.com,Web Developer,0,48.5,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+312,Md Tofayel Ahmed,tofayelkhan555@gmail.com,Unknown,0,47.62,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://drive.google.com/file/d/1QeTx1WoPCncjuiaScVtf6jjpodoYGfc3/view?usp=drive_link
+313,Nusrat Jahara,nusratjahara222@gmail.com,Unknown,0,46.79,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+314,Rashed Ullah,mrashedulislam015@gmail.com,DotNet Developer,0,47.52,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+315,Md Tamim khan,mdtamimkhan842@gmail.com,DotNet Developer,0,46.04,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/Tamimkhan7/Portfolio_Tamim
+316,Md. Rakibul Islam,rakibedu903@gmail.com,Unknown,0,45.51,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,
+317,Shuvro Roy,shuvroroyshuvo@gmail.com,DotNet Developer,0,44.82,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://shuvro-portfolio.web.app/
+318,Md Ashikur Rahman Ashik,mohammadashikidb@gmail.com,DotNet Developer,0,37.43,,python; numpy; pandas; scikit-learn; tensorflow; pytorch; spacy; nltk; rest; fastapi; flask; sql,https://github.com/MdAshikur-Rahman-Ashik

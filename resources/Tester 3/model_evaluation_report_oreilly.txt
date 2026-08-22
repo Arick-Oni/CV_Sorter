@@ -1,0 +1,273 @@
+==============================================================================================================
+EVALUATION REPORT: RETRIEVAL AND SORTING MODELS PERFORMANCE VS GROUND TRUTH
+==============================================================================================================
+Target Job Description: Senior Software Engineer (O'Reilly Auto Parts)
+Evaluation Dataset: validation (1).csv (O'Reilly Auto Parts JD subset - 26 CVs)
+Generated at: 2026-07-22 12:26:37
+
+This report evaluates how well each of our search/retrieval models sorted the 26 candidates
+compared to the original ATS compatibility scores and labels present in the validation dataset.
+
+--------------------------------------------------------------------------------------------------------------
+SUMMARY TABLE:
+--------------------------------------------------------------------------------------------------------------
+Model | Spearman | Pearson | NDCG@10 (Cont) | NDCG@20 (Cont) | NDCG@50 (Cont) | NDCG@All (Cont) | NDCG@10 (Cat) | NDCG@20 (Cat) | NDCG@50 (Cat) | NDCG@All (Cat) | P@10 (Good) | P@20 (Good) | P@50 (Good) | P@All (Good) | P@10 (Good+Pot) | P@20 (Good+Pot) | P@50 (Good+Pot) | P@All (Good+Pot) | MRR (Good)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TF-IDF                 | 0.158    | 0.298   | 0.871          | 0.869          | 0.930          | 0.930           | 0.861         | 0.830         | 0.906         | 0.906          | 0.900       | 0.650       | 0.300       | 0.577        | 0.900           | 0.650           | 0.300           | 0.577            | 1.000     
+Embed M2               | 0.166    | 0.414   | 0.849          | 0.906          | 0.941          | 0.941           | 0.820         | 0.884         | 0.921         | 0.921          | 0.800       | 0.700       | 0.300       | 0.577        | 0.800           | 0.700           | 0.300           | 0.577            | 1.000     
+Embed M1               | 0.239    | 0.351   | 0.766          | 0.847          | 0.909          | 0.909           | 0.678         | 0.790         | 0.864         | 0.864          | 0.700       | 0.650       | 0.300       | 0.577        | 0.700           | 0.650           | 0.300           | 0.577            | 1.000     
+Hybrid M2              | 0.110    | 0.209   | 0.651          | 0.794          | 0.860          | 0.860           | 0.533         | 0.719         | 0.794         | 0.794          | 0.600       | 0.650       | 0.300       | 0.577        | 0.600           | 0.650           | 0.300           | 0.577            | 0.500     
+Hybrid M1              | 0.153    | 0.184   | 0.722          | 0.790          | 0.852          | 0.852           | 0.641         | 0.710         | 0.784         | 0.784          | 0.800       | 0.650       | 0.300       | 0.577        | 0.800           | 0.650           | 0.300           | 0.577            | 0.333     
+LLM Rubric (Gemma 3)   | 0.087    | 0.317   | 0.814          | 0.872          | 0.932          | 0.932           | 0.797         | 0.851         | 0.926         | 0.926          | 0.800       | 0.650       | 0.300       | 0.577        | 0.800           | 0.650           | 0.300           | 0.577            | 1.000     
+NBK ATS Semantic       | 0.278    | 0.368   | 0.883          | 0.874          | 0.958          | 0.958           | 0.860         | 0.837         | 0.949         | 0.949          | 0.800       | 0.600       | 0.300       | 0.577        | 0.800           | 0.600           | 0.300           | 0.577            | 1.000     
+
+Note:
+  * Spearman: Spearman's rank correlation coefficient. Higher = better rank-sorting agreement.
+  * Pearson: Pearson linear correlation coefficient. Higher = better score scaling agreement.
+  * NDCG@K (Cont): NDCG using ground truth score directly as continuous relevance.
+  * NDCG@K (Cat): NDCG using categorical relevance (Good Fit=3, Potential Fit=1, No Fit=0).
+  * P@K (Good): Precision at K: percentage of top-K results that are actually 'Good Fit'.
+  * MRR (Good): Mean Reciprocal Rank of the first 'Good Fit' candidate.
+
+--------------------------------------------------------------------------------------------------------------
+KEY ANALYSIS & INSIGHTS:
+--------------------------------------------------------------------------------------------------------------
+1. Best Ranking/Sorting Model: NBK ATS Semantic (Spearman Rank Correlation = 0.278, Pearson = 0.368).
+2. Best Precision Model:
+   - Top 10: TF-IDF (P@10 Good Fit = 90.0%)
+   - Top 20: Embed M2 (P@20 Good Fit = 70.0%)
+   - Top 50: All models are tied at 30.0% (since top 50 exceeds total candidate count of 26, meaning all 15 Good Fit candidates are retrieved).
+3. Best Cumulative Gain:
+   - Top 10 Continuous: NBK ATS Semantic (NDCG@10 = 0.883)
+   - Top 10 Categorical: TF-IDF (NDCG@10 = 0.861)
+   - Top 20 Continuous: Embed M2 (NDCG@20 = 0.906)
+   - Top 20 Categorical: Embed M2 (NDCG@20 = 0.884)
+   - Top 50/All Continuous: NBK ATS Semantic (NDCG = 0.958)
+   - Top 50/All Categorical: NBK ATS Semantic (NDCG = 0.949)
+
+--------------------------------------------------------------------------------------------------------------
+DETAILED RANKINGS BREAKDOWNS (ALL 26 CANDIDATES LISTED):
+--------------------------------------------------------------------------------------------------------------
+==========================================================================================
+COMPLETE SORTED CANDIDATE RANKINGS (1 to 26): TF-IDF
+==========================================================================================
+Model Rank | Filename     | Model Score | Ground Truth Score | Ground Truth Label
+------------------------------------------------------------------------------------------
+1          | cv_5.docx    | 25.90       | 86.10              | Good Fit
+2          | cv_20.docx   | 24.95       | 25.30              | No Fit
+3          | cv_9.docx    | 22.44       | 83.30              | Good Fit
+4          | cv_26.docx   | 19.49       | 83.30              | Good Fit
+5          | cv_22.docx   | 19.20       | 84.60              | Good Fit
+6          | cv_13.docx   | 18.54       | 79.85              | Good Fit
+7          | cv_16.docx   | 18.54       | 79.85              | Good Fit
+8          | cv_3.docx    | 18.04       | 86.60              | Good Fit
+9          | cv_7.docx    | 16.41       | 88.30              | Good Fit
+10         | cv_21.docx   | 16.29       | 82.30              | Good Fit
+11         | cv_8.docx    | 16.13       | 21.70              | No Fit
+12         | cv_1.docx    | 16.11       | 29.90              | No Fit
+13         | cv_14.docx   | 15.69       | 29.20              | No Fit
+14         | cv_6.docx    | 15.59       | 89.30              | Good Fit
+15         | cv_24.docx   | 15.13       | 23.98              | No Fit
+16         | cv_10.docx   | 14.65       | 25.60              | No Fit
+17         | cv_15.docx   | 14.16       | 87.00              | Good Fit
+18         | cv_4.docx    | 14.13       | 21.50              | No Fit
+19         | cv_11.docx   | 13.81       | 85.50              | Good Fit
+20         | cv_19.docx   | 11.38       | 86.10              | Good Fit
+21         | cv_25.docx   | 10.83       | 86.10              | Good Fit
+22         | cv_23.docx   | 8.75        | 87.00              | Good Fit
+23         | cv_2.docx    | 8.31        | 26.30              | No Fit
+24         | cv_12.docx   | 7.69        | 23.50              | No Fit
+25         | cv_17.docx   | 7.61        | 27.40              | No Fit
+26         | cv_18.docx   | 6.48        | 29.70              | No Fit
+
+==========================================================================================
+COMPLETE SORTED CANDIDATE RANKINGS (1 to 26): Embed M2
+==========================================================================================
+Model Rank | Filename     | Model Score | Ground Truth Score | Ground Truth Label
+------------------------------------------------------------------------------------------
+1          | cv_5.docx    | 98.69       | 86.10              | Good Fit
+2          | cv_3.docx    | 98.60       | 86.60              | Good Fit
+3          | cv_9.docx    | 98.50       | 83.30              | Good Fit
+4          | cv_20.docx   | 98.23       | 25.30              | No Fit
+5          | cv_14.docx   | 97.76       | 29.20              | No Fit
+6          | cv_13.docx   | 97.71       | 79.85              | Good Fit
+7          | cv_16.docx   | 97.71       | 79.85              | Good Fit
+8          | cv_26.docx   | 97.60       | 83.30              | Good Fit
+9          | cv_22.docx   | 97.56       | 84.60              | Good Fit
+10         | cv_23.docx   | 97.43       | 87.00              | Good Fit
+11         | cv_4.docx    | 97.12       | 21.50              | No Fit
+12         | cv_12.docx   | 97.11       | 23.50              | No Fit
+13         | cv_1.docx    | 96.93       | 29.90              | No Fit
+14         | cv_6.docx    | 96.93       | 89.30              | Good Fit
+15         | cv_25.docx   | 96.93       | 86.10              | Good Fit
+16         | cv_19.docx   | 96.74       | 86.10              | Good Fit
+17         | cv_21.docx   | 96.50       | 82.30              | Good Fit
+18         | cv_8.docx    | 96.27       | 21.70              | No Fit
+19         | cv_7.docx    | 96.08       | 88.30              | Good Fit
+20         | cv_11.docx   | 95.75       | 85.50              | Good Fit
+21         | cv_24.docx   | 95.58       | 23.98              | No Fit
+22         | cv_17.docx   | 94.16       | 27.40              | No Fit
+23         | cv_15.docx   | 93.90       | 87.00              | Good Fit
+24         | cv_18.docx   | 92.17       | 29.70              | No Fit
+25         | cv_10.docx   | 91.23       | 25.60              | No Fit
+26         | cv_2.docx    | 88.08       | 26.30              | No Fit
+
+==========================================================================================
+COMPLETE SORTED CANDIDATE RANKINGS (1 to 26): Embed M1
+==========================================================================================
+Model Rank | Filename     | Model Score | Ground Truth Score | Ground Truth Label
+------------------------------------------------------------------------------------------
+1          | cv_5.docx    | 99.47       | 86.10              | Good Fit
+2          | cv_20.docx   | 99.00       | 25.30              | No Fit
+3          | cv_14.docx   | 98.62       | 29.20              | No Fit
+4          | cv_21.docx   | 98.45       | 82.30              | Good Fit
+5          | cv_23.docx   | 98.39       | 87.00              | Good Fit
+6          | cv_3.docx    | 98.37       | 86.60              | Good Fit
+7          | cv_18.docx   | 98.32       | 29.70              | No Fit
+8          | cv_9.docx    | 98.29       | 83.30              | Good Fit
+9          | cv_25.docx   | 98.20       | 86.10              | Good Fit
+10         | cv_11.docx   | 98.09       | 85.50              | Good Fit
+11         | cv_16.docx   | 98.06       | 79.85              | Good Fit
+12         | cv_13.docx   | 98.05       | 79.85              | Good Fit
+13         | cv_15.docx   | 97.73       | 87.00              | Good Fit
+14         | cv_22.docx   | 97.73       | 84.60              | Good Fit
+15         | cv_7.docx    | 97.64       | 88.30              | Good Fit
+16         | cv_4.docx    | 97.29       | 21.50              | No Fit
+17         | cv_17.docx   | 97.25       | 27.40              | No Fit
+18         | cv_8.docx    | 97.20       | 21.70              | No Fit
+19         | cv_26.docx   | 96.99       | 83.30              | Good Fit
+20         | cv_12.docx   | 96.81       | 23.50              | No Fit
+21         | cv_24.docx   | 96.67       | 23.98              | No Fit
+22         | cv_6.docx    | 96.31       | 89.30              | Good Fit
+23         | cv_1.docx    | 95.15       | 29.90              | No Fit
+24         | cv_19.docx   | 94.94       | 86.10              | Good Fit
+25         | cv_10.docx   | 89.22       | 25.60              | No Fit
+26         | cv_2.docx    | 81.65       | 26.30              | No Fit
+
+==========================================================================================
+COMPLETE SORTED CANDIDATE RANKINGS (1 to 26): Hybrid M2
+==========================================================================================
+Model Rank | Filename     | Model Score | Ground Truth Score | Ground Truth Label
+------------------------------------------------------------------------------------------
+1          | cv_20.docx   | 75.90       | 25.30              | No Fit
+2          | cv_21.docx   | 74.75       | 82.30              | Good Fit
+3          | cv_8.docx    | 74.60       | 21.70              | No Fit
+4          | cv_7.docx    | 74.47       | 88.30              | Good Fit
+5          | cv_5.docx    | 74.13       | 86.10              | Good Fit
+6          | cv_22.docx   | 73.37       | 84.60              | Good Fit
+7          | cv_4.docx    | 70.99       | 21.50              | No Fit
+8          | cv_6.docx    | 70.87       | 89.30              | Good Fit
+9          | cv_11.docx   | 70.08       | 85.50              | Good Fit
+10         | cv_10.docx   | 69.15       | 25.60              | No Fit
+11         | cv_23.docx   | 69.12       | 87.00              | Good Fit
+12         | cv_3.docx    | 67.82       | 86.60              | Good Fit
+13         | cv_9.docx    | 67.75       | 83.30              | Good Fit
+14         | cv_13.docx   | 67.22       | 79.85              | Good Fit
+15         | cv_16.docx   | 67.22       | 79.85              | Good Fit
+16         | cv_12.docx   | 66.82       | 23.50              | No Fit
+17         | cv_15.docx   | 66.76       | 87.00              | Good Fit
+18         | cv_1.docx    | 66.70       | 29.90              | No Fit
+19         | cv_25.docx   | 66.70       | 86.10              | Good Fit
+20         | cv_24.docx   | 65.80       | 23.98              | No Fit
+21         | cv_14.docx   | 65.18       | 29.20              | No Fit
+22         | cv_26.docx   | 65.06       | 83.30              | Good Fit
+23         | cv_19.docx   | 64.50       | 86.10              | Good Fit
+24         | cv_18.docx   | 63.53       | 29.70              | No Fit
+25         | cv_17.docx   | 62.77       | 27.40              | No Fit
+26         | cv_2.docx    | 60.80       | 26.30              | No Fit
+
+==========================================================================================
+COMPLETE SORTED CANDIDATE RANKINGS (1 to 26): Hybrid M1
+==========================================================================================
+Model Rank | Filename     | Model Score | Ground Truth Score | Ground Truth Label
+------------------------------------------------------------------------------------------
+1          | cv_8.docx    | 75.91       | 21.70              | No Fit
+2          | cv_20.docx   | 74.34       | 25.30              | No Fit
+3          | cv_21.docx   | 73.97       | 82.30              | Good Fit
+4          | cv_7.docx    | 73.43       | 88.30              | Good Fit
+5          | cv_11.docx   | 70.95       | 85.50              | Good Fit
+6          | cv_6.docx    | 69.76       | 89.30              | Good Fit
+7          | cv_5.docx    | 69.09       | 86.10              | Good Fit
+8          | cv_23.docx   | 68.37       | 87.00              | Good Fit
+9          | cv_9.docx    | 68.30       | 83.30              | Good Fit
+10         | cv_16.docx   | 68.15       | 79.85              | Good Fit
+11         | cv_13.docx   | 68.14       | 79.85              | Good Fit
+12         | cv_22.docx   | 67.93       | 84.60              | Good Fit
+13         | cv_4.docx    | 67.64       | 21.50              | No Fit
+14         | cv_12.docx   | 67.32       | 23.50              | No Fit
+15         | cv_1.docx    | 66.21       | 29.90              | No Fit
+16         | cv_14.docx   | 65.75       | 29.20              | No Fit
+17         | cv_3.docx    | 65.58       | 86.60              | Good Fit
+18         | cv_18.docx   | 65.54       | 29.70              | No Fit
+19         | cv_25.docx   | 65.46       | 86.10              | Good Fit
+20         | cv_15.docx   | 65.16       | 87.00              | Good Fit
+21         | cv_17.docx   | 64.83       | 27.40              | No Fit
+22         | cv_26.docx   | 64.66       | 83.30              | Good Fit
+23         | cv_24.docx   | 64.45       | 23.98              | No Fit
+24         | cv_19.docx   | 63.30       | 86.10              | Good Fit
+25         | cv_10.docx   | 62.26       | 25.60              | No Fit
+26         | cv_2.docx    | 57.21       | 26.30              | No Fit
+
+==========================================================================================
+COMPLETE SORTED CANDIDATE RANKINGS (1 to 26): LLM Rubric (Gemma 3)
+==========================================================================================
+Model Rank | Filename     | Model Score | Ground Truth Score | Ground Truth Label
+------------------------------------------------------------------------------------------
+1          | cv_13.docx   | 92.00       | 79.85              | Good Fit
+2          | cv_16.docx   | 92.00       | 79.85              | Good Fit
+3          | cv_22.docx   | 88.00       | 84.60              | Good Fit
+4          | cv_4.docx    | 82.00       | 21.50              | No Fit
+5          | cv_9.docx    | 78.00       | 83.30              | Good Fit
+6          | cv_11.docx   | 78.00       | 85.50              | Good Fit
+7          | cv_1.docx    | 78.00       | 29.90              | No Fit
+8          | cv_21.docx   | 78.00       | 82.30              | Good Fit
+9          | cv_6.docx    | 72.00       | 89.30              | Good Fit
+10         | cv_3.docx    | 68.00       | 86.60              | Good Fit
+11         | cv_7.docx    | 68.00       | 88.30              | Good Fit
+12         | cv_8.docx    | 68.00       | 21.70              | No Fit
+13         | cv_10.docx   | 68.00       | 25.60              | No Fit
+14         | cv_15.docx   | 68.00       | 87.00              | Good Fit
+15         | cv_2.docx    | 68.00       | 26.30              | No Fit
+16         | cv_20.docx   | 68.00       | 25.30              | No Fit
+17         | cv_23.docx   | 68.00       | 87.00              | Good Fit
+18         | cv_5.docx    | 48.00       | 86.10              | Good Fit
+19         | cv_19.docx   | 42.00       | 86.10              | Good Fit
+20         | cv_12.docx   | 42.00       | 23.50              | No Fit
+21         | cv_24.docx   | 42.00       | 23.98              | No Fit
+22         | cv_26.docx   | 42.00       | 83.30              | Good Fit
+23         | cv_25.docx   | 38.00       | 86.10              | Good Fit
+24         | cv_14.docx   | 35.00       | 29.20              | No Fit
+25         | cv_17.docx   | 15.00       | 27.40              | No Fit
+26         | cv_18.docx   | 5.00        | 29.70              | No Fit
+
+==========================================================================================
+COMPLETE SORTED CANDIDATE RANKINGS (1 to 26): NBK ATS Semantic
+==========================================================================================
+Model Rank | Filename     | Model Score | Ground Truth Score | Ground Truth Label
+------------------------------------------------------------------------------------------
+1          | cv_9.docx    | 83.26       | 83.30              | Good Fit
+2          | cv_5.docx    | 77.69       | 86.10              | Good Fit
+3          | cv_21.docx   | 77.19       | 82.30              | Good Fit
+4          | cv_11.docx   | 76.55       | 85.50              | Good Fit
+5          | cv_6.docx    | 75.61       | 89.30              | Good Fit
+6          | cv_7.docx    | 73.23       | 88.30              | Good Fit
+7          | cv_1.docx    | 73.13       | 29.90              | No Fit
+8          | cv_22.docx   | 72.59       | 84.60              | Good Fit
+9          | cv_20.docx   | 71.97       | 25.30              | No Fit
+10         | cv_26.docx   | 71.61       | 83.30              | Good Fit
+11         | cv_14.docx   | 71.03       | 29.20              | No Fit
+12         | cv_15.docx   | 69.50       | 87.00              | Good Fit
+13         | cv_10.docx   | 67.88       | 25.60              | No Fit
+14         | cv_2.docx    | 67.54       | 26.30              | No Fit
+15         | cv_13.docx   | 67.41       | 79.85              | Good Fit
+16         | cv_16.docx   | 67.41       | 79.85              | Good Fit
+17         | cv_8.docx    | 66.49       | 21.70              | No Fit
+18         | cv_12.docx   | 66.49       | 23.50              | No Fit
+19         | cv_25.docx   | 64.71       | 86.10              | Good Fit
+20         | cv_4.docx    | 61.21       | 21.50              | No Fit
+21         | cv_19.docx   | 60.90       | 86.10              | Good Fit
+22         | cv_24.docx   | 60.53       | 23.98              | No Fit
+23         | cv_3.docx    | 59.60       | 86.60              | Good Fit
+24         | cv_23.docx   | 55.42       | 87.00              | Good Fit
+25         | cv_17.docx   | 41.88       | 27.40              | No Fit
+26         | cv_18.docx   | 33.88       | 29.70              | No Fit

@@ -1,0 +1,772 @@
+==============================================================================================================
+EVALUATION REPORT: RETRIEVAL AND SORTING MODELS PERFORMANCE VS GROUND TRUTH
+==============================================================================================================
+Target Job Description: Software Engineering Manager (Fiserv)
+Evaluation Dataset: train (1).csv (Fiserv JD subset - 98 CVs)
+Generated at: 2026-07-22 10:52:00
+
+This report evaluates how well each of our search/retrieval models sorted the 98 candidates
+compared to the original ATS compatibility scores and labels present in the training dataset.
+
+--------------------------------------------------------------------------------------------------------------
+SUMMARY TABLE:
+--------------------------------------------------------------------------------------------------------------
+Model                | Spearman | Pearson | NDCG@10 (Cont) | NDCG@20 (Cont) | NDCG@50 (Cont) | NDCG@All (Cont) | NDCG@10 (Cat) | NDCG@20 (Cat) | NDCG@50 (Cat) | NDCG@All (Cat) | P@10 (Good) | P@20 (Good) | P@50 (Good) | P@All (Good) | P@10 (Good+Pot) | P@20 (Good+Pot) | P@50 (Good+Pot) | P@All (Good+Pot) | MRR (Good)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TF-IDF               | -0.037   | -0.074  | 0.464          | 0.483          | 0.619          | 0.828           | 0.196         | 0.235         | 0.384         | 0.647          | 0.100       | 0.200       | 0.220       | 0.245        | 0.400           | 0.350           | 0.340           | 0.347            | 0.100     
+Embed M2             | -0.212   | -0.186  | 0.361          | 0.413          | 0.526          | 0.795           | 0.102         | 0.163         | 0.247         | 0.597          | 0.100       | 0.150       | 0.140       | 0.245        | 0.100           | 0.250           | 0.240           | 0.347            | 0.250     
+Embed M1             | 0.040    | 0.058   | 0.419          | 0.455          | 0.622          | 0.819           | 0.181         | 0.229         | 0.404         | 0.643          | 0.200       | 0.250       | 0.260       | 0.245        | 0.300           | 0.300           | 0.360           | 0.347            | 0.125     
+Hybrid M2            | -0.216   | -0.207  | 0.329          | 0.361          | 0.511          | 0.781           | 0.024         | 0.075         | 0.214         | 0.562          | 0.000       | 0.050       | 0.140       | 0.245        | 0.100           | 0.150           | 0.240           | 0.347            | 0.077     
+Hybrid M1            | 0.004    | -0.115  | 0.321          | 0.408          | 0.597          | 0.797           | 0.023         | 0.154         | 0.360         | 0.597          | 0.000       | 0.200       | 0.260       | 0.245        | 0.100           | 0.250           | 0.360           | 0.347            | 0.071     
+LLM Rubric (Gemma 3) | 0.300    | 0.363   | 0.676          | 0.650          | 0.772          | 0.892           | 0.523         | 0.472         | 0.644         | 0.781          | 0.400       | 0.350       | 0.380       | 0.245        | 0.800           | 0.700           | 0.520           | 0.347            | 0.500     
+NBK ATS Semantic     | 0.322    | 0.401   | 0.817          | 0.729          | 0.809          | 0.929           | 0.770         | 0.623         | 0.722         | 0.870          | 0.700       | 0.500       | 0.360       | 0.245        | 0.700           | 0.550           | 0.460           | 0.347            | 1.000     
+
+Note:
+  * Spearman: Spearman's rank correlation coefficient. Higher = better rank-sorting agreement.
+  * Pearson: Pearson linear correlation coefficient. Higher = better score scaling agreement.
+  * NDCG@K (Cont): NDCG using ground truth score directly as continuous relevance.
+  * NDCG@K (Cat): NDCG using categorical relevance (Good Fit=3, Potential Fit=1, No Fit=0).
+  * P@K (Good): Precision at K: percentage of top-K results that are actually 'Good Fit'.
+  * MRR (Good): Mean Reciprocal Rank of the first 'Good Fit' candidate.
+
+--------------------------------------------------------------------------------------------------------------
+KEY ANALYSIS & INSIGHTS:
+--------------------------------------------------------------------------------------------------------------
+1. Best Ranking/Sorting Model: NBK ATS Semantic (Spearman Rank Correlation = 0.322).
+2. Best Precision Model:
+   - Top 10: NBK ATS Semantic (P@10 Good Fit = 70.0%)
+   - Top 50: LLM Rubric (Gemma 3) (P@50 Good Fit = 38.0%)
+3. Best Cumulative Gain:
+   - Top 10: NBK ATS Semantic (NDCG@10 = 0.817)
+   - Top 50: NBK ATS Semantic (NDCG@50 = 0.809)
+
+--------------------------------------------------------------------------------------------------------------
+DETAILED RANKINGS BREAKDOWNS (ALL 98 CANDIDATES LISTED):
+--------------------------------------------------------------------------------------------------------------
+==========================================================================================
+COMPLETE SORTED CANDIDATE RANKINGS (1 to 98): TF-IDF
+==========================================================================================
+Model Rank | Filename   | Model Score | Ground Truth Score | Ground Truth Label
+----------------------------------------------------------------------------------------
+1          | cv_91.docx | 14.50       | 53.40              | Potential Fit
+2          | cv_36.docx | 13.37       | 23.00              | No Fit
+3          | cv_29.docx | 12.30       | 53.20              | Potential Fit
+4          | cv_67.docx | 12.22       | 28.50              | No Fit
+5          | cv_40.docx | 12.12       | 28.70              | No Fit
+6          | cv_15.docx | 11.54       | 24.00              | No Fit
+7          | cv_95.docx | 11.49       | 21.20              | No Fit
+8          | cv_75.docx | 11.35       | 28.40              | No Fit
+9          | cv_83.docx | 11.15       | 59.10              | Potential Fit
+10         | cv_97.docx | 10.69       | 88.90              | Good Fit
+11         | cv_6.docx  | 10.42       | 86.70              | Good Fit
+12         | cv_8.docx  | 10.41       | 29.10              | No Fit
+13         | cv_68.docx | 10.15       | 28.00              | No Fit
+14         | cv_32.docx | 10.02       | 24.10              | No Fit
+15         | cv_9.docx  | 9.96        | 85.80              | Good Fit
+16         | cv_47.docx | 9.54        | 26.90              | No Fit
+17         | cv_94.docx | 9.34        | 24.80              | No Fit
+18         | cv_66.docx | 9.25        | 80.70              | Good Fit
+19         | cv_57.docx | 9.23        | 20.80              | No Fit
+20         | cv_86.docx | 9.21        | 20.90              | No Fit
+21         | cv_52.docx | 9.17        | 84.30              | Good Fit
+22         | cv_82.docx | 9.10        | 82.30              | Good Fit
+23         | cv_27.docx | 9.06        | 21.90              | No Fit
+24         | cv_65.docx | 9.00        | 83.70              | Good Fit
+25         | cv_85.docx | 8.92        | 82.10              | Good Fit
+26         | cv_41.docx | 8.87        | 20.40              | No Fit
+27         | cv_5.docx  | 8.81        | 88.60              | Good Fit
+28         | cv_11.docx | 8.69        | 26.90              | No Fit
+29         | cv_88.docx | 8.67        | 20.50              | No Fit
+30         | cv_34.docx | 8.60        | 28.70              | No Fit
+31         | cv_58.docx | 8.47        | 27.10              | No Fit
+32         | cv_20.docx | 8.44        | 56.10              | Potential Fit
+33         | cv_48.docx | 8.31        | 26.80              | No Fit
+34         | cv_2.docx  | 8.21        | 25.40              | No Fit
+35         | cv_90.docx | 8.21        | 27.60              | No Fit
+36         | cv_84.docx | 8.20        | 53.40              | Potential Fit
+37         | cv_13.docx | 8.13        | 82.50              | Good Fit
+38         | cv_45.docx | 8.08        | 57.20              | Potential Fit
+39         | cv_3.docx  | 8.00        | 23.50              | No Fit
+40         | cv_77.docx | 7.95        | 22.30              | No Fit
+41         | cv_74.docx | 7.93        | 21.40              | No Fit
+42         | cv_23.docx | 7.92        | 26.90              | No Fit
+43         | cv_53.docx | 7.87        | 25.60              | No Fit
+44         | cv_43.docx | 7.66        | 29.20              | No Fit
+45         | cv_12.docx | 7.51        | 25.40              | No Fit
+46         | cv_79.docx | 7.28        | 85.30              | Good Fit
+47         | cv_31.docx | 7.22        | 20.60              | No Fit
+48         | cv_19.docx | 7.18        | 28.60              | No Fit
+49         | cv_98.docx | 7.16        | 25.60              | No Fit
+50         | cv_56.docx | 7.15        | 23.70              | No Fit
+51         | cv_62.docx | 7.07        | 21.30              | No Fit
+52         | cv_22.docx | 6.94        | 29.80              | No Fit
+53         | cv_1.docx  | 6.88        | 26.90              | No Fit
+54         | cv_89.docx | 6.79        | 20.50              | No Fit
+55         | cv_93.docx | 6.71        | 29.90              | No Fit
+56         | cv_50.docx | 6.65        | 24.70              | No Fit
+57         | cv_51.docx | 6.61        | 27.90              | No Fit
+58         | cv_87.docx | 6.51        | 89.80              | Good Fit
+59         | cv_4.docx  | 6.48        | 26.90              | No Fit
+60         | cv_80.docx | 6.22        | 25.60              | No Fit
+61         | cv_71.docx | 5.62        | 52.70              | Potential Fit
+62         | cv_38.docx | 5.61        | 28.40              | No Fit
+63         | cv_42.docx | 5.61        | 28.00              | No Fit
+64         | cv_64.docx | 5.47        | 29.60              | No Fit
+65         | cv_37.docx | 5.47        | 26.80              | No Fit
+66         | cv_24.docx | 5.40        | 82.00              | Good Fit
+67         | cv_33.docx | 5.34        | 29.30              | No Fit
+68         | cv_78.docx | 5.30        | 22.10              | No Fit
+69         | cv_72.docx | 5.29        | 28.10              | No Fit
+70         | cv_39.docx | 5.28        | 54.80              | Potential Fit
+71         | cv_16.docx | 5.18        | 21.00              | No Fit
+72         | cv_28.docx | 5.17        | 85.00              | Good Fit
+73         | cv_21.docx | 5.13        | 20.90              | No Fit
+74         | cv_55.docx | 5.11        | 21.60              | No Fit
+75         | cv_35.docx | 5.08        | 25.00              | No Fit
+76         | cv_81.docx | 4.90        | 21.50              | No Fit
+77         | cv_17.docx | 4.82        | 22.00              | No Fit
+78         | cv_30.docx | 4.78        | 83.00              | Good Fit
+79         | cv_26.docx | 4.75        | 82.80              | Good Fit
+80         | cv_44.docx | 4.57        | 22.30              | No Fit
+81         | cv_70.docx | 4.47        | 81.40              | Good Fit
+82         | cv_49.docx | 4.46        | 24.10              | No Fit
+83         | cv_76.docx | 4.44        | 28.30              | No Fit
+84         | cv_54.docx | 4.28        | 82.30              | Good Fit
+85         | cv_96.docx | 4.23        | 84.40              | Good Fit
+86         | cv_46.docx | 3.98        | 57.10              | Potential Fit
+87         | cv_7.docx  | 3.95        | 22.20              | No Fit
+88         | cv_14.docx | 3.95        | 55.60              | Potential Fit
+89         | cv_61.docx | 3.81        | 89.30              | Good Fit
+90         | cv_25.docx | 3.60        | 87.40              | Good Fit
+91         | cv_69.docx | 3.53        | 83.20              | Good Fit
+92         | cv_10.docx | 3.41        | 25.40              | No Fit
+93         | cv_60.docx | 3.28        | 86.50              | Good Fit
+94         | cv_18.docx | 3.17        | 88.40              | Good Fit
+95         | cv_59.docx | 3.03        | 24.90              | No Fit
+96         | cv_63.docx | 2.95        | 22.10              | No Fit
+97         | cv_92.docx | 2.40        | 21.60              | No Fit
+98         | cv_73.docx | 2.25        | 29.50              | No Fit
+
+==========================================================================================
+COMPLETE SORTED CANDIDATE RANKINGS (1 to 98): Embed M2
+==========================================================================================
+Model Rank | Filename   | Model Score | Ground Truth Score | Ground Truth Label
+----------------------------------------------------------------------------------------
+1          | cv_40.docx | 97.04       | 28.70              | No Fit
+2          | cv_36.docx | 97.00       | 23.00              | No Fit
+3          | cv_32.docx | 96.95       | 24.10              | No Fit
+4          | cv_97.docx | 96.95       | 88.90              | Good Fit
+5          | cv_95.docx | 96.80       | 21.20              | No Fit
+6          | cv_62.docx | 96.79       | 21.30              | No Fit
+7          | cv_68.docx | 96.74       | 28.00              | No Fit
+8          | cv_8.docx  | 96.68       | 29.10              | No Fit
+9          | cv_94.docx | 96.61       | 24.80              | No Fit
+10         | cv_49.docx | 96.57       | 24.10              | No Fit
+11         | cv_84.docx | 96.56       | 53.40              | Potential Fit
+12         | cv_13.docx | 96.56       | 82.50              | Good Fit
+13         | cv_45.docx | 96.45       | 57.20              | Potential Fit
+14         | cv_90.docx | 96.41       | 27.60              | No Fit
+15         | cv_51.docx | 96.34       | 27.90              | No Fit
+16         | cv_34.docx | 96.20       | 28.70              | No Fit
+17         | cv_57.docx | 96.20       | 20.80              | No Fit
+18         | cv_88.docx | 96.16       | 20.50              | No Fit
+19         | cv_74.docx | 96.13       | 21.40              | No Fit
+20         | cv_65.docx | 96.11       | 83.70              | Good Fit
+21         | cv_67.docx | 96.10       | 28.50              | No Fit
+22         | cv_53.docx | 96.08       | 25.60              | No Fit
+23         | cv_27.docx | 96.06       | 21.90              | No Fit
+24         | cv_12.docx | 95.96       | 25.40              | No Fit
+25         | cv_75.docx | 95.79       | 28.40              | No Fit
+26         | cv_58.docx | 95.75       | 27.10              | No Fit
+27         | cv_24.docx | 95.73       | 82.00              | Good Fit
+28         | cv_2.docx  | 95.64       | 25.40              | No Fit
+29         | cv_47.docx | 95.56       | 26.90              | No Fit
+30         | cv_79.docx | 95.54       | 85.30              | Good Fit
+31         | cv_50.docx | 95.48       | 24.70              | No Fit
+32         | cv_31.docx | 95.36       | 20.60              | No Fit
+33         | cv_33.docx | 95.34       | 29.30              | No Fit
+34         | cv_6.docx  | 95.32       | 86.70              | Good Fit
+35         | cv_15.docx | 95.27       | 24.00              | No Fit
+36         | cv_41.docx | 95.22       | 20.40              | No Fit
+37         | cv_77.docx | 95.11       | 22.30              | No Fit
+38         | cv_44.docx | 95.09       | 22.30              | No Fit
+39         | cv_42.docx | 95.00       | 28.00              | No Fit
+40         | cv_82.docx | 94.98       | 82.30              | Good Fit
+41         | cv_29.docx | 94.85       | 53.20              | Potential Fit
+42         | cv_91.docx | 94.84       | 53.40              | Potential Fit
+43         | cv_86.docx | 94.84       | 20.90              | No Fit
+44         | cv_83.docx | 94.83       | 59.10              | Potential Fit
+45         | cv_64.docx | 94.78       | 29.60              | No Fit
+46         | cv_81.docx | 94.76       | 21.50              | No Fit
+47         | cv_37.docx | 94.75       | 26.80              | No Fit
+48         | cv_1.docx  | 94.72       | 26.90              | No Fit
+49         | cv_3.docx  | 94.70       | 23.50              | No Fit
+50         | cv_80.docx | 94.62       | 25.60              | No Fit
+51         | cv_4.docx  | 94.57       | 26.90              | No Fit
+52         | cv_78.docx | 94.47       | 22.10              | No Fit
+53         | cv_87.docx | 94.44       | 89.80              | Good Fit
+54         | cv_63.docx | 94.40       | 22.10              | No Fit
+55         | cv_52.docx | 94.35       | 84.30              | Good Fit
+56         | cv_17.docx | 94.30       | 22.00              | No Fit
+57         | cv_25.docx | 94.22       | 87.40              | Good Fit
+58         | cv_20.docx | 94.20       | 56.10              | Potential Fit
+59         | cv_39.docx | 94.10       | 54.80              | Potential Fit
+60         | cv_10.docx | 94.08       | 25.40              | No Fit
+61         | cv_85.docx | 94.08       | 82.10              | Good Fit
+62         | cv_21.docx | 94.03       | 20.90              | No Fit
+63         | cv_55.docx | 93.88       | 21.60              | No Fit
+64         | cv_93.docx | 93.77       | 29.90              | No Fit
+65         | cv_18.docx | 93.62       | 88.40              | Good Fit
+66         | cv_30.docx | 93.62       | 83.00              | Good Fit
+67         | cv_23.docx | 93.56       | 26.90              | No Fit
+68         | cv_43.docx | 93.46       | 29.20              | No Fit
+69         | cv_71.docx | 93.45       | 52.70              | Potential Fit
+70         | cv_9.docx  | 93.35       | 85.80              | Good Fit
+71         | cv_5.docx  | 93.33       | 88.60              | Good Fit
+72         | cv_48.docx | 93.22       | 26.80              | No Fit
+73         | cv_11.docx | 92.90       | 26.90              | No Fit
+74         | cv_28.docx | 92.53       | 85.00              | Good Fit
+75         | cv_69.docx | 92.51       | 83.20              | Good Fit
+76         | cv_66.docx | 91.92       | 80.70              | Good Fit
+77         | cv_89.docx | 91.88       | 20.50              | No Fit
+78         | cv_22.docx | 91.82       | 29.80              | No Fit
+79         | cv_76.docx | 91.67       | 28.30              | No Fit
+80         | cv_92.docx | 91.59       | 21.60              | No Fit
+81         | cv_7.docx  | 91.34       | 22.20              | No Fit
+82         | cv_19.docx | 91.28       | 28.60              | No Fit
+83         | cv_70.docx | 91.00       | 81.40              | Good Fit
+84         | cv_14.docx | 90.30       | 55.60              | Potential Fit
+85         | cv_35.docx | 90.21       | 25.00              | No Fit
+86         | cv_26.docx | 90.10       | 82.80              | Good Fit
+87         | cv_38.docx | 89.85       | 28.40              | No Fit
+88         | cv_61.docx | 89.82       | 89.30              | Good Fit
+89         | cv_16.docx | 89.41       | 21.00              | No Fit
+90         | cv_72.docx | 89.39       | 28.10              | No Fit
+91         | cv_46.docx | 89.04       | 57.10              | Potential Fit
+92         | cv_56.docx | 88.77       | 23.70              | No Fit
+93         | cv_54.docx | 88.49       | 82.30              | Good Fit
+94         | cv_60.docx | 88.25       | 86.50              | Good Fit
+95         | cv_98.docx | 88.22       | 25.60              | No Fit
+96         | cv_73.docx | 86.42       | 29.50              | No Fit
+97         | cv_59.docx | 84.27       | 24.90              | No Fit
+98         | cv_96.docx | 81.69       | 84.40              | Good Fit
+
+==========================================================================================
+COMPLETE SORTED CANDIDATE RANKINGS (1 to 98): Embed M1
+==========================================================================================
+Model Rank | Filename   | Model Score | Ground Truth Score | Ground Truth Label
+----------------------------------------------------------------------------------------
+1          | cv_51.docx | 98.93       | 27.90              | No Fit
+2          | cv_84.docx | 98.83       | 53.40              | Potential Fit
+3          | cv_94.docx | 98.80       | 24.80              | No Fit
+4          | cv_62.docx | 98.74       | 21.30              | No Fit
+5          | cv_90.docx | 98.73       | 27.60              | No Fit
+6          | cv_49.docx | 98.70       | 24.10              | No Fit
+7          | cv_32.docx | 98.69       | 24.10              | No Fit
+8          | cv_13.docx | 98.65       | 82.50              | Good Fit
+9          | cv_27.docx | 98.64       | 21.90              | No Fit
+10         | cv_79.docx | 98.64       | 85.30              | Good Fit
+11         | cv_97.docx | 98.47       | 88.90              | Good Fit
+12         | cv_24.docx | 98.46       | 82.00              | Good Fit
+13         | cv_36.docx | 98.36       | 23.00              | No Fit
+14         | cv_50.docx | 98.26       | 24.70              | No Fit
+15         | cv_75.docx | 98.14       | 28.40              | No Fit
+16         | cv_6.docx  | 98.12       | 86.70              | Good Fit
+17         | cv_44.docx | 98.11       | 22.30              | No Fit
+18         | cv_57.docx | 98.02       | 20.80              | No Fit
+19         | cv_88.docx | 98.01       | 20.50              | No Fit
+20         | cv_8.docx  | 97.98       | 29.10              | No Fit
+21         | cv_53.docx | 97.94       | 25.60              | No Fit
+22         | cv_67.docx | 97.94       | 28.50              | No Fit
+23         | cv_40.docx | 97.88       | 28.70              | No Fit
+24         | cv_34.docx | 97.87       | 28.70              | No Fit
+25         | cv_39.docx | 97.86       | 54.80              | Potential Fit
+26         | cv_85.docx | 97.74       | 82.10              | Good Fit
+27         | cv_82.docx | 97.72       | 82.30              | Good Fit
+28         | cv_69.docx | 97.70       | 83.20              | Good Fit
+29         | cv_10.docx | 97.66       | 25.40              | No Fit
+30         | cv_9.docx  | 97.60       | 85.80              | Good Fit
+31         | cv_18.docx | 97.56       | 88.40              | Good Fit
+32         | cv_58.docx | 97.52       | 27.10              | No Fit
+33         | cv_68.docx | 97.50       | 28.00              | No Fit
+34         | cv_14.docx | 97.37       | 55.60              | Potential Fit
+35         | cv_65.docx | 97.37       | 83.70              | Good Fit
+36         | cv_47.docx | 97.28       | 26.90              | No Fit
+37         | cv_52.docx | 97.22       | 84.30              | Good Fit
+38         | cv_21.docx | 97.19       | 20.90              | No Fit
+39         | cv_87.docx | 97.19       | 89.80              | Good Fit
+40         | cv_15.docx | 97.18       | 24.00              | No Fit
+41         | cv_33.docx | 97.15       | 29.30              | No Fit
+42         | cv_95.docx | 97.13       | 21.20              | No Fit
+43         | cv_45.docx | 97.13       | 57.20              | Potential Fit
+44         | cv_2.docx  | 97.08       | 25.40              | No Fit
+45         | cv_20.docx | 96.97       | 56.10              | Potential Fit
+46         | cv_74.docx | 96.81       | 21.40              | No Fit
+47         | cv_48.docx | 96.80       | 26.80              | No Fit
+48         | cv_12.docx | 96.77       | 25.40              | No Fit
+49         | cv_78.docx | 96.77       | 22.10              | No Fit
+50         | cv_80.docx | 96.76       | 25.60              | No Fit
+51         | cv_25.docx | 96.70       | 87.40              | Good Fit
+52         | cv_4.docx  | 96.57       | 26.90              | No Fit
+53         | cv_91.docx | 96.57       | 53.40              | Potential Fit
+54         | cv_83.docx | 96.56       | 59.10              | Potential Fit
+55         | cv_71.docx | 96.51       | 52.70              | Potential Fit
+56         | cv_30.docx | 96.41       | 83.00              | Good Fit
+57         | cv_31.docx | 96.37       | 20.60              | No Fit
+58         | cv_23.docx | 96.05       | 26.90              | No Fit
+59         | cv_41.docx | 95.97       | 20.40              | No Fit
+60         | cv_29.docx | 95.95       | 53.20              | Potential Fit
+61         | cv_64.docx | 95.72       | 29.60              | No Fit
+62         | cv_61.docx | 95.71       | 89.30              | Good Fit
+63         | cv_35.docx | 95.71       | 25.00              | No Fit
+64         | cv_81.docx | 95.67       | 21.50              | No Fit
+65         | cv_37.docx | 95.54       | 26.80              | No Fit
+66         | cv_43.docx | 95.54       | 29.20              | No Fit
+67         | cv_55.docx | 95.54       | 21.60              | No Fit
+68         | cv_77.docx | 95.51       | 22.30              | No Fit
+69         | cv_60.docx | 95.33       | 86.50              | Good Fit
+70         | cv_92.docx | 95.30       | 21.60              | No Fit
+71         | cv_3.docx  | 95.28       | 23.50              | No Fit
+72         | cv_42.docx | 95.16       | 28.00              | No Fit
+73         | cv_63.docx | 95.15       | 22.10              | No Fit
+74         | cv_76.docx | 94.53       | 28.30              | No Fit
+75         | cv_54.docx | 94.42       | 82.30              | Good Fit
+76         | cv_26.docx | 94.25       | 82.80              | Good Fit
+77         | cv_5.docx  | 94.20       | 88.60              | Good Fit
+78         | cv_17.docx | 94.03       | 22.00              | No Fit
+79         | cv_1.docx  | 93.82       | 26.90              | No Fit
+80         | cv_28.docx | 93.56       | 85.00              | Good Fit
+81         | cv_46.docx | 93.50       | 57.10              | Potential Fit
+82         | cv_86.docx | 93.31       | 20.90              | No Fit
+83         | cv_7.docx  | 92.75       | 22.20              | No Fit
+84         | cv_11.docx | 92.63       | 26.90              | No Fit
+85         | cv_19.docx | 92.53       | 28.60              | No Fit
+86         | cv_89.docx | 92.34       | 20.50              | No Fit
+87         | cv_93.docx | 92.22       | 29.90              | No Fit
+88         | cv_70.docx | 91.52       | 81.40              | Good Fit
+89         | cv_66.docx | 91.36       | 80.70              | Good Fit
+90         | cv_22.docx | 90.90       | 29.80              | No Fit
+91         | cv_16.docx | 88.88       | 21.00              | No Fit
+92         | cv_72.docx | 88.74       | 28.10              | No Fit
+93         | cv_56.docx | 88.04       | 23.70              | No Fit
+94         | cv_38.docx | 87.42       | 28.40              | No Fit
+95         | cv_73.docx | 87.39       | 29.50              | No Fit
+96         | cv_98.docx | 87.07       | 25.60              | No Fit
+97         | cv_96.docx | 80.96       | 84.40              | Good Fit
+98         | cv_59.docx | 79.58       | 24.90              | No Fit
+
+==========================================================================================
+COMPLETE SORTED CANDIDATE RANKINGS (1 to 98): Hybrid M2
+==========================================================================================
+Model Rank | Filename   | Model Score | Ground Truth Score | Ground Truth Label
+----------------------------------------------------------------------------------------
+1          | cv_4.docx  | 96.38       | 26.90              | No Fit
+2          | cv_34.docx | 80.80       | 28.70              | No Fit
+3          | cv_67.docx | 80.73       | 28.50              | No Fit
+4          | cv_53.docx | 80.72       | 25.60              | No Fit
+5          | cv_47.docx | 80.37       | 26.90              | No Fit
+6          | cv_15.docx | 80.18       | 24.00              | No Fit
+7          | cv_91.docx | 79.89       | 53.40              | Potential Fit
+8          | cv_38.docx | 76.57       | 28.40              | No Fit
+9          | cv_98.docx | 75.48       | 25.60              | No Fit
+10         | cv_40.docx | 64.69       | 28.70              | No Fit
+11         | cv_36.docx | 64.67       | 23.00              | No Fit
+12         | cv_32.docx | 64.63       | 24.10              | No Fit
+13         | cv_97.docx | 64.63       | 88.90              | Good Fit
+14         | cv_95.docx | 64.53       | 21.20              | No Fit
+15         | cv_62.docx | 64.53       | 21.30              | No Fit
+16         | cv_68.docx | 64.49       | 28.00              | No Fit
+17         | cv_8.docx  | 64.45       | 29.10              | No Fit
+18         | cv_94.docx | 64.41       | 24.80              | No Fit
+19         | cv_49.docx | 64.38       | 24.10              | No Fit
+20         | cv_84.docx | 64.37       | 53.40              | Potential Fit
+21         | cv_13.docx | 64.37       | 82.50              | Good Fit
+22         | cv_45.docx | 64.30       | 57.20              | Potential Fit
+23         | cv_90.docx | 64.28       | 27.60              | No Fit
+24         | cv_51.docx | 64.23       | 27.90              | No Fit
+25         | cv_57.docx | 64.14       | 20.80              | No Fit
+26         | cv_88.docx | 64.10       | 20.50              | No Fit
+27         | cv_74.docx | 64.09       | 21.40              | No Fit
+28         | cv_65.docx | 64.07       | 83.70              | Good Fit
+29         | cv_27.docx | 64.04       | 21.90              | No Fit
+30         | cv_12.docx | 63.97       | 25.40              | No Fit
+31         | cv_75.docx | 63.86       | 28.40              | No Fit
+32         | cv_58.docx | 63.83       | 27.10              | No Fit
+33         | cv_24.docx | 63.82       | 82.00              | Good Fit
+34         | cv_2.docx  | 63.76       | 25.40              | No Fit
+35         | cv_79.docx | 63.70       | 85.30              | Good Fit
+36         | cv_50.docx | 63.65       | 24.70              | No Fit
+37         | cv_31.docx | 63.57       | 20.60              | No Fit
+38         | cv_33.docx | 63.56       | 29.30              | No Fit
+39         | cv_6.docx  | 63.54       | 86.70              | Good Fit
+40         | cv_41.docx | 63.48       | 20.40              | No Fit
+41         | cv_77.docx | 63.40       | 22.30              | No Fit
+42         | cv_44.docx | 63.39       | 22.30              | No Fit
+43         | cv_42.docx | 63.33       | 28.00              | No Fit
+44         | cv_82.docx | 63.32       | 82.30              | Good Fit
+45         | cv_29.docx | 63.23       | 53.20              | Potential Fit
+46         | cv_86.docx | 63.23       | 20.90              | No Fit
+47         | cv_83.docx | 63.22       | 59.10              | Potential Fit
+48         | cv_64.docx | 63.19       | 29.60              | No Fit
+49         | cv_81.docx | 63.18       | 21.50              | No Fit
+50         | cv_37.docx | 63.17       | 26.80              | No Fit
+51         | cv_1.docx  | 63.15       | 26.90              | No Fit
+52         | cv_3.docx  | 63.14       | 23.50              | No Fit
+53         | cv_80.docx | 63.08       | 25.60              | No Fit
+54         | cv_78.docx | 62.98       | 22.10              | No Fit
+55         | cv_87.docx | 62.96       | 89.80              | Good Fit
+56         | cv_63.docx | 62.94       | 22.10              | No Fit
+57         | cv_52.docx | 62.90       | 84.30              | Good Fit
+58         | cv_17.docx | 62.87       | 22.00              | No Fit
+59         | cv_25.docx | 62.82       | 87.40              | Good Fit
+60         | cv_20.docx | 62.80       | 56.10              | Potential Fit
+61         | cv_39.docx | 62.73       | 54.80              | Potential Fit
+62         | cv_10.docx | 62.72       | 25.40              | No Fit
+63         | cv_85.docx | 62.72       | 82.10              | Good Fit
+64         | cv_21.docx | 62.69       | 20.90              | No Fit
+65         | cv_55.docx | 62.59       | 21.60              | No Fit
+66         | cv_93.docx | 62.51       | 29.90              | No Fit
+67         | cv_18.docx | 62.41       | 88.40              | Good Fit
+68         | cv_30.docx | 62.41       | 83.00              | Good Fit
+69         | cv_23.docx | 62.37       | 26.90              | No Fit
+70         | cv_43.docx | 62.31       | 29.20              | No Fit
+71         | cv_71.docx | 62.30       | 52.70              | Potential Fit
+72         | cv_9.docx  | 62.23       | 85.80              | Good Fit
+73         | cv_5.docx  | 62.22       | 88.60              | Good Fit
+74         | cv_48.docx | 62.14       | 26.80              | No Fit
+75         | cv_11.docx | 61.94       | 26.90              | No Fit
+76         | cv_28.docx | 61.69       | 85.00              | Good Fit
+77         | cv_69.docx | 61.68       | 83.20              | Good Fit
+78         | cv_66.docx | 61.28       | 80.70              | Good Fit
+79         | cv_89.docx | 61.26       | 20.50              | No Fit
+80         | cv_22.docx | 61.22       | 29.80              | No Fit
+81         | cv_76.docx | 61.12       | 28.30              | No Fit
+82         | cv_92.docx | 61.06       | 21.60              | No Fit
+83         | cv_7.docx  | 60.89       | 22.20              | No Fit
+84         | cv_19.docx | 60.85       | 28.60              | No Fit
+85         | cv_70.docx | 60.66       | 81.40              | Good Fit
+86         | cv_14.docx | 60.20       | 55.60              | Potential Fit
+87         | cv_35.docx | 60.14       | 25.00              | No Fit
+88         | cv_26.docx | 60.07       | 82.80              | Good Fit
+89         | cv_61.docx | 59.88       | 89.30              | Good Fit
+90         | cv_16.docx | 59.60       | 21.00              | No Fit
+91         | cv_72.docx | 59.59       | 28.10              | No Fit
+92         | cv_46.docx | 59.36       | 57.10              | Potential Fit
+93         | cv_56.docx | 59.18       | 23.70              | No Fit
+94         | cv_54.docx | 59.00       | 82.30              | Good Fit
+95         | cv_60.docx | 58.83       | 86.50              | Good Fit
+96         | cv_73.docx | 57.62       | 29.50              | No Fit
+97         | cv_59.docx | 56.18       | 24.90              | No Fit
+98         | cv_96.docx | 54.46       | 84.40              | Good Fit
+
+==========================================================================================
+COMPLETE SORTED CANDIDATE RANKINGS (1 to 98): Hybrid M1
+==========================================================================================
+Model Rank | Filename   | Model Score | Ground Truth Score | Ground Truth Label
+----------------------------------------------------------------------------------------
+1          | cv_4.docx  | 97.71       | 26.90              | No Fit
+2          | cv_67.docx | 81.96       | 28.50              | No Fit
+3          | cv_47.docx | 81.52       | 26.90              | No Fit
+4          | cv_15.docx | 81.45       | 24.00              | No Fit
+5          | cv_38.docx | 74.95       | 28.40              | No Fit
+6          | cv_98.docx | 74.72       | 25.60              | No Fit
+7          | cv_51.docx | 65.95       | 27.90              | No Fit
+8          | cv_84.docx | 65.88       | 53.40              | Potential Fit
+9          | cv_94.docx | 65.87       | 24.80              | No Fit
+10         | cv_62.docx | 65.83       | 21.30              | No Fit
+11         | cv_90.docx | 65.82       | 27.60              | No Fit
+12         | cv_49.docx | 65.80       | 24.10              | No Fit
+13         | cv_32.docx | 65.79       | 24.10              | No Fit
+14         | cv_13.docx | 65.77       | 82.50              | Good Fit
+15         | cv_27.docx | 65.76       | 21.90              | No Fit
+16         | cv_79.docx | 65.76       | 85.30              | Good Fit
+17         | cv_24.docx | 65.64       | 82.00              | Good Fit
+18         | cv_97.docx | 65.64       | 88.90              | Good Fit
+19         | cv_36.docx | 65.58       | 23.00              | No Fit
+20         | cv_50.docx | 65.51       | 24.70              | No Fit
+21         | cv_75.docx | 65.43       | 28.40              | No Fit
+22         | cv_6.docx  | 65.42       | 86.70              | Good Fit
+23         | cv_44.docx | 65.40       | 22.30              | No Fit
+24         | cv_57.docx | 65.35       | 20.80              | No Fit
+25         | cv_88.docx | 65.34       | 20.50              | No Fit
+26         | cv_8.docx  | 65.32       | 29.10              | No Fit
+27         | cv_53.docx | 65.29       | 25.60              | No Fit
+28         | cv_40.docx | 65.25       | 28.70              | No Fit
+29         | cv_34.docx | 65.24       | 28.70              | No Fit
+30         | cv_39.docx | 65.24       | 54.80              | Potential Fit
+31         | cv_85.docx | 65.16       | 82.10              | Good Fit
+32         | cv_82.docx | 65.14       | 82.30              | Good Fit
+33         | cv_69.docx | 65.13       | 83.20              | Good Fit
+34         | cv_10.docx | 65.10       | 25.40              | No Fit
+35         | cv_9.docx  | 65.07       | 85.80              | Good Fit
+36         | cv_18.docx | 65.04       | 88.40              | Good Fit
+37         | cv_58.docx | 65.01       | 27.10              | No Fit
+38         | cv_68.docx | 65.00       | 28.00              | No Fit
+39         | cv_14.docx | 64.92       | 55.60              | Potential Fit
+40         | cv_65.docx | 64.91       | 83.70              | Good Fit
+41         | cv_52.docx | 64.81       | 84.30              | Good Fit
+42         | cv_21.docx | 64.79       | 20.90              | No Fit
+43         | cv_87.docx | 64.79       | 89.80              | Good Fit
+44         | cv_33.docx | 64.76       | 29.30              | No Fit
+45         | cv_95.docx | 64.75       | 21.20              | No Fit
+46         | cv_45.docx | 64.75       | 57.20              | Potential Fit
+47         | cv_2.docx  | 64.72       | 25.40              | No Fit
+48         | cv_20.docx | 64.64       | 56.10              | Potential Fit
+49         | cv_48.docx | 64.54       | 26.80              | No Fit
+50         | cv_74.docx | 64.54       | 21.40              | No Fit
+51         | cv_12.docx | 64.51       | 25.40              | No Fit
+52         | cv_78.docx | 64.51       | 22.10              | No Fit
+53         | cv_80.docx | 64.50       | 25.60              | No Fit
+54         | cv_25.docx | 64.47       | 87.40              | Good Fit
+55         | cv_91.docx | 64.38       | 53.40              | Potential Fit
+56         | cv_83.docx | 64.38       | 59.10              | Potential Fit
+57         | cv_71.docx | 64.34       | 52.70              | Potential Fit
+58         | cv_30.docx | 64.27       | 83.00              | Good Fit
+59         | cv_31.docx | 64.25       | 20.60              | No Fit
+60         | cv_23.docx | 64.03       | 26.90              | No Fit
+61         | cv_41.docx | 63.98       | 20.40              | No Fit
+62         | cv_29.docx | 63.97       | 53.20              | Potential Fit
+63         | cv_64.docx | 63.82       | 29.60              | No Fit
+64         | cv_61.docx | 63.81       | 89.30              | Good Fit
+65         | cv_35.docx | 63.81       | 25.00              | No Fit
+66         | cv_81.docx | 63.78       | 21.50              | No Fit
+67         | cv_55.docx | 63.70       | 21.60              | No Fit
+68         | cv_37.docx | 63.69       | 26.80              | No Fit
+69         | cv_43.docx | 63.69       | 29.20              | No Fit
+70         | cv_77.docx | 63.67       | 22.30              | No Fit
+71         | cv_60.docx | 63.56       | 86.50              | Good Fit
+72         | cv_92.docx | 63.53       | 21.60              | No Fit
+73         | cv_3.docx  | 63.52       | 23.50              | No Fit
+74         | cv_63.docx | 63.44       | 22.10              | No Fit
+75         | cv_42.docx | 63.44       | 28.00              | No Fit
+76         | cv_76.docx | 63.02       | 28.30              | No Fit
+77         | cv_54.docx | 62.95       | 82.30              | Good Fit
+78         | cv_26.docx | 62.84       | 82.80              | Good Fit
+79         | cv_5.docx  | 62.80       | 88.60              | Good Fit
+80         | cv_17.docx | 62.69       | 22.00              | No Fit
+81         | cv_1.docx  | 62.55       | 26.90              | No Fit
+82         | cv_28.docx | 62.38       | 85.00              | Good Fit
+83         | cv_46.docx | 62.33       | 57.10              | Potential Fit
+84         | cv_86.docx | 62.21       | 20.90              | No Fit
+85         | cv_7.docx  | 61.83       | 22.20              | No Fit
+86         | cv_11.docx | 61.75       | 26.90              | No Fit
+87         | cv_19.docx | 61.68       | 28.60              | No Fit
+88         | cv_89.docx | 61.56       | 20.50              | No Fit
+89         | cv_93.docx | 61.48       | 29.90              | No Fit
+90         | cv_70.docx | 61.01       | 81.40              | Good Fit
+91         | cv_66.docx | 60.91       | 80.70              | Good Fit
+92         | cv_22.docx | 60.60       | 29.80              | No Fit
+93         | cv_16.docx | 59.25       | 21.00              | No Fit
+94         | cv_72.docx | 59.16       | 28.10              | No Fit
+95         | cv_56.docx | 58.69       | 23.70              | No Fit
+96         | cv_73.docx | 58.26       | 29.50              | No Fit
+97         | cv_96.docx | 53.97       | 84.40              | Good Fit
+98         | cv_59.docx | 53.05       | 24.90              | No Fit
+
+==========================================================================================
+COMPLETE SORTED CANDIDATE RANKINGS (1 to 98): LLM Rubric (Gemma 3)
+==========================================================================================
+Model Rank | Filename   | Model Score | Ground Truth Score | Ground Truth Label
+----------------------------------------------------------------------------------------
+1          | cv_91.docx | 93.00       | 53.40              | Potential Fit
+2          | cv_70.docx | 86.00       | 81.40              | Good Fit
+3          | cv_20.docx | 85.00       | 56.10              | Potential Fit
+4          | cv_31.docx | 85.00       | 20.60              | No Fit
+5          | cv_52.docx | 85.00       | 84.30              | Good Fit
+6          | cv_66.docx | 85.00       | 80.70              | Good Fit
+7          | cv_71.docx | 85.00       | 52.70              | Potential Fit
+8          | cv_77.docx | 85.00       | 22.30              | No Fit
+9          | cv_83.docx | 85.00       | 59.10              | Potential Fit
+10         | cv_5.docx  | 82.00       | 88.60              | Good Fit
+11         | cv_9.docx  | 82.00       | 85.80              | Good Fit
+12         | cv_84.docx | 78.00       | 53.40              | Potential Fit
+13         | cv_61.docx | 78.00       | 89.30              | Good Fit
+14         | cv_94.docx | 78.00       | 24.80              | No Fit
+15         | cv_15.docx | 78.00       | 24.00              | No Fit
+16         | cv_16.docx | 78.00       | 21.00              | No Fit
+17         | cv_85.docx | 78.00       | 82.10              | Good Fit
+18         | cv_29.docx | 78.00       | 53.20              | Potential Fit
+19         | cv_46.docx | 78.00       | 57.10              | Potential Fit
+20         | cv_47.docx | 78.00       | 26.90              | No Fit
+21         | cv_55.docx | 78.00       | 21.60              | No Fit
+22         | cv_60.docx | 68.00       | 86.50              | Good Fit
+23         | cv_8.docx  | 68.00       | 29.10              | No Fit
+24         | cv_13.docx | 68.00       | 82.50              | Good Fit
+25         | cv_23.docx | 68.00       | 26.90              | No Fit
+26         | cv_26.docx | 68.00       | 82.80              | Good Fit
+27         | cv_32.docx | 68.00       | 24.10              | No Fit
+28         | cv_30.docx | 68.00       | 83.00              | Good Fit
+29         | cv_34.docx | 68.00       | 28.70              | No Fit
+30         | cv_40.docx | 68.00       | 28.70              | No Fit
+31         | cv_41.docx | 68.00       | 20.40              | No Fit
+32         | cv_48.docx | 68.00       | 26.80              | No Fit
+33         | cv_65.docx | 68.00       | 83.70              | Good Fit
+34         | cv_69.docx | 68.00       | 83.20              | Good Fit
+35         | cv_79.docx | 68.00       | 85.30              | Good Fit
+36         | cv_74.docx | 68.00       | 21.40              | No Fit
+37         | cv_75.docx | 68.00       | 28.40              | No Fit
+38         | cv_96.docx | 68.00       | 84.40              | Good Fit
+39         | cv_97.docx | 68.00       | 88.90              | Good Fit
+40         | cv_2.docx  | 62.00       | 25.40              | No Fit
+41         | cv_6.docx  | 62.00       | 86.70              | Good Fit
+42         | cv_50.docx | 62.00       | 24.70              | No Fit
+43         | cv_86.docx | 62.00       | 20.90              | No Fit
+44         | cv_67.docx | 58.00       | 28.50              | No Fit
+45         | cv_72.docx | 58.00       | 28.10              | No Fit
+46         | cv_95.docx | 48.00       | 21.20              | No Fit
+47         | cv_11.docx | 48.00       | 26.90              | No Fit
+48         | cv_17.docx | 48.00       | 22.00              | No Fit
+49         | cv_24.docx | 48.00       | 82.00              | Good Fit
+50         | cv_28.docx | 48.00       | 85.00              | Good Fit
+51         | cv_36.docx | 48.00       | 23.00              | No Fit
+52         | cv_38.docx | 48.00       | 28.40              | No Fit
+53         | cv_39.docx | 48.00       | 54.80              | Potential Fit
+54         | cv_43.docx | 48.00       | 29.20              | No Fit
+55         | cv_53.docx | 48.00       | 25.60              | No Fit
+56         | cv_56.docx | 48.00       | 23.70              | No Fit
+57         | cv_58.docx | 48.00       | 27.10              | No Fit
+58         | cv_59.docx | 48.00       | 24.90              | No Fit
+59         | cv_76.docx | 48.00       | 28.30              | No Fit
+60         | cv_80.docx | 48.00       | 25.60              | No Fit
+61         | cv_92.docx | 45.00       | 21.60              | No Fit
+62         | cv_18.docx | 45.00       | 88.40              | Good Fit
+63         | cv_98.docx | 45.00       | 25.60              | No Fit
+64         | cv_35.docx | 42.00       | 25.00              | No Fit
+65         | cv_54.docx | 42.00       | 82.30              | Good Fit
+66         | cv_62.docx | 38.00       | 21.30              | No Fit
+67         | cv_1.docx  | 38.00       | 26.90              | No Fit
+68         | cv_33.docx | 38.00       | 29.30              | No Fit
+69         | cv_44.docx | 38.00       | 22.30              | No Fit
+70         | cv_87.docx | 38.00       | 89.80              | Good Fit
+71         | cv_93.docx | 35.00       | 29.90              | No Fit
+72         | cv_12.docx | 35.00       | 25.40              | No Fit
+73         | cv_22.docx | 35.00       | 29.80              | No Fit
+74         | cv_27.docx | 35.00       | 21.90              | No Fit
+75         | cv_42.docx | 35.00       | 28.00              | No Fit
+76         | cv_45.docx | 35.00       | 57.20              | Potential Fit
+77         | cv_78.docx | 35.00       | 22.10              | No Fit
+78         | cv_81.docx | 35.00       | 21.50              | No Fit
+79         | cv_73.docx | 28.00       | 29.50              | No Fit
+80         | cv_7.docx  | 25.00       | 22.20              | No Fit
+81         | cv_14.docx | 25.00       | 55.60              | Potential Fit
+82         | cv_19.docx | 25.00       | 28.60              | No Fit
+83         | cv_25.docx | 25.00       | 87.40              | Good Fit
+84         | cv_64.docx | 25.00       | 29.60              | No Fit
+85         | cv_37.docx | 25.00       | 26.80              | No Fit
+86         | cv_51.docx | 25.00       | 27.90              | No Fit
+87         | cv_57.docx | 25.00       | 20.80              | No Fit
+88         | cv_68.docx | 25.00       | 28.00              | No Fit
+89         | cv_82.docx | 25.00       | 82.30              | Good Fit
+90         | cv_88.docx | 25.00       | 20.50              | No Fit
+91         | cv_89.docx | 25.00       | 20.50              | No Fit
+92         | cv_4.docx  | 17.00       | 26.90              | No Fit
+93         | cv_90.docx | 17.00       | 27.60              | No Fit
+94         | cv_3.docx  | 15.00       | 23.50              | No Fit
+95         | cv_10.docx | 15.00       | 25.40              | No Fit
+96         | cv_21.docx | 15.00       | 20.90              | No Fit
+97         | cv_49.docx | 15.00       | 24.10              | No Fit
+98         | cv_63.docx | 5.00        | 22.10              | No Fit
+
+==========================================================================================
+COMPLETE SORTED CANDIDATE RANKINGS (1 to 98): NBK ATS Semantic
+==========================================================================================
+Model Rank | Filename   | Model Score | Ground Truth Score | Ground Truth Label
+----------------------------------------------------------------------------------------
+1          | cv_25.docx | 72.11       | 87.40              | Good Fit
+2          | cv_9.docx  | 71.47       | 85.80              | Good Fit
+3          | cv_61.docx | 70.40       | 89.30              | Good Fit
+4          | cv_18.docx | 70.27       | 88.40              | Good Fit
+5          | cv_44.docx | 69.99       | 22.30              | No Fit
+6          | cv_74.docx | 68.78       | 21.40              | No Fit
+7          | cv_30.docx | 68.72       | 83.00              | Good Fit
+8          | cv_69.docx | 68.34       | 83.20              | Good Fit
+9          | cv_90.docx | 67.75       | 27.60              | No Fit
+10         | cv_79.docx | 67.49       | 85.30              | Good Fit
+11         | cv_97.docx | 67.22       | 88.90              | Good Fit
+12         | cv_84.docx | 66.19       | 53.40              | Potential Fit
+13         | cv_52.docx | 66.09       | 84.30              | Good Fit
+14         | cv_66.docx | 65.97       | 80.70              | Good Fit
+15         | cv_80.docx | 65.92       | 25.60              | No Fit
+16         | cv_31.docx | 65.84       | 20.60              | No Fit
+17         | cv_94.docx | 65.34       | 24.80              | No Fit
+18         | cv_34.docx | 64.92       | 28.70              | No Fit
+19         | cv_15.docx | 64.82       | 24.00              | No Fit
+20         | cv_16.docx | 64.79       | 21.00              | No Fit
+21         | cv_77.docx | 64.38       | 22.30              | No Fit
+22         | cv_20.docx | 64.35       | 56.10              | Potential Fit
+23         | cv_5.docx  | 64.33       | 88.60              | Good Fit
+24         | cv_87.docx | 63.90       | 89.80              | Good Fit
+25         | cv_72.docx | 63.87       | 28.10              | No Fit
+26         | cv_91.docx | 63.65       | 53.40              | Potential Fit
+27         | cv_17.docx | 63.65       | 22.00              | No Fit
+28         | cv_11.docx | 63.30       | 26.90              | No Fit
+29         | cv_64.docx | 62.90       | 29.60              | No Fit
+30         | cv_53.docx | 62.76       | 25.60              | No Fit
+31         | cv_43.docx | 62.74       | 29.20              | No Fit
+32         | cv_40.docx | 62.65       | 28.70              | No Fit
+33         | cv_70.docx | 62.40       | 81.40              | Good Fit
+34         | cv_83.docx | 62.38       | 59.10              | Potential Fit
+35         | cv_6.docx  | 62.34       | 86.70              | Good Fit
+36         | cv_57.docx | 61.74       | 20.80              | No Fit
+37         | cv_49.docx | 61.72       | 24.10              | No Fit
+38         | cv_48.docx | 61.49       | 26.80              | No Fit
+39         | cv_1.docx  | 61.38       | 26.90              | No Fit
+40         | cv_85.docx | 61.24       | 82.10              | Good Fit
+41         | cv_71.docx | 61.22       | 52.70              | Potential Fit
+42         | cv_23.docx | 61.18       | 26.90              | No Fit
+43         | cv_54.docx | 60.80       | 82.30              | Good Fit
+44         | cv_58.docx | 60.70       | 27.10              | No Fit
+45         | cv_96.docx | 60.46       | 84.40              | Good Fit
+46         | cv_7.docx  | 60.45       | 22.20              | No Fit
+47         | cv_76.docx | 60.32       | 28.30              | No Fit
+48         | cv_98.docx | 60.16       | 25.60              | No Fit
+49         | cv_55.docx | 60.08       | 21.60              | No Fit
+50         | cv_28.docx | 59.68       | 85.00              | Good Fit
+51         | cv_32.docx | 59.66       | 24.10              | No Fit
+52         | cv_26.docx | 59.13       | 82.80              | Good Fit
+53         | cv_8.docx  | 58.80       | 29.10              | No Fit
+54         | cv_46.docx | 58.66       | 57.10              | Potential Fit
+55         | cv_39.docx | 58.60       | 54.80              | Potential Fit
+56         | cv_60.docx | 58.57       | 86.50              | Good Fit
+57         | cv_47.docx | 58.27       | 26.90              | No Fit
+58         | cv_62.docx | 57.60       | 21.30              | No Fit
+59         | cv_92.docx | 57.31       | 21.60              | No Fit
+60         | cv_24.docx | 56.88       | 82.00              | Good Fit
+61         | cv_36.docx | 56.34       | 23.00              | No Fit
+62         | cv_81.docx | 56.07       | 21.50              | No Fit
+63         | cv_88.docx | 56.06       | 20.50              | No Fit
+64         | cv_65.docx | 56.05       | 83.70              | Good Fit
+65         | cv_35.docx | 56.04       | 25.00              | No Fit
+66         | cv_33.docx | 55.96       | 29.30              | No Fit
+67         | cv_37.docx | 55.95       | 26.80              | No Fit
+68         | cv_10.docx | 55.87       | 25.40              | No Fit
+69         | cv_14.docx | 55.84       | 55.60              | Potential Fit
+70         | cv_38.docx | 55.79       | 28.40              | No Fit
+71         | cv_45.docx | 55.77       | 57.20              | Potential Fit
+72         | cv_4.docx  | 55.75       | 26.90              | No Fit
+73         | cv_59.docx | 55.69       | 24.90              | No Fit
+74         | cv_29.docx | 55.02       | 53.20              | Potential Fit
+75         | cv_89.docx | 54.70       | 20.50              | No Fit
+76         | cv_13.docx | 54.58       | 82.50              | Good Fit
+77         | cv_19.docx | 54.20       | 28.60              | No Fit
+78         | cv_86.docx | 54.12       | 20.90              | No Fit
+79         | cv_75.docx | 54.01       | 28.40              | No Fit
+80         | cv_67.docx | 53.65       | 28.50              | No Fit
+81         | cv_3.docx  | 53.19       | 23.50              | No Fit
+82         | cv_27.docx | 52.53       | 21.90              | No Fit
+83         | cv_68.docx | 52.45       | 28.00              | No Fit
+84         | cv_56.docx | 52.31       | 23.70              | No Fit
+85         | cv_51.docx | 52.13       | 27.90              | No Fit
+86         | cv_82.docx | 51.95       | 82.30              | Good Fit
+87         | cv_50.docx | 51.10       | 24.70              | No Fit
+88         | cv_42.docx | 50.71       | 28.00              | No Fit
+89         | cv_95.docx | 49.78       | 21.20              | No Fit
+90         | cv_78.docx | 49.68       | 22.10              | No Fit
+91         | cv_21.docx | 49.36       | 20.90              | No Fit
+92         | cv_41.docx | 49.12       | 20.40              | No Fit
+93         | cv_22.docx | 49.03       | 29.80              | No Fit
+94         | cv_63.docx | 48.24       | 22.10              | No Fit
+95         | cv_93.docx | 47.83       | 29.90              | No Fit
+96         | cv_2.docx  | 47.43       | 25.40              | No Fit
+97         | cv_73.docx | 47.12       | 29.50              | No Fit
+98         | cv_12.docx | 41.67       | 25.40              | No Fit

@@ -22,7 +22,7 @@ def _get_easyocr():
     global _easyocr_reader
     if _easyocr_reader is None:
         import easyocr
-        _easyocr_reader = easyocr.Reader(["en"], gpu=False)
+        _easyocr_reader = easyocr.Reader(["en","bn"], gpu=False)
     return _easyocr_reader
 
 def _layout_text(results: list) -> str:

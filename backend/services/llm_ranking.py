@@ -312,9 +312,24 @@ def rerank_top_candidates(jd_text: str, top_candidates: list[dict], ollama_url: 
 
 CRITERIA_EXTRACTION_SYSTEM_PROMPT = (
     "You are an expert technical recruiter. Analyze the given job description and divide it into "
-    "exactly 5 major, non-overlapping criteria for screening candidates. Each criterion must represent "
-    "a distinct category (e.g., Core programming stack, Frameworks, Architecture/Databases, Process/Soft skills, Domain experience). "
-    "Allocate a weight percentage (integer) to each of the 5 criteria such that they sum to exactly 100%. "
+    "5 to 8 major, non-overlapping evaluation criteria based on the actual structure of the Job Description. "
+    "For each criterion, define its name, description, weight (an integer representing importance), "
+    "and a list of structured subcriteria.\n\n"
+    "CRITICAL CONSTRAINTS FOR RUBRIC GENERATION:\n"
+    "1. Criteria count: Generate between 5 and 8 criteria. Do not force exactly 5.\n"
+    "2. Non-overlapping: Ensure criteria and subcriteria are strictly non-overlapping. Every technology, "
+    "competency, tool, certification, or qualification must appear in exactly one criterion. A skill (e.g., SQL Server, SSRS) "
+    "must NOT be duplicated across multiple categories.\n"
+    "3. Separate Required & Preferred: Whenever possible, separate required qualifications from preferred (nice-to-have) "
+    "qualifications into distinct criteria or distinct subcriteria.\n"
+    "4. Weight Allocation: Allocate weights based on employer emphasis: Required > Preferred; repeated skills receive higher "
+    "weight; terms like 'Must', 'Expert', 'Required', 'Essential' increase weight; required years of experience must "
+    "influence weighting. The total sum of parent criteria weights must equal exactly 100.\n"
+    "5. Subcriteria weights: Each subcriterion has a name, a weight, and a 'required' boolean flag. "
+    "The sum of subcriterion weights within a criterion must equal the parent criterion's weight.\n"
+    "6. Objective criteria only: Remove subjective resume criteria (e.g., Integrity, Positive attitude, Punctuality, "
+    "On-site attendance, or other personality traits) unless they are hard requirements that can realistically "
+    "be verified or inferred from a resume.\n\n"
     "Respond with valid JSON only matching the schema."
 )
 
@@ -324,19 +339,27 @@ CRITERIA_EXTRACTION_SCHEMA = {
         "criteria": {
             "type": "array",
             "minItems": 5,
-            "maxItems": 5,
+            "maxItems": 8,
             "items": {
                 "type": "object",
                 "properties": {
                     "name": {"type": "string"},
                     "weight": {"type": "integer"},
                     "description": {"type": "string"},
-                    "sub_criteria": {
+                    "subcriteria": {
                         "type": "array",
-                        "items": {"type": "string"}
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {"type": "string"},
+                                "weight": {"type": "integer"},
+                                "required": {"type": "boolean"}
+                            },
+                            "required": ["name", "weight", "required"]
+                        }
                     }
                 },
-                "required": ["name", "weight", "description", "sub_criteria"]
+                "required": ["name", "weight", "description", "subcriteria"]
             }
         }
     },
@@ -344,58 +367,241 @@ CRITERIA_EXTRACTION_SCHEMA = {
 }
 
 SCORE_CRITERION_SYSTEM_PROMPT = (
-    "You are an expert technical recruiter. You score candidate CVs against one specific rubric criterion "
-    "from 0-100 based on candidate fit. "
-    "CRITICAL GUARDRAIL: If the CV is a blank template containing placeholder text, formatting guides, "
-    "or writing instructions, score it as 0. Respond with valid JSON only matching the schema."
+    "You are an expert technical recruiter scoring a candidate CV against one specific rubric criterion. "
+    "You must evaluate every subcriterion of this criterion independently.\n\n"
+    "CRITICAL SCORING CONSTRAINTS:\n"
+    "1. Strict Evidence-Based: Only use explicit, literal evidence from the resume. Do NOT infer or assume missing experience. "
+    "If the resume does not explicitly mention a technology, tool, competency, or qualification, assign a score of 0.0.\n"
+    "2. Granular Scoring: For each subcriterion, assign exactly one of the following scores: "
+    "1.0 (Full match with clear/strong evidence), 0.75 (Good match with slightly minor gaps), 0.5 (Partial match / basic exposure), "
+    "0.25 (Very weak match or highly ambiguous mention), 0.0 (No explicit mention or evidence at all).\n"
+    "3. Quote Evidence: You must extract and quote the exact supporting evidence from the resume for each subcriterion. "
+    "If no evidence exists, explain why or state 'No explicit evidence found'.\n"
+    "4. Clamped Scores: Use lower scores (e.g. 0.25 or 0.0) whenever the evidence is weak, ambiguous, or self-reported without context.\n"
+    "5. Calculate Parent Score: Compute the overall criterion score on a 0 to 100 scale from the weighted subcriteria. "
+    "Formula: (Sum of (subcriterion_score * subcriterion_weight) / parent_criterion_weight) * 100.\n\n"
+    "Respond with valid JSON only matching the schema."
 )
 
 SCORE_CRITERION_SCHEMA = {
     "type": "object",
     "properties": {
+        "subcriteria": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "score": {"type": "number"},
+                    "evidence": {"type": "string"}
+                },
+                "required": ["name", "score", "evidence"]
+            }
+        },
         "score": {"type": "number"},
-        "justification": {"type": "string"},
+        "justification": {"type": "string"}
     },
-    "required": ["score", "justification"],
+    "required": ["subcriteria", "score", "justification"]
 }
 
+def normalize_weights(criteria: list[dict]) -> list[dict]:
+    """
+    Ensure the parent weights sum to exactly 100, and for each criterion,
+    the sum of subcriteria weights equals the parent criterion's weight.
+    """
+    if not criteria:
+        return criteria
+
+    # 1. Normalize parent weights to sum to exactly 100
+    total_parent_weight = sum(c.get("weight", 0) for c in criteria)
+    if total_parent_weight == 0:
+        default_weight = 100 // len(criteria)
+        for c in criteria:
+            c["weight"] = default_weight
+        criteria[-1]["weight"] = 100 - (default_weight * (len(criteria) - 1))
+    else:
+        running_sum = 0
+        for i, c in enumerate(criteria):
+            w = c.get("weight", 0)
+            if i == len(criteria) - 1:
+                c["weight"] = 100 - running_sum
+            else:
+                normalized = round((w / total_parent_weight) * 100)
+                c["weight"] = normalized
+                running_sum += normalized
+
+    # 2. Normalize subcriteria weights to sum to the parent weight
+    for c in criteria:
+        parent_w = c["weight"]
+        sub = c.get("subcriteria", [])
+        if not sub:
+            c["subcriteria"] = [{"name": c["name"], "weight": parent_w, "required": True}]
+            continue
+
+        total_sub_weight = sum(s.get("weight", 0) for s in sub)
+        if total_sub_weight == 0:
+            default_sub_weight = parent_w // len(sub)
+            running_sub_sum = 0
+            for i, s in enumerate(sub):
+                if i == len(sub) - 1:
+                    s["weight"] = parent_w - running_sub_sum
+                else:
+                    s["weight"] = default_sub_weight
+                    running_sub_sum += default_sub_weight
+        else:
+            running_sub_sum = 0
+            for i, s in enumerate(sub):
+                sw = s.get("weight", 0)
+                if i == len(sub) - 1:
+                    s["weight"] = parent_w - running_sub_sum
+                else:
+                    normalized_sub = round((sw / total_sub_weight) * parent_w)
+                    s["weight"] = normalized_sub
+                    running_sub_sum += normalized_sub
+
+    return criteria
+
 def extract_rubric_criteria(jd_text: str, ollama_url: str, model: str) -> list[dict]:
-    """Split the job description into exactly 5 weighted criteria."""
-    user_text = f"Job Description:\n{jd_text}\n\nExtract exactly 5 criteria and their weights."
+    """Split the job description into 5 to 8 weighted criteria with nested subcriteria."""
+    user_text = f"Job Description:\n{jd_text}\n\nExtract 5 to 8 criteria and their structured subcriteria."
     content = _ollama_chat(ollama_url, model, CRITERIA_EXTRACTION_SYSTEM_PROMPT, user_text, json_schema=CRITERIA_EXTRACTION_SCHEMA)
     try:
         parsed = json.loads(content)
         criteria = parsed.get("criteria", [])
-        if len(criteria) != 5:
-            raise ValueError("Expected exactly 5 criteria")
-        return criteria
+        if not (5 <= len(criteria) <= 8):
+            raise ValueError(f"Expected between 5 and 8 criteria, got {len(criteria)}")
+        return normalize_weights(criteria)
     except Exception as e:
         print(f"Failed to parse criteria JSON: {e}. Using fallback criteria.")
-        return [
-            {"name": "Core Technical Skills", "weight": 20, "description": "Required languages, frameworks, and tools", "sub_criteria": []},
-            {"name": "Experience & Seniority", "weight": 20, "description": "Years of experience and role seniority", "sub_criteria": []},
-            {"name": "Architecture & Design", "weight": 20, "description": "System design, OOP, and patterns", "sub_criteria": []},
-            {"name": "Database & Cloud", "weight": 20, "description": "Databases, cloud platforms, and DevOps", "sub_criteria": []},
-            {"name": "Methodology & Soft Skills", "weight": 20, "description": "Agile, team-work, and communication", "sub_criteria": []}
+        fallback = [
+            {
+                "name": "Core Technical Skills",
+                "weight": 25,
+                "description": "Required languages, frameworks, and tools stated in the JD.",
+                "subcriteria": [{"name": "Core programming stack and frameworks", "weight": 25, "required": True}]
+            },
+            {
+                "name": "Experience & Seniority",
+                "weight": 20,
+                "description": "Years of experience and role seniority levels.",
+                "subcriteria": [{"name": "Required years and depth of professional experience", "weight": 20, "required": True}]
+            },
+            {
+                "name": "Architecture & Design",
+                "weight": 15,
+                "description": "System design, OOP, design patterns, and architecture principles.",
+                "subcriteria": [{"name": "System design and software architecture principles", "weight": 15, "required": False}]
+            },
+            {
+                "name": "Database & Cloud Infrastructure",
+                "weight": 20,
+                "description": "Databases, cloud platforms, and DevOps / CI/CD tools.",
+                "subcriteria": [{"name": "Cloud infrastructure and database systems", "weight": 20, "required": True}]
+            },
+            {
+                "name": "Methodology & Domain",
+                "weight": 20,
+                "description": "Agile methodologies, communication skills, and specific industry domain experience.",
+                "subcriteria": [{"name": "Agile practices and domain expertise", "weight": 20, "required": False}]
+            }
         ]
+        return normalize_weights(fallback)
 
 def score_cv_criterion(criterion: dict, cv_text: str, ollama_url: str, model: str) -> dict:
-    """Score one candidate CV raw text against a single criterion. Returns {"score": float, "justification": str}."""
+    """Score one candidate CV raw text against a single criterion by evaluating its subcriteria independently."""
+    sub_lines = []
+    for s in criterion.get("subcriteria", []):
+        req_str = "Required" if s.get("required", True) else "Preferred"
+        sub_lines.append(f"- Name: {s['name']}, Weight: {s['weight']}, Type: {req_str}")
+    sub_desc = "\n".join(sub_lines)
+
     user_text = (
-        f"Criterion: {criterion['name']}\n"
-        f"Weight: {criterion['weight']}%\n"
-        f"Description: {criterion['description']}\n"
-        f"Sub-criteria: {', '.join(criterion.get('sub_criteria', []))}\n\n"
+        f"Parent Criterion: {criterion['name']}\n"
+        f"Total Weight: {criterion['weight']}\n"
+        f"Description: {criterion['description']}\n\n"
+        f"Evaluate the following Subcriteria:\n{sub_desc}\n\n"
         f"Candidate CV:\n{cv_text}\n\n"
-        f"Score this candidate's fit for this specific criterion on a scale from 0 to 100, and provide a one-sentence justification."
+        f"Evaluate each subcriterion independently and return the JSON response matching the schema."
     )
+    
     content = _ollama_chat(ollama_url, model, SCORE_CRITERION_SYSTEM_PROMPT, user_text, json_schema=SCORE_CRITERION_SCHEMA)
+    
     try:
         parsed = json.loads(content)
+        
+        orig_subs = criterion.get("subcriteria", [])
+        parsed_subs = parsed.get("subcriteria", [])
+        
+        weighted_sum = 0.0
+        aligned_parsed_subs = []
+        
+        for idx, orig_sub in enumerate(orig_subs):
+            orig_name_clean = orig_sub["name"].strip().lower()
+            match_eval = None
+            
+            for p_sub in parsed_subs:
+                if p_sub.get("name", "").strip().lower() == orig_name_clean:
+                    match_eval = p_sub
+                    break
+            
+            if not match_eval and idx < len(parsed_subs):
+                match_eval = parsed_subs[idx]
+                
+            if match_eval:
+                eval_score = float(match_eval.get("score", 0.0))
+                valid_scores = [0.0, 0.25, 0.5, 0.75, 1.0]
+                eval_score = min(valid_scores, key=lambda x: abs(x - eval_score))
+                
+                weighted_sum += eval_score * orig_sub["weight"]
+                
+                aligned_parsed_subs.append({
+                    "name": orig_sub["name"],
+                    "weight": orig_sub["weight"],
+                    "required": orig_sub.get("required", True),
+                    "score": eval_score,
+                    "evidence": str(match_eval.get("evidence", ""))
+                })
+            else:
+                aligned_parsed_subs.append({
+                    "name": orig_sub["name"],
+                    "weight": orig_sub["weight"],
+                    "required": orig_sub.get("required", True),
+                    "score": 0.0,
+                    "evidence": "No explicit evidence found."
+                })
+        
+        parent_weight = float(criterion["weight"])
+        computed_score = (weighted_sum / parent_weight) * 100.0 if parent_weight > 0 else 0.0
+        
+        sub_details = []
+        for s in aligned_parsed_subs:
+            status = "Required" if s["required"] else "Preferred"
+            evidence_str = f"Evidence: \"{s['evidence']}\"" if s["evidence"] and s["evidence"].strip() != "No explicit evidence found." else "No explicit evidence found."
+            sub_details.append(f"[{s['name']} (Weight: {s['weight']}/{int(parent_weight)}, {status}) -> Score: {s['score']} ({evidence_str})]")
+        
+        overall_justification = str(parsed.get("justification", ""))
+        full_justification = f"Overall: {overall_justification}\nSubcriteria Breakdown:\n" + "\n".join(sub_details)
+        
         return {
-            "score": float(parsed.get("score", 0.0)),
-            "justification": str(parsed.get("justification", "")),
+            "score": round(computed_score, 2),
+            "justification": full_justification,
+            "subcriteria_breakdown": aligned_parsed_subs
         }
     except Exception as e:
-        return {"score": 0.0, "justification": f"Parsing failed for this criterion: {e}."}
+        print(f"Failed to parse or score criterion: {e}. Using fallback 0.0.")
+        fallback_breakdown = []
+        for s in criterion.get("subcriteria", []):
+            fallback_breakdown.append({
+                "name": s["name"],
+                "weight": s["weight"],
+                "required": s.get("required", True),
+                "score": 0.0,
+                "evidence": f"Scoring execution encountered an error: {e}"
+            })
+        return {
+            "score": 0.0,
+            "justification": f"Failed to score criterion: {e}.",
+            "subcriteria_breakdown": fallback_breakdown
+        }
+
 

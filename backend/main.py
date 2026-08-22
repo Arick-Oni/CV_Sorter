@@ -12,13 +12,17 @@ from .routers import cvs, projects
 Base.metadata.create_all(bind=engine)
 
 # Add columns that didn't exist in DBs created before this feature was added
-with engine.connect() as _conn:
-    _conn.execute(text("ALTER TABLE cvs ADD COLUMN IF NOT EXISTS ner_skills JSON"))
-    _conn.execute(text("ALTER TABLE cvs ADD COLUMN IF NOT EXISTS project_id INTEGER"))
-    _conn.execute(text("ALTER TABLE cvs ADD COLUMN IF NOT EXISTS years_of_experience REAL"))
-    _conn.execute(text("ALTER TABLE cvs ADD COLUMN IF NOT EXISTS seniority_level VARCHAR"))
-    _conn.execute(text("ALTER TABLE match_history ADD COLUMN IF NOT EXISTS rubric TEXT"))
-    _conn.commit()
+try:
+    with engine.connect() as _conn:
+        if not engine.url.drivername.startswith("sqlite"):
+            _conn.execute(text("ALTER TABLE cvs ADD COLUMN IF NOT EXISTS ner_skills JSON"))
+            _conn.execute(text("ALTER TABLE cvs ADD COLUMN IF NOT EXISTS project_id INTEGER"))
+            _conn.execute(text("ALTER TABLE cvs ADD COLUMN IF NOT EXISTS years_of_experience REAL"))
+            _conn.execute(text("ALTER TABLE cvs ADD COLUMN IF NOT EXISTS seniority_level VARCHAR"))
+            _conn.execute(text("ALTER TABLE match_history ADD COLUMN IF NOT EXISTS rubric TEXT"))
+            _conn.commit()
+except Exception as e:
+    print(f"Database migration note: {e}")
 
 app = FastAPI(title="CV Platform", version="1.0.0")
 
