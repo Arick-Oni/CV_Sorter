@@ -9,6 +9,9 @@ load_dotenv()
 # Import models to register them on Base.metadata
 from backend.models import Base, Project, CV, MatchHistory
 
+# Define projects to exclude from the Render SQLite database
+EXCLUDED_PROJECTS = {"TEST", "DN", "CodeSprint2026"}
+
 def main():
     pg_url = os.getenv("DATABASE_URL")
     if not pg_url or not pg_url.startswith("postgresql"):
@@ -34,22 +37,33 @@ def main():
     SqliteSession = sessionmaker(bind=sqlite_engine)
     sqlite_session = SqliteSession()
 
-    print("Copying projects...")
+    print(f"Copying projects (excluding: {', '.join(EXCLUDED_PROJECTS)})...")
     projects = pg_session.query(Project).all()
-    print(f"Found {len(projects)} projects.")
+    excluded_project_ids = set()
+    copied_projects_count = 0
     for p in projects:
+        if p.name in EXCLUDED_PROJECTS:
+            excluded_project_ids.add(p.id)
+            print(f" - Excluding project: {p.name} (ID: {p.id})")
+            continue
         sqlite_p = Project(
             id=p.id,
             name=p.name,
             created_at=p.created_at
         )
         sqlite_session.add(sqlite_p)
+        copied_projects_count += 1
     sqlite_session.commit()
+    print(f"-> Copied {copied_projects_count} projects. Excluded {len(excluded_project_ids)} projects.")
 
-    print("Copying CVs...")
+    print("Copying CVs (excluding those assigned to excluded projects)...")
     cvs = pg_session.query(CV).all()
-    print(f"Found {len(cvs)} CVs.")
+    copied_cvs_count = 0
+    excluded_cvs_count = 0
     for c in cvs:
+        if c.project_id in excluded_project_ids:
+            excluded_cvs_count += 1
+            continue
         sqlite_c = CV(
             id=c.id,
             filename=c.filename,
@@ -68,12 +82,18 @@ def main():
             project_id=c.project_id
         )
         sqlite_session.add(sqlite_c)
+        copied_cvs_count += 1
     sqlite_session.commit()
+    print(f"-> Copied {copied_cvs_count} CVs. Excluded {excluded_cvs_count} CVs.")
 
-    print("Copying Match History...")
+    print("Copying Match History (excluding runs for excluded projects)...")
     history = pg_session.query(MatchHistory).all()
-    print(f"Found {len(history)} match history runs.")
+    copied_history_count = 0
+    excluded_history_count = 0
     for h in history:
+        if h.project_id in excluded_project_ids:
+            excluded_history_count += 1
+            continue
         sqlite_h = MatchHistory(
             id=h.id,
             project_id=h.project_id,
@@ -85,7 +105,9 @@ def main():
             results=h.results
         )
         sqlite_session.add(sqlite_h)
+        copied_history_count += 1
     sqlite_session.commit()
+    print(f"-> Copied {copied_history_count} match runs. Excluded {excluded_history_count} runs.")
 
     pg_session.close()
     sqlite_session.close()
