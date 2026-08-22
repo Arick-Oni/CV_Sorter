@@ -204,6 +204,29 @@ extractionMethod.addEventListener('change', () => {
   ollamaUrlGroup.style.display = extractionMethod.value === 'minicpm-v' ? 'block' : 'none';
 });
 
+// Dynamic switcher between Individual Files and Entire Folder upload modes
+const uploadModeRadios = document.querySelectorAll('input[name="upload-mode"]');
+const cvFileInput      = document.getElementById('cv-file');
+const cvFileLabelText  = document.getElementById('cv-file-label-text');
+
+uploadModeRadios.forEach(radio => {
+  radio.addEventListener('change', () => {
+    if (radio.value === 'folder') {
+      cvFileInput.webkitdirectory = true;
+      cvFileInput.setAttribute('webkitdirectory', '');
+      cvFileInput.setAttribute('directory', '');
+      cvFileLabelText.textContent = 'CV Folder — select a folder';
+    } else {
+      cvFileInput.webkitdirectory = false;
+      cvFileInput.removeAttribute('webkitdirectory');
+      cvFileInput.removeAttribute('directory');
+      cvFileLabelText.textContent = 'CV Files (image, PDF, or DOCX) — select files';
+    }
+    // Reset selection when changing modes
+    cvFileInput.value = '';
+  });
+});
+
 document.getElementById('upload-form').addEventListener('submit', async e => {
   e.preventDefault();
   const statusEl = document.getElementById('upload-status');

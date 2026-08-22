@@ -30,9 +30,20 @@
     <div class="card">
       <h2>Upload a CV</h2>
       <form id="upload-form">
-        <label>CV Files (image, PDF, or DOCX) — select a file or a folder
-          <input type="file" id="cv-file" accept=".png,.jpg,.jpeg,.webp,.pdf,.docx" required multiple webkitdirectory />
-          <div style="font-size:0.85rem;color:#64748b;margin-top:6px">Tip: In Chromium-based browsers you can select a folder to upload all files inside.</div>
+        <label>Upload Mode
+          <div style="display:flex; gap:1.5rem; margin-top:4px; margin-bottom:4px; font-weight:normal">
+            <label style="flex-direction:row !important; font-weight:normal; cursor:pointer; align-items:center; gap:6px">
+              <input type="radio" name="upload-mode" value="files" checked /> Individual Files
+            </label>
+            <label style="flex-direction:row !important; font-weight:normal; cursor:pointer; align-items:center; gap:6px">
+              <input type="radio" name="upload-mode" value="folder" /> Entire Folder
+            </label>
+          </div>
+        </label>
+
+        <label id="cv-file-label"><span id="cv-file-label-text">CV Files (image, PDF, or DOCX) — select files</span>
+          <input type="file" id="cv-file" accept=".png,.jpg,.jpeg,.webp,.pdf,.docx" required multiple />
+          <div style="font-size:0.85rem;color:#64748b;margin-top:6px">Tip: You can select multiple files at once, or toggle 'Entire Folder' mode to pick a directory.</div>
         </label>
 
         <label>Project
